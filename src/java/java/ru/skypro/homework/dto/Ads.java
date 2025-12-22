@@ -3,15 +3,15 @@ package java.ru.skypro.homework.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-import java.util.List;import java.ru.skypro.homework.dto.listOfAdvertisements;
+import java.util.List;
 
 @Data
 @Schema(description = "Список объявлений")
-public class listOfAdvertisements {
+public class Ads {
 
     @Schema(description = "общее количество объявлений")
     private Integer count;
 
     @Schema(description = "список объявлений")
-    private List<listOfAdvertisements> results;
+    private List<Ads> results;
 }

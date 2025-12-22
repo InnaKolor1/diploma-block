@@ -3,6 +3,7 @@ package java.ru.skypro.homework.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import java.ru.skypro.homework.dto.register;
+import javax.lang.model.element.Name;
 import javax.management.relation.Role;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -39,4 +40,7 @@ public class register {
 
     @Schema(description = "роль пользователя")
     private Role role;
+
+    public void setRole(role role) {
+    }
 }

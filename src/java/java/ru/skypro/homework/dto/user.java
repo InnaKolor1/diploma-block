@@ -2,8 +2,9 @@ package java.ru.skypro.homework.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import java.ru.skypro.homework.dto.user;
+
 import javax.management.relation.Role;
+
 
 @Data
 @Schema(description = "Данные пользователя")

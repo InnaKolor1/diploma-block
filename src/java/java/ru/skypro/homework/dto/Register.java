@@ -2,16 +2,14 @@ package java.ru.skypro.homework.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import java.ru.skypro.homework.dto.register;
-import javax.lang.model.element.Name;
-import javax.management.relation.Role;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Data
 @Schema(description = "Данные для регистрации")
-public class register {
+public class Register {
 
     @NotBlank
     @Size(min = 4, max = 32)
@@ -39,8 +37,8 @@ public class register {
     private String phone;
 
     @Schema(description = "роль пользователя")
-    private Role role;
+    private javax.management.relation.Role role;
 
-    public void setRole(role role) {
+    public void setRole(Role role) {
     }
 }

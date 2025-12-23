@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class openApiConfig {
+public class OpenApiConfig {
 
     @Bean
     public OpenAPI customOpenAPI() {

@@ -2,11 +2,10 @@ package java.ru.skypro.homework.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import java.ru.skypro.homework.dto.announcement;
 
 @Data
 @Schema(description = "Объявление")
-public class announcement  {
+public class Announcement {
 
     @Schema(description = "id автора объявления")
     private Integer author;

@@ -10,7 +10,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 @TestConfiguration
 @EnableWebSecurity
-public class testSecurityConfig {
+public class TestSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {

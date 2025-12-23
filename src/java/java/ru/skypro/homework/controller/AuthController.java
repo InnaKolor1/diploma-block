@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import java.ru.skypro.homework.dto.login;
-import java.ru.skypro.homework.dto.register;
+import java.ru.skypro.homework.dto.Login;
+import java.ru.skypro.homework.dto.Register;
 
-import java.ru.skypro.homework.service.authService;
+import java.ru.skypro.homework.service.AuthService;
 
 import javax.validation.Valid;
 
@@ -22,9 +22,9 @@ import javax.validation.Valid;
 @CrossOrigin(value = "http://localhost:3000")
 @RestController
 @RequiredArgsConstructor
-public class authController {
+public class AuthController {
 
-    private final authService authService;
+    private final AuthService authService;
 
     @Operation(
             summary = "Авторизация пользователя",
@@ -34,7 +34,7 @@ public class authController {
             }
     )
     @PostMapping("/login")
-    public ResponseEntity<Void> login(@Valid @RequestBody login login) {
+    public ResponseEntity<Void> login(@Valid @RequestBody Login login) {
         log.info("Login attempt for user: {}", login.getUsername());
         if (authService.login(login.getUsername(), login.getPassword())) {
             return ResponseEntity.ok().build();
@@ -51,7 +51,7 @@ public class authController {
             }
     )
     @PostMapping("/register")
-    public ResponseEntity<Void> register(@Valid @RequestBody register register) {
+    public ResponseEntity<Void> register(@Valid @RequestBody Register register) {
         log.info("Registration attempt for user: {}", register.getUsername());
         if (authService.register(register)) {
             return ResponseEntity.status(HttpStatus.CREATED).build();

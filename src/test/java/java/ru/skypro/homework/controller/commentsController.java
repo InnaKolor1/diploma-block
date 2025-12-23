@@ -8,17 +8,16 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.ru.skypro.homework.testSecurityConfig;
+import java.ru.skypro.homework.TestSecurityConfig;
 
-import java.ru.skypro.homework.controller.commentsController;
-import java.ru.skypro.homework.dto.createOrUpdateComment;
+import java.ru.skypro.homework.dto.CreateOrUpdateComment;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(commentsController.class)
-@Import(testSecurityConfig.class)
-class commentControllerTest {
+@WebMvcTest(CommentsController.class)
+@Import(TestSecurityConfig.class)
+class CommentControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -36,7 +35,7 @@ class commentControllerTest {
 
     @Test
     void addComment_ShouldReturnComment() throws Exception {
-        createOrUpdateComment comment = new createOrUpdateComment();
+        CreateOrUpdateComment comment = new CreateOrUpdateComment();
         comment.setText("This is a test comment");
 
         mockMvc.perform(post("/ads/1/comments")
@@ -54,7 +53,7 @@ class commentControllerTest {
 
     @Test
     void updateComment_ShouldReturnComment() throws Exception {
-        createOrUpdateComment comment = new createOrUpdateComment();
+        CreateOrUpdateComment comment = new CreateOrUpdateComment();
         comment.setText("Updated comment text");
 
         mockMvc.perform(patch("/ads/1/comments/1")

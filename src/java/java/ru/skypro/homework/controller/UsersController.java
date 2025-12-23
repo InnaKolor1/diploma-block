@@ -15,8 +15,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import java.ru.skypro.homework.dto.newPassword;
-import java.ru.skypro.homework.dto.updateUser;
+import java.ru.skypro.homework.dto.NewPassword;
+import java.ru.skypro.homework.dto.UpdateUser;
 
 import javax.validation.Valid;
 import java.util.Iterator;
@@ -26,7 +26,7 @@ import java.util.Iterator;
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
-public class usersController {
+public class UsersController {
 
     @Operation(
             summary = "Обновление пароля",
@@ -37,7 +37,7 @@ public class usersController {
             }
     )
     @PostMapping("/set_password")
-    public ResponseEntity<Void> setPassword(@Valid @RequestBody newPassword newPassword) {
+    public ResponseEntity<Void> setPassword(@Valid @RequestBody NewPassword newPassword) {
         log.info("Updating password");
         // TODO: Implement in service layer
         return ResponseEntity.status(HttpStatus.OK).build();
@@ -56,7 +56,7 @@ public class usersController {
             }
     )
     @PatchMapping("/me")
-    public ResponseEntity<User> updateUser(@Valid @RequestBody updateUser updateUser) {
+    public ResponseEntity<User> updateUser(@Valid @RequestBody UpdateUser updateUser) {
         log.info("Updating user info");
         // TODO: Implement in service layer
         User user = new User() {

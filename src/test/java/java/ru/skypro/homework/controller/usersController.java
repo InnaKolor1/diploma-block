@@ -9,19 +9,18 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.ru.skypro.homework.testSecurityConfig;
+import java.ru.skypro.homework.TestSecurityConfig;
 
-import java.ru.skypro.homework.controller.usersController;
-import java.ru.skypro.homework.dto.newPassword;
-import java.ru.skypro.homework.dto.updateUser;
+import java.ru.skypro.homework.dto.NewPassword;
+import java.ru.skypro.homework.dto.UpdateUser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(usersController.class)
-@Import(testSecurityConfig.class)
-class userControllerTest {
+@WebMvcTest(UsersController.class)
+@Import(TestSecurityConfig.class)
+class UserControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -31,7 +30,7 @@ class userControllerTest {
 
     @Test
     void setPassword_ShouldReturnOk() throws Exception {
-        newPassword newPassword = new newPassword();
+        NewPassword newPassword = new NewPassword();
         newPassword.setCurrentPassword("currentPass");
         newPassword.setNewPassword("newPass123");
 
@@ -51,7 +50,7 @@ class userControllerTest {
 
     @Test
     void updateUser_ShouldReturnUser() throws Exception {
-        updateUser updateUser = new updateUser();
+        UpdateUser updateUser = new UpdateUser();
         updateUser.setFirstName("John");
         updateUser.setLastName("Doe");
         updateUser.setPhone("+79999999999");

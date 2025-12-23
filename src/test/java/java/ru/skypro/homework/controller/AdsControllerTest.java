@@ -7,18 +7,17 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
-import java.ru.skypro.homework.testSecurityConfig;
+import java.ru.skypro.homework.TestSecurityConfig;
 
-import java.ru.skypro.homework.controller.AdsController;
-import java.ru.skypro.homework.dto.createOrUpdateAd;
+import java.ru.skypro.homework.dto.CreateOrUpdateAd;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(AdsController.class)
-@Import(testSecurityConfig.class)
-class adsControllerTest {
+@Import(TestSecurityConfig.class)
+class AdsControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -49,7 +48,7 @@ class adsControllerTest {
 
     @Test
     void updateAds_ShouldReturnAd() throws Exception {
-        createOrUpdateAd updateAd = new createOrUpdateAd();
+        CreateOrUpdateAd updateAd = new CreateOrUpdateAd();
         updateAd.setTitle("Updated Title");
         updateAd.setPrice(1000);
         updateAd.setDescription("Updated description");
@@ -70,7 +69,7 @@ class adsControllerTest {
 
     @Test
     void addAd_ShouldReturnCreated() throws Exception {
-        createOrUpdateAd properties = new createOrUpdateAd();
+        CreateOrUpdateAd properties = new CreateOrUpdateAd();
         properties.setTitle("New Ad");
         properties.setPrice(5000);
         properties.setDescription("New description");

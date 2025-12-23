@@ -2,10 +2,10 @@ package java.ru.skypro.homework.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import java.ru.skypro.homework.dto.comment;
+
 @Data
 @Schema(description = "Комментарий")
-public class comment {
+public class Comment {
 
     @Schema(description = "id автора комментария")
     private Integer author;

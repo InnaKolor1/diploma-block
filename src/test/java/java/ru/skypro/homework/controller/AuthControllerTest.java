@@ -1,6 +1,5 @@
 package java.ru.skypro.homework.controller;
 
-import org.h2.engine.Role;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -9,12 +8,11 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.ru.skypro.homework.controller.authController;
-import java.ru.skypro.homework.dto.login;
-import java.ru.skypro.homework.dto.register;
-import java.ru.skypro.homework.dto.role;
-import java.ru.skypro.homework.service.authService;
-import java.ru.skypro.homework.testSecurityConfig;
+import java.ru.skypro.homework.dto.Login;
+import java.ru.skypro.homework.dto.Register;
+import java.ru.skypro.homework.dto.Role;
+import java.ru.skypro.homework.service.AuthService;
+import java.ru.skypro.homework.TestSecurityConfig;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -23,9 +21,9 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(authController.class)
-@Import(testSecurityConfig.class)
-class authControllerTest {
+@WebMvcTest(AuthController.class)
+@Import(TestSecurityConfig.class)
+class AuthControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -34,11 +32,11 @@ class authControllerTest {
     private ObjectMapper objectMapper;
 
     @MockBean
-    private authService authService;
+    private AuthService authService;
 
     @Test
     void login_ShouldReturnOk_WhenCredentialsAreValid() throws Exception {
-        login login = new login();
+        Login login = new Login();
         login.setUsername("user@gmail.com");
         login.setPassword("password");
 
@@ -52,7 +50,7 @@ class authControllerTest {
 
     @Test
     void login_ShouldReturnUnauthorized_WhenCredentialsAreInvalid() throws Exception {
-        login login = new login();
+        Login login = new Login();
         login.setUsername("user@gmail.com");
         login.setPassword("wrongpassword");
 
@@ -66,15 +64,15 @@ class authControllerTest {
 
     @Test
     void register_ShouldReturnCreated_WhenRegistrationIsSuccessful() throws Exception {
-        register register = new register();
+        Register register = new Register();
         register.setUsername("newuser@gmail.com");
         register.setPassword("password123");
         register.setFirstName("John");
         register.setLastName("Doe");
         register.setPhone("+79999999999");
-        register.setRole(role.USER);
+        register.setRole(Role.USER);
 
-        when(authService.register(any(register.class))).thenReturn(true);
+        when(authService.register(any(Register.class))).thenReturn(true);
 
         mockMvc.perform(post("/register")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -84,11 +82,11 @@ class authControllerTest {
 
     @Test
     void register_ShouldReturnBadRequest_WhenRegistrationFails() throws Exception {
-        register register = new register();
+        Register register = new Register();
         register.setUsername("user@gmail.com");
         register.setPassword("password");
 
-        when(authService.register(any(register.class))).thenReturn(false);
+        when(authService.register(any(Register.class))).thenReturn(false);
 
         mockMvc.perform(post("/register")
                         .contentType(MediaType.APPLICATION_JSON)

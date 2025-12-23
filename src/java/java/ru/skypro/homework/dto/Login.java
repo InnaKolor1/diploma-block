@@ -5,10 +5,10 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.ru.skypro.homework.dto.login;
+
 @Data
 @Schema(description = "Данные для авторизации")
-public class login {
+public class Login {
 
     @NotBlank
     @Size(min = 8, max = 16)

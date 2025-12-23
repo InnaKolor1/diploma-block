@@ -2,13 +2,13 @@ package java.ru.skypro.homework.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import java.ru.skypro.homework.dto.createOrUpdateComment;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Data
 @Schema(description = "Создание или обновление комментария")
-public class createOrUpdateComment {
+public class CreateOrUpdateComment {
 
     @NotBlank
     @Size(min = 8, max = 64)

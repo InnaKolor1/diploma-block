@@ -15,8 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.ru.skypro.homework.dto.Ad;
 import java.ru.skypro.homework.dto.Ads;
-import java.ru.skypro.homework.dto.createOrUpdateAd;
-import java.ru.skypro.homework.dto.extendedAd;
+import java.ru.skypro.homework.dto.CreateOrUpdateAd;
+import java.ru.skypro.homework.dto.ExtendedAd;
 
 @Slf4j
 @CrossOrigin(value = "http://localhost:3000")
@@ -57,7 +57,7 @@ public class AdsController {
             }
     )
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Ad> addAd(@RequestPart("properties") @Valid createOrUpdateAd properties,
+    public ResponseEntity<Ad> addAd(@RequestPart("properties") @Valid CreateOrUpdateAd properties,
                                     @RequestPart("image") MultipartFile image) {
         log.info("Adding new ad with title: {}", properties.getTitle());
         // TODO: Implement in service layer
@@ -72,17 +72,17 @@ public class AdsController {
                             responseCode = "200",
                             description = "OK",
                             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = extendedAd.class))
+                                    schema = @Schema(implementation = ExtendedAd.class))
                     ),
                     @ApiResponse(responseCode = "401", description = "Unauthorized"),
                     @ApiResponse(responseCode = "404", description = "Not found")
             }
     )
     @GetMapping("/{id}")
-    public ResponseEntity<extendedAd> getAds(@PathVariable("id") Integer id) {
+    public ResponseEntity<ExtendedAd> getAds(@PathVariable("id") Integer id) {
         log.info("Getting ad with id: {}", id);
         // TODO: Implement in service layer
-        extendedAd extendedAd = new extendedAd();
+        ExtendedAd extendedAd = new ExtendedAd();
         return ResponseEntity.status(HttpStatus.OK).body(extendedAd);
     }
 
@@ -118,7 +118,7 @@ public class AdsController {
     )
     @PatchMapping("/{id}")
     public ResponseEntity<Ad> updateAds(@PathVariable("id") Integer id,
-                                        @Valid @RequestBody createOrUpdateAd createOrUpdateAd) {
+                                        @Valid @RequestBody CreateOrUpdateAd createOrUpdateAd) {
         log.info("Updating ad with id: {}", id);
         // TODO: Implement in service layer
         Ad ad = new Ad();

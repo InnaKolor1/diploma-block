@@ -8,7 +8,7 @@ import javax.management.relation.Role;
 
 @Data
 @Schema(description = "Данные пользователя")
-public class user {
+public class User {
 
     @Schema(description = "id пользователя")
     private Integer id;

@@ -12,15 +12,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Writer;
-import java.ru.skypro.homework.dto.comment;
-import java.ru.skypro.homework.dto.createOrUpdateComment;
+import java.ru.skypro.homework.dto.Comment;
+import java.ru.skypro.homework.dto.CreateOrUpdateComment;
 
 import javax.validation.Valid;
 import javax.xml.namespace.QName;
 import javax.xml.stream.Location;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Characters;
-import javax.xml.stream.events.Comment;
 import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
 
@@ -29,7 +28,7 @@ import javax.xml.stream.events.StartElement;
 @RestController
 @RequestMapping("/ads")
 @RequiredArgsConstructor
-public class commentsController {
+public class CommentsController {
 
     @Operation(
             summary = "Получение комментариев объявления",
@@ -38,17 +37,17 @@ public class commentsController {
                             responseCode = "200",
                             description = "OK",
                             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = comment.class))
+                                    schema = @Schema(implementation = Comment.class))
                     ),
                     @ApiResponse(responseCode = "401", description = "Unauthorized"),
                     @ApiResponse(responseCode = "404", description = "Not found")
             }
     )
     @GetMapping("/{id}/comments")
-    public ResponseEntity<comment> getComments(@PathVariable("id") Integer id) {
+    public ResponseEntity<Comment> getComments(@PathVariable("id") Integer id) {
         log.info("Getting comments for ad with id: {}", id);
         // TODO: Implement in service layer
-        comment comments = new comment();
+        Comment comments = new Comment();
         return ResponseEntity.status(HttpStatus.OK).body(comments);
     }
 
@@ -59,18 +58,18 @@ public class commentsController {
                             responseCode = "200",
                             description = "OK",
                             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = comment.class))
+                                    schema = @Schema(implementation = Comment.class))
                     ),
                     @ApiResponse(responseCode = "401", description = "Unauthorized"),
                     @ApiResponse(responseCode = "404", description = "Not found")
             }
     )
     @PostMapping("/{id}/comments")
-    public ResponseEntity<comment> addComment(@PathVariable("id") Integer id,
-                                              @Valid @RequestBody createOrUpdateComment createOrUpdateComment) {
+    public ResponseEntity<Comment> addComment(@PathVariable("id") Integer id,
+                                              @Valid @RequestBody CreateOrUpdateComment createOrUpdateComment) {
         log.info("Adding comment to ad with id: {}", id);
         // TODO: Implement in service layer
-        Comment comment = new Comment() {
+        javax.xml.stream.events.Comment comment = new javax.xml.stream.events.Comment() {
             @Override
             public int getEventType() {
                 return 0;
@@ -156,7 +155,7 @@ public class commentsController {
                 return "";
             }
         };
-        return ResponseEntity.status(HttpStatus.OK).body((comment) comment);
+        return ResponseEntity.status(HttpStatus.OK).body((Comment) comment);
     }
 
     @Operation(
@@ -183,7 +182,7 @@ public class commentsController {
                             responseCode = "200",
                             description = "OK",
                             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = Comment.class))
+                                    schema = @Schema(implementation = javax.xml.stream.events.Comment.class))
                     ),
                     @ApiResponse(responseCode = "401", description = "Unauthorized"),
                     @ApiResponse(responseCode = "403", description = "Forbidden"),
@@ -191,12 +190,12 @@ public class commentsController {
             }
     )
     @PatchMapping("/{adId}/comments/{commentId}")
-    public ResponseEntity<Comment> updateComment(@PathVariable("adId") Integer adId,
-                                                 @PathVariable("commentId") Integer commentId,
-                                                 @Valid @RequestBody createOrUpdateComment createOrUpdateComment) {
+    public ResponseEntity<javax.xml.stream.events.Comment> updateComment(@PathVariable("adId") Integer adId,
+                                                                         @PathVariable("commentId") Integer commentId,
+                                                                         @Valid @RequestBody CreateOrUpdateComment createOrUpdateComment) {
         log.info("Updating comment with id: {} for ad with id: {}", commentId, adId);
         // TODO: Implement in service layer
-        Comment comment = new Comment() {
+        javax.xml.stream.events.Comment comment = new javax.xml.stream.events.Comment() {
             @Override
             public int getEventType() {
                 return 0;

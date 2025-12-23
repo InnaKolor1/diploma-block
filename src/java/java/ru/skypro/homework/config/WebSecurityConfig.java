@@ -10,7 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import java.ru.skypro.homework.dto.role;
+import java.ru.skypro.homework.dto.Role;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -33,7 +33,7 @@ public class WebSecurityConfig {
                         .username("user@gmail.com")
                         .password("password")
                         .passwordEncoder(passwordEncoder::encode)
-                        .roles(role.USER.name())
+                        .roles(Role.USER.name())
                         .build();
         return new InMemoryUserDetailsManager(user);
     }

@@ -2,10 +2,10 @@ package java.ru.skypro.homework.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import java.ru.skypro.homework.dto.extendedAd;
+
 @Data
 @Schema(description = "Расширенные данные объявления")
-public class extendedAd {
+public class ExtendedAd {
 
     @Schema(description = "id объявления")
     private Integer pk;

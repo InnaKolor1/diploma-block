@@ -5,10 +5,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
-import java.ru.skypro.homework.dto.register;
+import java.ru.skypro.homework.dto.Register;
 
 @Service
-public class AuthServiceImpl implements authService {
+public class AuthServiceImpl implements AuthService {
 
     private final UserDetailsManager manager;
     private final PasswordEncoder encoder;
@@ -29,7 +29,7 @@ public class AuthServiceImpl implements authService {
     }
 
     @Override
-    public boolean register(register register) {
+    public boolean register(Register register) {
         if (manager.userExists(register.getUsername())) {
             return false;
         }

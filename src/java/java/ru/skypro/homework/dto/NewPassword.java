@@ -3,13 +3,13 @@ package java.ru.skypro.homework.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
-import java.ru.skypro.homework.dto.newPassword;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Data
 @Schema(description = "Обновление пароля")
-public class newPassword {
+public class NewPassword {
 
     @NotBlank
     @Size(min = 8, max = 16)

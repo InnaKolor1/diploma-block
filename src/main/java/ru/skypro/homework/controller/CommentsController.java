@@ -30,14 +30,14 @@ public class CommentsController {
                             responseCode = "200",
                             description = "OK",
                             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = Comments.class))
+                                    schema = @Schema(implementation = Comment.class))
                     ),
                     @ApiResponse(responseCode = "401", description = "Unauthorized"),
                     @ApiResponse(responseCode = "404", description = "Not found")
             }
     )
     @GetMapping("/{id}/comments")
-    public ResponseEntity<Comments> getComments(@PathVariable("id") Integer id) {
+    public ResponseEntity<Comment> getComments(@PathVariable("id") Integer id) {
         log.info("Getting comments for ad with id: {}", id);
         return commentService.getComments(id)
                 .map(ResponseEntity::ok)
@@ -51,15 +51,15 @@ public class CommentsController {
                             responseCode = "200",
                             description = "OK",
                             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = Comment.class))
+                                    schema = @Schema(implementation = ru.skypro.homework.dto.Comment.class))
                     ),
                     @ApiResponse(responseCode = "401", description = "Unauthorized"),
                     @ApiResponse(responseCode = "404", description = "Not found")
             }
     )
     @PostMapping("/{id}/comments")
-    public ResponseEntity<Comment> addComment(@PathVariable("id") Integer id,
-                                              @Valid @RequestBody CreateOrUpdateComment createOrUpdateComment) {
+    public ResponseEntity<ru.skypro.homework.dto.Comment> addComment(@PathVariable("id") Integer id,
+                                                                     @Valid @RequestBody CreateOrUpdateComment createOrUpdateComment) {
         log.info("Adding comment to ad with id: {}", id);
         return commentService.addComment(id, createOrUpdateComment)
                 .map(ResponseEntity::ok)
@@ -92,7 +92,7 @@ public class CommentsController {
                             responseCode = "200",
                             description = "OK",
                             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = Comment.class))
+                                    schema = @Schema(implementation = ru.skypro.homework.dto.Comment.class))
                     ),
                     @ApiResponse(responseCode = "401", description = "Unauthorized"),
                     @ApiResponse(responseCode = "403", description = "Forbidden"),
@@ -100,9 +100,9 @@ public class CommentsController {
             }
     )
     @PatchMapping("/{adId}/comments/{commentId}")
-    public ResponseEntity<Comment> updateComment(@PathVariable("adId") Integer adId,
-                                                 @PathVariable("commentId") Integer commentId,
-                                                 @Valid @RequestBody CreateOrUpdateComment createOrUpdateComment) {
+    public ResponseEntity<ru.skypro.homework.dto.Comment> updateComment(@PathVariable("adId") Integer adId,
+                                                                        @PathVariable("commentId") Integer commentId,
+                                                                        @Valid @RequestBody CreateOrUpdateComment createOrUpdateComment) {
         log.info("Updating comment with id: {} for ad with id: {}", commentId, adId);
         return commentService.updateComment(adId, commentId, createOrUpdateComment)
                 .map(ResponseEntity::ok)

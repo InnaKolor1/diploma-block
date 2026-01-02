@@ -1,29 +1,36 @@
 package ru.skypro.homework.mapper;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
+import org.springframework.stereotype.Component;
 import ru.skypro.homework.dto.Comment;
 import ru.skypro.homework.dto.CreateOrUpdateComment;
 import ru.skypro.homework.entity.CommentEntity;
 
-@SuppressWarnings("MapstructReferenceInspection")
-@Mapper(imports = {java.time.Instant.class})
-public interface CommentMapper {
-    CommentMapper INSTANCE = Mappers.getMapper(CommentMapper.class);
+import java.time.ZoneId;
 
-    @Mapping(target = "id", source = "id")
-    @Mapping(target = "createdAt", source = "createAt")
-    @Mapping(target = "author", source = "author")
-    @Mapping(target = "ad", source = "ad")
-    default CommentEntity toEntity(CreateOrUpdateComment dto) {
-        return null;
+@Component
+public class CommentMapper {
+
+    public CommentEntity toEntity(CreateOrUpdateComment dto) {
+        CommentEntity entity = new CommentEntity();
+        entity.setText(dto.getText());
+        return entity;
     }
 
-    @Mapping(target = "pk", source = "id")
-    @Mapping(target = "author", source = "author.id")
-    @Mapping(target = "authorFirstName", source = "author.firstName")
-    @Mapping(target = "authorImage", source = "author.image")
-    @Mapping(target = "createdAt", expression = "java(entity.getCreatedAt().atZone(java.time.ZoneId.systemDefault()).toInstant().toEpochMilli())")
-    Comment toDto(CommentEntity entity);
+    public Comment toDto(CommentEntity entity) {
+        Comment dto = new Comment();
+        dto.setPk(entity.getId());
+        dto.setText(entity.getText());
+        dto.setCreatedAt(entity.getCreatedAt()
+                .atZone(ZoneId.systemDefault())
+                .toInstant()
+                .toEpochMilli());
+
+        if (entity.getAuthor() != null) {
+            dto.setAuthor(entity.getAuthor().getId());
+            dto.setAuthorFirstName(entity.getAuthor().getFirstName());
+            dto.setAuthorImage(entity.getAuthor().getImage());
+        }
+
+        return dto;
+    }
 }

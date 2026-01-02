@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface AdRepository extends JpaRepository<AdEntity, Integer> {
     List<AdEntity> findAllByAuthor(UserEntity author);
+    @SuppressWarnings("NullableProblems")
+    List<AdEntity> findAll();
 }

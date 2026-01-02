@@ -3,7 +3,7 @@ package ru.skypro.homework.service;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.skypro.homework.controller.Comments;
+import ru.skypro.homework.controller.Comment;
 import ru.skypro.homework.dto.*;
 import ru.skypro.homework.entity.AdEntity;
 import ru.skypro.homework.entity.CommentEntity;
@@ -33,21 +33,21 @@ public class CommentService {
         this.commentMapper = commentMapper;
     }
 
-    public Optional<Comments> getComments(Integer adId) {
+    public Optional<Comment> getComments(Integer adId) {
         return adRepository.findById(adId)
                 .map(ad -> {
-                    List<Comment> comments = commentRepository.findAllByAd(ad).stream()
+                    List<ru.skypro.homework.dto.Comment> comments = commentRepository.findAllByAd(ad).stream()
                             .map(commentMapper::toDto)
                             .collect(Collectors.toList());
 
-                    Comments result = new Comments();
+                    Comment result = new Comment();
                     result.setCount(comments.size());
                     result.setResults(comments);
                     return result;
                 });
     }
 
-    public Optional<Comment> addComment(Integer adId, CreateOrUpdateComment createOrUpdateComment) {
+    public Optional<ru.skypro.homework.dto.Comment> addComment(Integer adId, CreateOrUpdateComment createOrUpdateComment) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Optional<UserEntity> user = userRepository.findByEmail(username);
         Optional<AdEntity> ad = adRepository.findById(adId);
@@ -76,7 +76,7 @@ public class CommentService {
                 .orElse(false);
     }
 
-    public Optional<Comment> updateComment(Integer adId, Integer commentId, CreateOrUpdateComment updateComment) {
+    public Optional<ru.skypro.homework.dto.Comment> updateComment(Integer adId, Integer commentId, CreateOrUpdateComment updateComment) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return commentRepository.findById(commentId)
                 .filter(comment -> comment.getAd().getId().equals(adId))

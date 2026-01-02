@@ -7,10 +7,11 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import ru.skypro.homework.controller.CommentsController;
+import ru.skypro.homework.dto.CreateOrUpdateComment;
 
 import java.ru.skypro.homework.TestSecurityConfig;
 
-import java.ru.skypro.homework.dto.CreateOrUpdateComment;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;

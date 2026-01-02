@@ -9,8 +9,9 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import java.ru.skypro.homework.TestSecurityConfig;
 
-import java.ru.skypro.homework.dto.CreateOrUpdateAd;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import ru.skypro.homework.controller.AdsController;
+import ru.skypro.homework.dto.CreateOrUpdateAd;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;

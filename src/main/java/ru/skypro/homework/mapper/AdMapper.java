@@ -1,39 +1,51 @@
 package ru.skypro.homework.mapper;
 
-
-import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
+import org.springframework.stereotype.Component;
 import ru.skypro.homework.dto.Ad;
 import ru.skypro.homework.dto.CreateOrUpdateAd;
 import ru.skypro.homework.dto.ExtendedAd;
 import ru.skypro.homework.entity.AdEntity;
+import ru.skypro.homework.entity.UserEntity;
 
-@SuppressWarnings("MapstructReferenceInspection")
-@Mapper()
-public interface AdMapper {
-    AdMapper INSTANCE = Mappers.getMapper(AdMapper.class);
+@Component
+public class AdMapper {
 
-    @org.mapstruct.Mapping(target = "imagePath", source = "imagePath")
-    @org.mapstruct.Mapping(target = "id", source = "id")
-    @org.mapstruct.Mapping(target = "comments", source = "comments")
-    @org.mapstruct.Mapping(target = "author", source = "author")
-    default AdEntity toEntity(CreateOrUpdateAd dto) {
-        return null;
+    public AdEntity toEntity(CreateOrUpdateAd dto) {
+        AdEntity entity = new AdEntity();
+        entity.setTitle(dto.getTitle());
+        entity.setPrice(dto.getPrice());
+        entity.setDescription(dto.getDescription());
+        return entity;
     }
 
-    @org.mapstruct.Mapping(target = "pk", source = "id")
-    @org.mapstruct.Mapping(target = "image", source = "imagePath")
-    default Ad toDto(AdEntity entity) {
-        return null;
+    public Ad toDto(AdEntity entity) {
+        Ad dto = new Ad();
+        dto.setPk(entity.getId());
+        if (entity.getAuthor() != null) {
+            dto.setAuthor(entity.getAuthor().getId());
+        }
+        dto.setImage(entity.getImagePath());
+        dto.setPrice(entity.getPrice());
+        dto.setTitle(entity.getTitle());
+        return dto;
     }
 
-    @org.mapstruct.Mapping(target = "pk", source = "id")
-    @org.mapstruct.Mapping(target = "phone", source = "author.phone")
-    @org.mapstruct.Mapping(target = "image", source = "imagePath")
-    @org.mapstruct.Mapping(target = "email", source = "author.email")
-    @org.mapstruct.Mapping(target = "authorLastName", source = "authorLastName")
-    @org.mapstruct.Mapping(target = "authorFirstName", source = "authorFirstName")
-    default ExtendedAd toExtendedDto(AdEntity entity) {
-        return null;
+    public ExtendedAd toExtendedDto(AdEntity entity) {
+        ExtendedAd dto = new ExtendedAd();
+        dto.setPk(entity.getId());
+        dto.setPrice(entity.getPrice());
+        dto.setTitle(entity.getTitle());
+        dto.setDescription(entity.getDescription());
+        dto.setImage(entity.getImagePath());
+
+        UserEntity author = entity.getAuthor();
+        if (author != null) {
+            dto.setAuthorFirstName(author.getFirstName());
+            dto.setAuthorLastName(author.getLastName());
+            dto.setEmail(author.getEmail());
+            dto.setPhone(author.getPhone());
+        }
+
+        return dto;
     }
 }

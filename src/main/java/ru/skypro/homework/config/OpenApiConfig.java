@@ -14,6 +14,6 @@ public class OpenApiConfig {
                 .info(new Info()
                         .title("API Documentation")
                         .version("1.0")
-                        .description("Документация для Avito-like приложения"));
+                        .description("Документация для Avito приложения"));
     }
 }

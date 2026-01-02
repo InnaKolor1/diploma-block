@@ -1,33 +1,45 @@
 package ru.skypro.homework.mapper;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
+import org.springframework.stereotype.Component;
 import ru.skypro.homework.dto.Register;
 import ru.skypro.homework.dto.UpdateUser;
 import ru.skypro.homework.dto.User;
 import ru.skypro.homework.entity.UserEntity;
 
-@SuppressWarnings("MapstructReferenceInspection")
-@Mapper()
-public interface UserMapper {
-    UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
+@Component
+public class UserMapper {
 
-    @Mapping(target = "image", source = "image")
-    @Mapping(target = "id", source = "id")
-    @Mapping(target = "email", source = "email")
-    @Mapping(target = "comments", source = "comments")
-    @Mapping(target = "authorities", source = "authorities")
-    @Mapping(target = "ads", source = "ads")
-    default void toEntity(Register register) {
-
+    public UserEntity toEntity(Register register) {
+        UserEntity entity = new UserEntity();
+        entity.setEmail(register.getUsername());
+        entity.setFirstName(register.getFirstName());
+        entity.setLastName(register.getLastName());
+        entity.setPhone(register.getPhone());
+        entity.setRole(register.getRole());
+        return entity;
     }
 
-    @Mapping(target = "email", source = "username")
-    default void updateEntity(UpdateUser updateUser, UserEntity entity) {
-
+    public User toDto(UserEntity entity) {
+        User dto = new User();
+        dto.setId(entity.getId());
+        dto.setEmail(entity.getEmail());
+        dto.setFirstName(entity.getFirstName());
+        dto.setLastName(entity.getLastName());
+        dto.setPhone(entity.getPhone());
+        dto.setRole(entity.getRole());
+        dto.setImage(entity.getImage());
+        return dto;
     }
 
-    @Mapping(target = "email", source = "username")
-    User toDto(UserEntity entity);
+    public void updateEntity(UpdateUser updateUser, UserEntity entity) {
+        if (updateUser.getFirstName() != null) {
+            entity.setFirstName(updateUser.getFirstName());
+        }
+        if (updateUser.getLastName() != null) {
+            entity.setLastName(updateUser.getLastName());
+        }
+        if (updateUser.getPhone() != null) {
+            entity.setPhone(updateUser.getPhone());
+        }
+    }
 }

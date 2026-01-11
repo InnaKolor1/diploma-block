@@ -1,6 +1,5 @@
 package java.ru.skypro.homework.controller;
 
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -11,8 +10,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.ru.skypro.homework.TestSecurityConfig;
 
-import java.ru.skypro.homework.dto.NewPassword;
-import java.ru.skypro.homework.dto.UpdateUser;
+import ru.skypro.homework.controller.UsersController;
+import ru.skypro.homework.dto.NewPassword;
+import ru.skypro.homework.dto.UpdateUser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;

@@ -8,10 +8,11 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.ru.skypro.homework.dto.Login;
-import java.ru.skypro.homework.dto.Register;
-import java.ru.skypro.homework.dto.Role;
-import java.ru.skypro.homework.service.AuthService;
+import ru.skypro.homework.controller.AuthController;
+import ru.skypro.homework.dto.Login;
+import ru.skypro.homework.dto.Register;
+import ru.skypro.homework.dto.Role;
+import ru.skypro.homework.service.AuthService;
 import java.ru.skypro.homework.TestSecurityConfig;
 
 import com.fasterxml.jackson.databind.ObjectMapper;

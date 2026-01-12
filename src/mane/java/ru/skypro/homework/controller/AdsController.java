@@ -11,13 +11,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import ru.skypro.homework.dto.*;
+import ru.skypro.homework.service.AdService;
 
 import javax.validation.Valid;
-import ru.skypro.homework.dto.Ad;
-import ru.skypro.homework.dto.Ads;
-import ru.skypro.homework.dto.CreateOrUpdateAd;
-import ru.skypro.homework.dto.ExtendedAd;
-import ru.skypro.homework.service.AdService;
+import java.security.Principal;
 
 @Slf4j
 @CrossOrigin(value = "http://localhost:3000")
@@ -25,7 +23,8 @@ import ru.skypro.homework.service.AdService;
 @RequestMapping("/ads")
 @RequiredArgsConstructor
 public class AdsController {
-    private final AdService adService;
+
+    private final AdService adsService;
 
     @Operation(
             summary = "Получение всех объявлений",
@@ -41,7 +40,8 @@ public class AdsController {
     @GetMapping
     public ResponseEntity<Ads> getAllAds() {
         log.info("Getting all ads");
-        return ResponseEntity.ok(adService.getAllAds());
+        Ads ads = adsService.getAllAds();
+        return ResponseEntity.ok(ads);
     }
 
     @Operation(
@@ -58,11 +58,11 @@ public class AdsController {
     )
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Ad> addAd(@RequestPart("properties") @Valid CreateOrUpdateAd properties,
-                                    @RequestPart("image") MultipartFile image) {
-        log.info("Adding new ad with title: {}", properties.getTitle());
-        return adService.createAd(properties, image)
-                .map(ad -> ResponseEntity.status(HttpStatus.CREATED).body(ad))
-                .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
+                                    @RequestPart("image") MultipartFile image,
+                                    Principal principal) {
+        log.info("Adding new ad with title: {} by user: {}", properties.getTitle(), principal.getName());
+        Ad ad = adsService.addAd(properties, image, principal.getName());
+        return ResponseEntity.status(HttpStatus.CREATED).body(ad);
     }
 
     @Operation(
@@ -81,9 +81,8 @@ public class AdsController {
     @GetMapping("/{id}")
     public ResponseEntity<ExtendedAd> getAds(@PathVariable("id") Integer id) {
         log.info("Getting ad with id: {}", id);
-        return adService.getAd(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        ExtendedAd extendedAd = adsService.getExtendedAd(id);
+        return ResponseEntity.ok(extendedAd);
     }
 
     @Operation(
@@ -96,12 +95,10 @@ public class AdsController {
             }
     )
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> removeAd(@PathVariable("id") Integer id) {
-        log.info("Removing ad with id: {}", id);
-        if (adService.deleteAd(id)) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    public ResponseEntity<Void> removeAd(@PathVariable("id") Integer id, Principal principal) {
+        log.info("Removing ad with id: {} by user: {}", id, principal.getName());
+        adsService.removeAd(id, principal.getName());
+        return ResponseEntity.noContent().build();
     }
 
     @Operation(
@@ -120,11 +117,11 @@ public class AdsController {
     )
     @PatchMapping("/{id}")
     public ResponseEntity<Ad> updateAds(@PathVariable("id") Integer id,
-                                        @Valid @RequestBody CreateOrUpdateAd createOrUpdateAd) {
-        log.info("Updating ad with id: {}", id);
-        return adService.updateAd(id, createOrUpdateAd)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.status(HttpStatus.FORBIDDEN).build());
+                                        @Valid @RequestBody CreateOrUpdateAd createOrUpdateAd,
+                                        Principal principal) {
+        log.info("Updating ad with id: {} by user: {}", id, principal.getName());
+        Ad ad = adsService.updateAd(id, createOrUpdateAd, principal.getName());
+        return ResponseEntity.ok(ad);
     }
 
     @Operation(
@@ -140,19 +137,16 @@ public class AdsController {
             }
     )
     @GetMapping("/me")
-    public ResponseEntity<Ads> getAdsMe() {
-        log.info("Getting current user's ads");
-        return ResponseEntity.ok(adService.getUserAds());
+    public ResponseEntity<Ads> getAdsMe(Principal principal) {
+        log.info("Getting current user's ads for: {}", principal.getName());
+        Ads ads = adsService.getAdsByUser(principal.getName());
+        return ResponseEntity.ok(ads);
     }
 
     @Operation(
             summary = "Обновление картинки объявления",
             responses = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "OK",
-                            content = @Content(mediaType = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-                    ),
+                    @ApiResponse(responseCode = "200", description = "OK"),
                     @ApiResponse(responseCode = "401", description = "Unauthorized"),
                     @ApiResponse(responseCode = "403", description = "Forbidden"),
                     @ApiResponse(responseCode = "404", description = "Not found")
@@ -160,11 +154,10 @@ public class AdsController {
     )
     @PatchMapping(value = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> updateImage(@PathVariable("id") Integer id,
-                                            @RequestParam("image") MultipartFile image) {
-        log.info("Updating image for ad with id: {}", id);
-        if (adService.updateAdImage(id, image)) {
-            return ResponseEntity.ok().build();
-        }
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+                                            @RequestParam("image") MultipartFile image,
+                                            Principal principal) {
+        log.info("Updating image for ad with id: {} by user: {}", id, principal.getName());
+        adsService.updateAdImage(id, image, principal.getName());
+        return ResponseEntity.ok().build();
     }
 }

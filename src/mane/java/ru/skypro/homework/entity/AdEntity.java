@@ -1,57 +1,39 @@
 package ru.skypro.homework.entity;
 
-import lombok.*;
-import org.hibernate.proxy.HibernateProxy;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "ads")
-@Getter
-@Setter
-@ToString
-@RequiredArgsConstructor
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class AdEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "author_id", nullable = false)
-    @ToString.Exclude
-    private UserEntity author;
-
-    @Column(nullable = false)
+    @Column(name = "title", nullable = false, length = 32)
     private String title;
 
-    @Column(nullable = false)
+    @Column(name = "price", nullable = false)
     private Integer price;
 
-    @Column(nullable = false, length = 1000)
+    @Column(name = "description", length = 64)
     private String description;
 
-    @Column(name = "image_path")
-    private String imagePath;
+    @Column(name = "image")
+    private String image;
 
-    @OneToMany(mappedBy = "ad", cascade = CascadeType.ALL, orphanRemoval = true)
-    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id", nullable = false)
+    private UserEntity author;
+
+    @OneToMany(mappedBy = "ad", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<CommentEntity> comments;
-
-    @Override
-    public final boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null) return false;
-        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
-        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
-        if (thisEffectiveClass != oEffectiveClass) return false;
-        AdEntity adEntity = (AdEntity) o;
-        return getId() != null && Objects.equals(getId(), adEntity.getId());
-    }
-
-    @Override
-    public final int hashCode() {
-        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
-    }
 }

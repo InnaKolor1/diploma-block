@@ -1,52 +1,34 @@
 package ru.skypro.homework.entity;
 
-import lombok.*;
-import org.hibernate.proxy.HibernateProxy;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.Objects;
+import java.time.Instant;
 
 @Entity
 @Table(name = "comments")
-@Getter
-@Setter
-@ToString
-@RequiredArgsConstructor
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class CommentEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ad_id", nullable = false)
-    @ToString.Exclude
-    private AdEntity ad;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "author_id", nullable = false)
-    @ToString.Exclude
-    private UserEntity author;
-
-    @Column(nullable = false, length = 1000)
+    @Column(name = "text", nullable = false, length = 64)
     private String text;
 
     @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private Instant createdAt;
 
-    @Override
-    public final boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null) return false;
-        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
-        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
-        if (thisEffectiveClass != oEffectiveClass) return false;
-        CommentEntity that = (CommentEntity) o;
-        return getId() != null && Objects.equals(getId(), that.getId());
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id", nullable = false)
+    private UserEntity author;
 
-    @Override
-    public final int hashCode() {
-        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ad_id", nullable = false)
+    private AdEntity ad;
 }

@@ -10,10 +10,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.skypro.homework.dto.*;
-import ru.skypro.homework.service.CommentService;
+import ru.skypro.homework.dto.Comment;
+import ru.skypro.homework.dto.Comments;
+import ru.skypro.homework.dto.CreateOrUpdateComment;
+import ru.skypro.homework.service.CommentsService;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 @Slf4j
 @CrossOrigin(value = "http://localhost:3000")
@@ -21,10 +24,31 @@ import javax.validation.Valid;
 @RequestMapping("/ads")
 @RequiredArgsConstructor
 public class CommentsController {
-    private final CommentService commentService;
+
+    private final CommentsService commentsService;
 
     @Operation(
             summary = "Получение комментариев объявления",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "OK",
+                            content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = Comments.class))
+                    ),
+                    @ApiResponse(responseCode = "401", description = "Unauthorized"),
+                    @ApiResponse(responseCode = "404", description = "Not found")
+            }
+    )
+    @GetMapping("/{id}/comments")
+    public ResponseEntity<Comments> getComments(@PathVariable("id") Integer id) {
+        log.info("Getting comments for ad with id: {}", id);
+        Comments comments = commentsService.getComments(id);
+        return ResponseEntity.ok(comments);
+    }
+
+    @Operation(
+            summary = "Добавление комментария к объявлению",
             responses = {
                     @ApiResponse(
                             responseCode = "200",
@@ -36,34 +60,13 @@ public class CommentsController {
                     @ApiResponse(responseCode = "404", description = "Not found")
             }
     )
-    @GetMapping("/{id}/comments")
-    public ResponseEntity<Comment> getComments(@PathVariable("id") Integer id) {
-        log.info("Getting comments for ad with id: {}", id);
-        return commentService.getComments(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
-
-    @Operation(
-            summary = "Добавление комментария к объявлению",
-            responses = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "OK",
-                            content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = ru.skypro.homework.dto.Comment.class))
-                    ),
-                    @ApiResponse(responseCode = "401", description = "Unauthorized"),
-                    @ApiResponse(responseCode = "404", description = "Not found")
-            }
-    )
     @PostMapping("/{id}/comments")
-    public ResponseEntity<ru.skypro.homework.dto.Comment> addComment(@PathVariable("id") Integer id,
-                                                                     @Valid @RequestBody CreateOrUpdateComment createOrUpdateComment) {
-        log.info("Adding comment to ad with id: {}", id);
-        return commentService.addComment(id, createOrUpdateComment)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<Comment> addComment(@PathVariable("id") Integer id,
+                                              @Valid @RequestBody CreateOrUpdateComment createOrUpdateComment,
+                                              Principal principal) {
+        log.info("Adding comment to ad with id: {} by user: {}", id, principal.getName());
+        Comment comment = commentsService.addComment(id, createOrUpdateComment, principal.getName());
+        return ResponseEntity.ok(comment);
     }
 
     @Operation(
@@ -77,12 +80,11 @@ public class CommentsController {
     )
     @DeleteMapping("/{adId}/comments/{commentId}")
     public ResponseEntity<Void> deleteComment(@PathVariable("adId") Integer adId,
-                                              @PathVariable("commentId") Integer commentId) {
-        log.info("Deleting comment with id: {} from ad with id: {}", commentId, adId);
-        if (commentService.deleteComment(adId, commentId)) {
-            return ResponseEntity.ok().build();
-        }
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+                                              @PathVariable("commentId") Integer commentId,
+                                              Principal principal) {
+        log.info("Deleting comment with id: {} from ad with id: {} by user: {}", commentId, adId, principal.getName());
+        commentsService.deleteComment(adId, commentId, principal.getName());
+        return ResponseEntity.ok().build();
     }
 
     @Operation(
@@ -92,7 +94,7 @@ public class CommentsController {
                             responseCode = "200",
                             description = "OK",
                             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = ru.skypro.homework.dto.Comment.class))
+                                    schema = @Schema(implementation = Comment.class))
                     ),
                     @ApiResponse(responseCode = "401", description = "Unauthorized"),
                     @ApiResponse(responseCode = "403", description = "Forbidden"),
@@ -100,12 +102,12 @@ public class CommentsController {
             }
     )
     @PatchMapping("/{adId}/comments/{commentId}")
-    public ResponseEntity<ru.skypro.homework.dto.Comment> updateComment(@PathVariable("adId") Integer adId,
-                                                                        @PathVariable("commentId") Integer commentId,
-                                                                        @Valid @RequestBody CreateOrUpdateComment createOrUpdateComment) {
-        log.info("Updating comment with id: {} for ad with id: {}", commentId, adId);
-        return commentService.updateComment(adId, commentId, createOrUpdateComment)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.status(HttpStatus.FORBIDDEN).build());
+    public ResponseEntity<Comment> updateComment(@PathVariable("adId") Integer adId,
+                                                 @PathVariable("commentId") Integer commentId,
+                                                 @Valid @RequestBody CreateOrUpdateComment createOrUpdateComment,
+                                                 Principal principal) {
+        log.info("Updating comment with id: {} for ad with id: {} by user: {}", commentId, adId, principal.getName());
+        Comment comment = commentsService.updateComment(adId, commentId, createOrUpdateComment, principal.getName());
+        return ResponseEntity.ok(comment);
     }
 }

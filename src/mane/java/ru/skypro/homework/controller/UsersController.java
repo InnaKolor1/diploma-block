@@ -17,6 +17,12 @@ import ru.skypro.homework.dto.User;
 import ru.skypro.homework.service.UserService;
 
 import javax.validation.Valid;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.security.Principal;
+import java.util.UUID;
 
 @Slf4j
 @CrossOrigin(value = "http://localhost:3000")
@@ -24,6 +30,7 @@ import javax.validation.Valid;
 @RequestMapping("/users")
 @RequiredArgsConstructor
 public class UsersController {
+
     private final UserService userService;
 
     @Operation(
@@ -35,12 +42,13 @@ public class UsersController {
             }
     )
     @PostMapping("/set_password")
-    public ResponseEntity<Void> setPassword(@Valid @RequestBody NewPassword newPassword) {
-        log.info("Updating password");
-        if (userService.updatePassword(newPassword)) {
-            return ResponseEntity.ok().build();
-        }
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    public ResponseEntity<Void> setPassword(@Valid @RequestBody NewPassword newPassword,
+                                            Principal principal) {
+        log.info("Updating password for user: {}", principal.getName());
+        userService.updatePassword(principal.getName(),
+                newPassword.getCurrentPassword(),
+                newPassword.getNewPassword());
+        return ResponseEntity.ok().build();
     }
 
     @Operation(
@@ -56,11 +64,11 @@ public class UsersController {
             }
     )
     @PatchMapping("/me")
-    public ResponseEntity<User> updateUser(@Valid @RequestBody UpdateUser updateUser) {
-        log.info("Updating user info");
-        return userService.updateUser(updateUser)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<User> updateUser(@Valid @RequestBody UpdateUser updateUser,
+                                           Principal principal) {
+        log.info("Updating user info for: {}", principal.getName());
+        User user = userService.updateUser(principal.getName(), updateUser);
+        return ResponseEntity.ok(user);
     }
 
     @Operation(
@@ -76,11 +84,10 @@ public class UsersController {
             }
     )
     @GetMapping("/me")
-    public ResponseEntity<User> getUser() {
-        log.info("Getting current user info");
-        return userService.getCurrentUser()
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<User> getUser(Principal principal) {
+        log.info("Getting current user info for: {}", principal.getName());
+        User user = userService.getCurrentUser(principal.getName());
+        return ResponseEntity.ok(user);
     }
 
     @Operation(
@@ -91,9 +98,29 @@ public class UsersController {
             }
     )
     @PatchMapping(value = "/me/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Void> updateUserImage(@RequestParam("image") MultipartFile image) {
-        log.info("Updating user image");
-        // TODO: Реализовать сохранение изображения
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Void> updateUserImage(@RequestParam("image") MultipartFile image,
+                                                Principal principal) {
+        log.info("Updating user image for: {}", principal.getName());
+        try {
+            String imagePath = saveUserImage(image);
+            userService.updateUserImage(principal.getName(), imagePath);
+            return ResponseEntity.ok().build();
+        } catch (IOException e) {
+            log.error("Failed to save user image", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    private String saveUserImage(MultipartFile image) throws IOException {
+        String originalFilename = image.getOriginalFilename();
+        String extension = originalFilename != null ?
+                originalFilename.substring(originalFilename.lastIndexOf(".")) : ".jpg";
+        String filename = "user_" + UUID.randomUUID() + extension;
+        Path path = Paths.get("images/" + filename);
+
+        Files.createDirectories(path.getParent());
+        Files.write(path, image.getBytes());
+
+        return filename;
     }
 }

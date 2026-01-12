@@ -3,11 +3,10 @@ package ru.skypro.homework.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-import javax.management.relation.Role;
-
 @Data
 @Schema(description = "Данные пользователя")
 public class User {
+
     @Schema(description = "id пользователя")
     private Integer id;
 
@@ -28,4 +27,4 @@ public class User {
 
     @Schema(description = "ссылка на аватар пользователя")
     private String image;
-    }
+}

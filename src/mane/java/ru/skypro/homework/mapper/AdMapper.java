@@ -1,51 +1,46 @@
 package ru.skypro.homework.mapper;
 
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import ru.skypro.homework.dto.Ad;
 import ru.skypro.homework.dto.CreateOrUpdateAd;
 import ru.skypro.homework.dto.ExtendedAd;
 import ru.skypro.homework.entity.AdEntity;
-import ru.skypro.homework.entity.UserEntity;
 
-@Component
-public class AdMapper {
+@Mapper(componentModel = "spring", uses = {UserMapper.class})
+public interface AdMapper {
 
-    public AdEntity toEntity(CreateOrUpdateAd dto) {
-        AdEntity entity = new AdEntity();
-        entity.setTitle(dto.getTitle());
-        entity.setPrice(dto.getPrice());
-        entity.setDescription(dto.getDescription());
-        return entity;
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "author", ignore = true)
+    @Mapping(target = "comments", ignore = true)
+    @Mapping(target = "image", ignore = true)
+    default AdEntity toEntity(CreateOrUpdateAd createOrUpdateAd) {
+        return null;
     }
 
-    public Ad toDto(AdEntity entity) {
-        Ad dto = new Ad();
-        dto.setPk(entity.getId());
-        if (entity.getAuthor() != null) {
-            dto.setAuthor(entity.getAuthor().getId());
-        }
-        dto.setImage(entity.getImagePath());
-        dto.setPrice(entity.getPrice());
-        dto.setTitle(entity.getTitle());
-        return dto;
-    }
+    @Mapping(target = "author", source = "entity.author.id")
+    @Mapping(target = "image", expression = "java(entity.getImage() != null ? \"/images/\" + entity.getImage() : null)")
+    @Mapping(target = "pk", source = "entity.id")
+    @Mapping(target = "price", source = "entity.price")
+    @Mapping(target = "title", source = "entity.title")
+    Ad toDto(AdEntity entity);
 
-    public ExtendedAd toExtendedDto(AdEntity entity) {
-        ExtendedAd dto = new ExtendedAd();
-        dto.setPk(entity.getId());
-        dto.setPrice(entity.getPrice());
-        dto.setTitle(entity.getTitle());
-        dto.setDescription(entity.getDescription());
-        dto.setImage(entity.getImagePath());
+    @Mapping(target = "pk", source = "entity.id")
+    @Mapping(target = "authorFirstName", source = "entity.author.firstName")
+    @Mapping(target = "authorLastName", source = "entity.author.lastName")
+    @Mapping(target = "description", source = "entity.description")
+    @Mapping(target = "email", source = "entity.author.email")
+    @Mapping(target = "image", expression = "java(entity.getImage() != null ? \"/images/\" + entity.getImage() : null)")
+    @Mapping(target = "phone", source = "entity.author.phone")
+    @Mapping(target = "price", source = "entity.price")
+    @Mapping(target = "title", source = "entity.title")
+    ExtendedAd toExtendedAd(AdEntity entity);
 
-        UserEntity author = entity.getAuthor();
-        if (author != null) {
-            dto.setAuthorFirstName(author.getFirstName());
-            dto.setAuthorLastName(author.getLastName());
-            dto.setEmail(author.getEmail());
-            dto.setPhone(author.getPhone());
-        }
-
-        return dto;
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "author", ignore = true)
+    @Mapping(target = "comments", ignore = true)
+    @Mapping(target = "image", ignore = true)
+    default void updateEntityFromDto(CreateOrUpdateAd createOrUpdateAd, @org.mapstruct.MappingTarget AdEntity entity) {
+        
     }
 }

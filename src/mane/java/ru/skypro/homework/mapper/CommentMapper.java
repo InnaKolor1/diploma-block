@@ -1,36 +1,31 @@
 package ru.skypro.homework.mapper;
 
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import ru.skypro.homework.dto.Comment;
 import ru.skypro.homework.dto.CreateOrUpdateComment;
 import ru.skypro.homework.entity.CommentEntity;
 
-import java.time.ZoneId;
+@Mapper(componentModel = "spring", uses = {UserMapper.class})
+public interface CommentMapper {
 
-@Component
-public class CommentMapper {
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "author", ignore = true)
+    @Mapping(target = "ad", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    CommentEntity toEntity(CreateOrUpdateComment createOrUpdateComment);
 
-    public CommentEntity toEntity(CreateOrUpdateComment dto) {
-        CommentEntity entity = new CommentEntity();
-        entity.setText(dto.getText());
-        return entity;
-    }
+    @Mapping(target = "author", source = "entity.author.id")
+    @Mapping(target = "authorImage", expression = "java(entity.getAuthor().getImage() != null ? \"/images/\" + entity.getAuthor().getImage() : null)")
+    @Mapping(target = "authorFirstName", source = "entity.author.firstName")
+    @Mapping(target = "createdAt", expression = "java(entity.getCreatedAt().toEpochMilli())")
+    @Mapping(target = "pk", source = "entity.id")
+    @Mapping(target = "text", source = "entity.text")
+    Comment toDto(CommentEntity entity);
 
-    public Comment toDto(CommentEntity entity) {
-        Comment dto = new Comment();
-        dto.setPk(entity.getId());
-        dto.setText(entity.getText());
-        dto.setCreatedAt(entity.getCreatedAt()
-                .atZone(ZoneId.systemDefault())
-                .toInstant()
-                .toEpochMilli());
-
-        if (entity.getAuthor() != null) {
-            dto.setAuthor(entity.getAuthor().getId());
-            dto.setAuthorFirstName(entity.getAuthor().getFirstName());
-            dto.setAuthorImage(entity.getAuthor().getImage());
-        }
-
-        return dto;
-    }
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "author", ignore = true)
+    @Mapping(target = "ad", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    void updateEntityFromDto(CreateOrUpdateComment createOrUpdateComment, @org.mapstruct.MappingTarget CommentEntity entity);
 }

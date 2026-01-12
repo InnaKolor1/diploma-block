@@ -8,6 +8,7 @@ import java.util.List;
 @Data
 @Schema(description = "Список объявлений")
 public class Ads {
+
     @Schema(description = "общее количество объявлений")
     private Integer count;
 

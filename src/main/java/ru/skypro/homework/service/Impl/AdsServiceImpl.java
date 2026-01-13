@@ -52,7 +52,7 @@ public class AdsServiceImpl implements AdService {
         log.info("Adding new ad for user: {}", username);
 
         UserEntity author = userService.getUserEntity(username);
-        AdEntity adEntity = adMapper.toEntity(properties);
+        AdEntity adEntity = (properties == null) ? null : adMapper.toEntity(properties);
         adEntity.setAuthor(author);
 
         if (image != null && !image.isEmpty()) {

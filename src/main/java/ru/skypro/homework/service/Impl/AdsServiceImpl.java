@@ -11,7 +11,6 @@ import ru.skypro.homework.entity.UserEntity;
 import ru.skypro.homework.mapper.AdMapper;
 import ru.skypro.homework.repository.AdRepository;
 import ru.skypro.homework.service.AdService;
-
 import ru.skypro.homework.service.UserService;
 
 import javax.persistence.EntityNotFoundException;

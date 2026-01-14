@@ -11,7 +11,7 @@ import ru.skypro.homework.dto.Role;
 import ru.skypro.homework.entity.UserEntity;
 import ru.skypro.homework.mapper.UserMapper;
 import ru.skypro.homework.repository.UserRepository;
-import ru.skypro.homework.service.Impl.AuthServiceImpl;
+import ru.skypro.homework.service.impl.AuthServiceImpl;
 
 import java.util.Optional;
 

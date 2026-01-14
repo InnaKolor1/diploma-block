@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import ru.skypro.homework.entity.UserEntity;
 import ru.skypro.homework.dto.Role;
 import ru.skypro.homework.repository.UserRepository;
-import ru.skypro.homework.service.Impl.UserDetailsServiceImpl;
+import ru.skypro.homework.service.impl.UserDetailsServiceImpl;
 
 import java.util.Optional;
 

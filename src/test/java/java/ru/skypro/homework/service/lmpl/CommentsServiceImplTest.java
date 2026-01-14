@@ -14,7 +14,7 @@ import ru.skypro.homework.entity.UserEntity;
 import ru.skypro.homework.mapper.CommentMapper;
 import ru.skypro.homework.repository.CommentRepository;
 import ru.skypro.homework.service.AdService;
-import ru.skypro.homework.service.Impl.CommentsServiceImpl;
+import ru.skypro.homework.service.impl.CommentsServiceImpl;
 import ru.skypro.homework.service.UserService;
 
 import java.util.Arrays;

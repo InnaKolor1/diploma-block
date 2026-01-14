@@ -12,7 +12,7 @@ import ru.skypro.homework.entity.AdEntity;
 import ru.skypro.homework.entity.UserEntity;
 import ru.skypro.homework.mapper.AdMapper;
 import ru.skypro.homework.repository.AdRepository;
-import ru.skypro.homework.service.Impl.AdsServiceImpl;
+import ru.skypro.homework.service.impl.AdServiceImpl;
 import ru.skypro.homework.service.UserService;
 
 import javax.persistence.EntityNotFoundException;
@@ -38,8 +38,7 @@ class AdsServiceImplTest {
     private UserService userService;
 
     @InjectMocks
-    private AdsServiceImpl adsService;
-
+    private AdServiceImpl adsService;
     @Test
     void getAllAds_ShouldReturnAds_WhenAdsExist() {
         AdEntity adEntity1 = new AdEntity();

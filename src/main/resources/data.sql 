@@ -1,9 +1,0 @@
--- Создание тестового пользователя с ролью ADMIN
-INSERT INTO users (email, first_name, last_name, phone, role)
-SELECT 'admin@gmail.com', 'Admin', 'User', '+7 (123) 456-78-90', 'ADMIN',
-WHERE NOT EXISTS (SELECT 1 FROM users WHERE email = 'admin@gmail.com');
-
--- Создание тестового пользователя с ролью USER
-INSERT INTO users (email, first_name, last_name, phone, role)
-SELECT 'user@gmail.com', 'Regular', 'User', '+7 (987) 654-32-10', 'USER',
-WHERE NOT EXISTS (SELECT 1 FROM users WHERE email = 'user@gmail.com');

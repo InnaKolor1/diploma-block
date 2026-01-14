@@ -20,6 +20,13 @@ public class DataInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) {
 
+        if (userRepository.count() == 0) {
+            createTestUsers();
+        }
+    }
+
+    private void createTestUsers() {
+        // Юзер
         if (userRepository.findByEmail("user@gmail.com").isEmpty()) {
             UserEntity user = new UserEntity();
             user.setEmail("user@gmail.com");
@@ -28,11 +35,11 @@ public class DataInitializer implements CommandLineRunner {
             user.setLastName("Бендер");
             user.setPhone("+79002223344");
             user.setRole(Role.USER);
-
             userRepository.save(user);
             log.info("Создан тестовый пользователь: user@gmail.com / 1234");
         }
 
+        // Админ
         if (userRepository.findByEmail("admin@gmail.com").isEmpty()) {
             UserEntity admin = new UserEntity();
             admin.setEmail("admin@gmail.com");
@@ -41,7 +48,6 @@ public class DataInitializer implements CommandLineRunner {
             admin.setLastName("Воробьянинов");
             admin.setPhone("+79001112233");
             admin.setRole(Role.ADMIN);
-
             userRepository.save(admin);
             log.info("Создан администратор: admin@gmail.com / 1234");
         }

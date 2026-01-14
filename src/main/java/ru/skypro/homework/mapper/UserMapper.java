@@ -15,6 +15,7 @@ public interface UserMapper {
     @Mapping(target = "comments", ignore = true)
     @Mapping(target = "image", ignore = true)
     @Mapping(target = "email", source = "username")
+    @Mapping(target = "password", ignore = true)
     UserEntity toEntity(Register register);
 
     @Mapping(target = "id", ignore = true)

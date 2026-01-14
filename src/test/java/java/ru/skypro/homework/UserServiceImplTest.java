@@ -12,7 +12,8 @@ import ru.skypro.homework.dto.User;
 import ru.skypro.homework.entity.UserEntity;
 import ru.skypro.homework.mapper.UserMapper;
 import ru.skypro.homework.repository.UserRepository;
-import ru.skypro.homework.service.Impl.UserServiceImp;
+import ru.skypro.homework.service.impl.UserServiceImpl;
+
 
 import java.util.Optional;
 
@@ -33,7 +34,7 @@ class UserServiceImplTest {
     private PasswordEncoder passwordEncoder;
 
     @InjectMocks
-    private UserServiceImp userService;
+    private UserServiceImpl userService;
 
     @Test
     void getCurrentUser_ShouldReturnUser_WhenUserExists() {

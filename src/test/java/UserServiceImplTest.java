@@ -106,7 +106,6 @@ class UserServiceImplTest {
 
         UserEntity userEntity = new UserEntity();
         userEntity.setEmail(username);
-        userEntity.setImage("old-avatar.jpg");
 
         when(userRepository.findByEmail(username)).thenReturn(Optional.of(userEntity));
         when(userRepository.save(userEntity)).thenReturn(userEntity);
@@ -126,7 +125,6 @@ class UserServiceImplTest {
 
         UserEntity userEntity = new UserEntity();
         userEntity.setEmail(username);
-        userEntity.setPassword("encodedCurrentPassword");
 
         when(userRepository.findByEmail(username)).thenReturn(Optional.of(userEntity));
         when(passwordEncoder.matches(currentPassword, "encodedCurrentPassword")).thenReturn(true);
@@ -149,7 +147,6 @@ class UserServiceImplTest {
 
         UserEntity userEntity = new UserEntity();
         userEntity.setEmail(username);
-        userEntity.setPassword("encodedCurrentPassword");
 
         when(userRepository.findByEmail(username)).thenReturn(Optional.of(userEntity));
         when(passwordEncoder.matches(currentPassword, "encodedCurrentPassword")).thenReturn(false);

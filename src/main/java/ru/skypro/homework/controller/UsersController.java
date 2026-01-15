@@ -16,7 +16,6 @@ import ru.skypro.homework.dto.UpdateUser;
 import ru.skypro.homework.dto.User;
 import ru.skypro.homework.service.UserService;
 
-import javax.validation.Valid;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -42,7 +41,7 @@ public class UsersController {
             }
     )
     @PostMapping("/set_password")
-    public ResponseEntity<Void> setPassword(@Valid @RequestBody NewPassword newPassword,
+    public ResponseEntity<Void> setPassword(@RequestBody NewPassword newPassword,
                                             Principal principal) {
         log.info("Updating password for user: {}", principal.getName());
         userService.updatePassword(principal.getName(),
@@ -64,7 +63,7 @@ public class UsersController {
             }
     )
     @PatchMapping("/me")
-    public ResponseEntity<User> updateUser(@Valid @RequestBody UpdateUser updateUser,
+    public ResponseEntity<User> updateUser(@RequestBody UpdateUser updateUser,
                                            Principal principal) {
         log.info("Updating user info for: {}", principal.getName());
         User user = userService.updateUser(principal.getName(), updateUser);

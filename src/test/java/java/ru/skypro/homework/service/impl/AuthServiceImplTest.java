@@ -42,7 +42,6 @@ class AuthServiceImplTest {
 
         UserEntity userEntity = new UserEntity();
         userEntity.setEmail(username);
-        userEntity.setPassword(encodedPassword);
 
         when(userRepository.findByEmail(username)).thenReturn(Optional.of(userEntity));
         when(passwordEncoder.matches(password, encodedPassword)).thenReturn(true);
@@ -76,7 +75,6 @@ class AuthServiceImplTest {
 
         UserEntity userEntity = new UserEntity();
         userEntity.setEmail(username);
-        userEntity.setPassword(encodedPassword);
 
         when(userRepository.findByEmail(username)).thenReturn(Optional.of(userEntity));
         when(passwordEncoder.matches(password, encodedPassword)).thenReturn(false);

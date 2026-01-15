@@ -2,6 +2,7 @@ package java.ru.skypro.homework.config;
 
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
@@ -17,7 +18,7 @@ public class TestSecurityConfig {
         http
                 .csrf().disable()
                 .authorizeHttpRequests(authorize -> authorize
-                        .antMatchers("/images/**").permitAll() // Разрешаем доступ к изображениям без аутентификации
+                        .dispatcherTypeMatchers(HttpMethod.valueOf("/images/**")).permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(withDefaults());

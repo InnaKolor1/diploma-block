@@ -3,53 +3,42 @@ package ru.skypro.homework.config;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
 import ru.skypro.homework.dto.Role;
 import ru.skypro.homework.entity.UserEntity;
 import ru.skypro.homework.repository.UserRepository;
 
-@Component
 @Slf4j
+@Configuration
 @RequiredArgsConstructor
-public class DataInitializer implements CommandLineRunner {
+public class DataInitializer {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @Override
-    public void run(String... args) {
-
-        if (userRepository.count() == 0) {
-            createTestUsers();
-        }
+    @Bean
+    public CommandLineRunner initData() {
+        return args -> {
+            createTestUser("user@gmail.com", "Ося", "Бендер", "+79002223344", "USER");
+            createTestUser("admin@gmail.com", "Киса", "Воробьянинов", "+79001112233", "ADMIN");
+        };
     }
 
-    private void createTestUsers() {
-        // Юзер
-        if (userRepository.findByEmail("user@gmail.com").isEmpty()) {
+    private void createTestUser(String email, String firstName, String lastName,
+                                String phone, String role) {
+        if (userRepository.findByEmail(email).isEmpty()) {
             UserEntity user = new UserEntity();
-            user.setEmail("user@gmail.com");
+            user.setEmail(email);
+            user.setFirstName(firstName);
+            user.setLastName(lastName);
+            user.setPhone(phone);
+            user.setRole(Role.valueOf(role));
             user.setPassword(passwordEncoder.encode("1234"));
-            user.setFirstName("Ося");
-            user.setLastName("Бендер");
-            user.setPhone("+79002223344");
-            user.setRole(Role.USER);
-            userRepository.save(user);
-            log.info("Создан тестовый пользователь: user@gmail.com / 1234");
-        }
 
-        // Админ
-        if (userRepository.findByEmail("admin@gmail.com").isEmpty()) {
-            UserEntity admin = new UserEntity();
-            admin.setEmail("admin@gmail.com");
-            admin.setPassword(passwordEncoder.encode("1234"));
-            admin.setFirstName("Киса");
-            admin.setLastName("Воробьянинов");
-            admin.setPhone("+79001112233");
-            admin.setRole(Role.ADMIN);
-            userRepository.save(admin);
-            log.info("Создан администратор: admin@gmail.com / 1234");
+            userRepository.save(user);
+            log.info("Created user: {} / {}", email, "1234");
         }
     }
 }

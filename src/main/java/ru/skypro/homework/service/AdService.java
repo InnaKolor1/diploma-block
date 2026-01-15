@@ -14,7 +14,7 @@ public interface AdService {
     void removeAd(Integer id, String username);
 
     @PreAuthorize("hasRole('ADMIN') or @adsServiceImpl.isAdOwner(#id, authentication.name)")
-    Ad updateAd(Integer id, CreateOrUpdateAd updateAd, String username);
+    User updateAd(Integer id, CreateOrUpdateAd updateAd, String username);
 
     Ads getAdsByUser(String username);
 

@@ -1,10 +1,10 @@
 package java.ru.skypro.homework.entity;
 
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 import ru.skypro.homework.entity.UserEntity;
 
-import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
 
@@ -38,7 +38,7 @@ public class AdEntity {
 
     @OneToMany(mappedBy = "ad", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
-    private List<java.ru.skypro.homework.entity.CommentEntity> comments;
+    private List<CommentEntity> comments;
 
     @Override
     public final boolean equals(Object o) {

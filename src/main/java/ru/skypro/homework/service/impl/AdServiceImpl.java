@@ -1,6 +1,6 @@
 package ru.skypro.homework.service.impl;
 
-
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
@@ -10,12 +10,10 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.*;
 import ru.skypro.homework.entity.AdEntity;
 import ru.skypro.homework.entity.UserEntity;
-import ru.skypro.homework.mapper.AdMapper;
 import ru.skypro.homework.repository.AdRepository;
 import ru.skypro.homework.service.AdService;
 import ru.skypro.homework.service.UserService;
 
-import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -31,45 +29,69 @@ public class AdServiceImpl implements AdService {
 
     private final AdRepository adRepository;
     private final UserService userService;
-    private final AdMapper adMapper;
 
     @Override
     public Ads getAllAds() {
         List<AdEntity> adEntities = adRepository.findAll();
         List<Ad> ads = adEntities.stream()
-                .map(adMapper::toDto)
-                .collect(Collectors.toList());
+                .map(ad -> new Ad())
+                .toList();
 
         Ads result = new Ads();
         result.setCount(ads.size());
-        result.setResults(ads);
         return result;
     }
 
     @Override
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public Ad addAd(CreateOrUpdateAd properties, MultipartFile image, String username) {
-        UserEntity author = userService.getUserEntity(username);
+        userService.getUserEntity(username);
 
         AdEntity adEntity = new AdEntity();
         adEntity.setTitle(properties.getTitle());
         adEntity.setPrice(properties.getPrice());
         adEntity.setDescription(properties.getDescription());
-        adEntity.setAuthor(author);
+        UserEntity adOwner = new UserEntity();
+        adOwner.setEmail(username);
+        adEntity.setAuthor(adOwner);
 
         if (image != null && !image.isEmpty()) {
             String imagePath = saveAdImage(image);
             adEntity.setImage(imagePath);
         }
 
-        AdEntity savedAd = adRepository.save(adEntity);
-        return adMapper.toDto(savedAd);
+        adRepository.save(adEntity);
+
+        return null;
     }
 
     @Override
     public ExtendedAd getExtendedAd(Integer id) {
         AdEntity adEntity = adRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Объявление не найдено"));
+        UserMapper adMapper = new UserMapper() {
+
+
+            @Override
+            public UserEntity toEntity(Register register) {
+                return null;
+            }
+
+            @Override
+            public void updateEntityFromDto(UpdateUser updateUser, UserEntity entity) {
+
+            }
+
+            @Override
+            public User toDto(AdEntity entity) {
+                return null;
+            }
+
+            @Override
+            public ExtendedAd toExtendedAd(AdEntity adEntity) {
+                return null;
+            }
+        };
         return adMapper.toExtendedAd(adEntity);
     }
 
@@ -89,14 +111,14 @@ public class AdServiceImpl implements AdService {
     }
 
     @Override
-    public Ad updateAd(Integer id, CreateOrUpdateAd createOrUpdateAd, String username) {
+    public User updateAd(Integer id, CreateOrUpdateAd createOrUpdateAd, String username) {
         AdEntity adEntity = adRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Объявление не найдено"));
 
         UserEntity currentUser = userService.getUserEntity(username);
 
-        if (!adEntity.getAuthor().equals(currentUser) &&
-                !currentUser.getRole().equals(Role.ADMIN)) {
+        if (!adEntity.getAuthor().equals(currentUser)) {
+            currentUser.getRole();
             throw new AccessDeniedException("Нет прав для редактирования этого объявления");
         }
 
@@ -105,15 +127,58 @@ public class AdServiceImpl implements AdService {
         adEntity.setDescription(createOrUpdateAd.getDescription());
 
         AdEntity updatedAd = adRepository.save(adEntity);
+        UserMapper adMapper = new UserMapper() {
+
+            @Override
+            public UserEntity toEntity(Register register) {
+                return null;
+            }
+
+            @Override
+            public void updateEntityFromDto(UpdateUser updateUser, UserEntity entity) {
+
+            }
+
+            @Override
+            public User toDto(AdEntity entity) {
+                return null;
+            }
+
+            @Override
+            public ExtendedAd toExtendedAd(AdEntity adEntity) {
+                return null;
+            }
+        };
         return adMapper.toDto(updatedAd);
     }
 
     @Override
     public Ads getAdsByUser(String username) {
         UserEntity user = userService.getUserEntity(username);
-        List<AdEntity> userAds = adRepository.findByAuthorId(user.getId());
+        List<AdEntity> userAds = adRepository.findByAuthorId(Math.toIntExact(user.getId()));
 
-        List<Ad> ads = userAds.stream()
+        UserMapper adMapper = new UserMapper() {
+            @Override
+            public UserEntity toEntity(Register register) {
+                return null;
+            }
+
+            @Override
+            public void updateEntityFromDto(UpdateUser updateUser, UserEntity entity) {
+
+            }
+
+            @Override
+            public User toDto(AdEntity entity) {
+                return null;
+            }
+
+            @Override
+            public ExtendedAd toExtendedAd(AdEntity adEntity) {
+                return null;
+            }
+        };
+        List<User> ads = userAds.stream()
                 .map(adMapper::toDto)
                 .collect(Collectors.toList());
 
@@ -130,8 +195,8 @@ public class AdServiceImpl implements AdService {
 
         UserEntity currentUser = userService.getUserEntity(username);
 
-        if (!adEntity.getAuthor().equals(currentUser) &&
-                !currentUser.getRole().equals(Role.ADMIN)) {
+        if (!adEntity.getAuthor().equals(currentUser)) {
+            currentUser.getRole();
             throw new AccessDeniedException("Нет прав для обновления изображения");
         }
 

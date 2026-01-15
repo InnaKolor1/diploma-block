@@ -1,10 +1,10 @@
 package java.ru.skypro.homework.entity;
 
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 import ru.skypro.homework.entity.UserEntity;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 

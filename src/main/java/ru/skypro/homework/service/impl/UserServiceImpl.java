@@ -10,6 +10,7 @@ import ru.skypro.homework.dto.UpdateUser;
 import ru.skypro.homework.dto.User;
 import ru.skypro.homework.entity.AdEntity;
 import ru.skypro.homework.entity.UserEntity;
+import ru.skypro.homework.mapper.UserMapper;
 import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.UserService;
 
@@ -20,12 +21,20 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
-    private final PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder = null;
+
+    public UserServiceImpl(UserRepository userRepository, ru.skypro.homework.mapper.UserMapper userMapper, PasswordEncoder userPasswordEncoder) {
+        this.userRepository = userRepository;
+        this.userMapper = userMapper;
+        if (userPasswordEncoder != null) {
+            this.passwordEncoder = userPasswordEncoder;
+        }
+    }
 
     @Override
     public User getCurrentUser(String username) {
         UserEntity userEntity = getUserEntity(username);
-        AdEntity userEnt0ity;
+        new AdEntity();
         return userMapper.toDto(userEntity);
     }
 

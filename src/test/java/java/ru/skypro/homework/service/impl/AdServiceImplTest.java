@@ -2,19 +2,20 @@ package java.ru.skypro.homework.service.impl;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.*;
 import ru.skypro.homework.entity.AdEntity;
 import ru.skypro.homework.entity.UserEntity;
 import ru.skypro.homework.mapper.UserMapper;
 import ru.skypro.homework.repository.AdRepository;
+import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.UserService;
 import ru.skypro.homework.service.impl.AdServiceImpl;
+import ru.skypro.homework.service.impl.UserServiceImpl;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -25,8 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
-class AdServiceImplTest {
+public class AdServiceImplTest {
 
     @Mock
     private AdRepository adRepository;
@@ -36,6 +36,17 @@ class AdServiceImplTest {
 
     @InjectMocks
     private AdServiceImpl adsService;
+    @Mock
+    private UserRepository userRepository;
+    @Mock
+    private UserMapper userMapper;
+
+    private AdServiceImplTest() {
+    }
+
+    public static AdServiceImplTest createAdServiceImplTest() {
+        return new AdServiceImplTest();
+    }
 
     @Test
     void getAllAds_ShouldReturnAds_WhenAdsExist() {
@@ -166,17 +177,17 @@ class AdServiceImplTest {
         expectedAd.setPk(1);
 
         when(userService.getUserEntity(username)).thenReturn(userEntity);
-        UserMapper adMapper = new UserMapper() {
+        PasswordEncoder userPasswordEncoder = mock(PasswordEncoder.class);
+        when(userPasswordEncoder.encode(any())).thenReturn("encodedPassword");
+        userService = new UserServiceImpl(userRepository, userMapper, userPasswordEncoder);
+        new UserMapper() {
+
             @Override
             public UserEntity toEntity(Register register) {
-                return null;
+                UserEntity userEntity = new UserEntity();
+                userEntity.setEmail(register.getUsername());
+                return userEntity;
             }
-
-            @Override
-            public void updateEntity(UpdateUser updateUser, UserEntity userEntity) {
-                super.updateEntity(updateUser, userEntity);
-            }
-
             @Override
             public void updateEntityFromDto(UpdateUser updateUser, UserEntity entity) {
 

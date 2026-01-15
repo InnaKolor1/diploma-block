@@ -1,0 +1,11 @@
+<root>
+    <item name='java.time.Duration'>
+        <annotation name='java.lang.Deprecated'/>
+    </item>
+    <item name='java.time.OffsetDateTime'>
+        <annotation name='java.lang.Deprecated'/>
+    </item>
+    <item name='java.time.ZonedDateTime'>
+        <annotation name='java.lang.Deprecated'/>
+    </item>
+</root>

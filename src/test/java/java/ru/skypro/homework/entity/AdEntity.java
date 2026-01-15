@@ -3,7 +3,6 @@ package java.ru.skypro.homework.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
-import ru.skypro.homework.entity.UserEntity;
 
 import java.util.List;
 import java.util.Objects;

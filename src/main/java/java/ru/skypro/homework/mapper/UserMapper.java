@@ -1,9 +1,9 @@
-package ru.skypro.homework.mapper;
+package java.ru.skypro.homework.mapper;
 
 import org.springframework.stereotype.Component;
 import ru.skypro.homework.dto.*;
-import ru.skypro.homework.entity.AdEntity;
-import ru.skypro.homework.entity.UserEntity;
+import java.ru.skypro.homework.entity.AdEntity;
+import java.ru.skypro.homework.entity.UserEntity;
 
 @Component
 public abstract class UserMapper {

@@ -1,9 +1,9 @@
-package ru.skypro.homework.mapper;
+package java.ru.skypro.homework.mapper;
 
 
 import ru.skypro.homework.dto.Comment;
 import ru.skypro.homework.dto.CreateOrUpdateComment;
-import ru.skypro.homework.entity.CommentEntity;
+import java.ru.skypro.homework.entity.CommentEntity;
 import ru.skypro.homework.service.impl.UserMapper;
 
 
@@ -18,3 +18,4 @@ public interface CommentMapper {
 
     void updateEntityFromDto(CreateOrUpdateComment updateDto, CommentEntity commentEntity);
 }
+

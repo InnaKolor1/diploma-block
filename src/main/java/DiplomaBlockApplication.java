@@ -4,7 +4,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication(scanBasePackages = "ru.skypro.homework")
-@EntityScan("ru.skypro.homework.entity")
+@EntityScan("java.ru.skypro.homework.entity")
 @EnableJpaRepositories("ru.skypro.homework.repository")
 public class DiplomaBlockApplication {
 	public static void main(String[] args) {

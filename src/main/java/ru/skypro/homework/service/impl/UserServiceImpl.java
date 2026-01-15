@@ -8,9 +8,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.skypro.homework.dto.UpdateUser;
 import ru.skypro.homework.dto.User;
-import ru.skypro.homework.entity.AdEntity;
-import ru.skypro.homework.entity.UserEntity;
-import ru.skypro.homework.mapper.UserMapper;
+import java.ru.skypro.homework.entity.AdEntity;
+import java.ru.skypro.homework.entity.UserEntity;
+import java.ru.skypro.homework.mapper.UserMapper;
 import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.UserService;
 
@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private PasswordEncoder passwordEncoder = null;
 
-    public UserServiceImpl(UserRepository userRepository, ru.skypro.homework.mapper.UserMapper userMapper, PasswordEncoder userPasswordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, java.ru.skypro.homework.mapper.UserMapper userMapper, PasswordEncoder userPasswordEncoder) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         if (userPasswordEncoder != null) {

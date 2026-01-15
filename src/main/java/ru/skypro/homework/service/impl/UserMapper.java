@@ -4,10 +4,10 @@ import ru.skypro.homework.dto.ExtendedAd;
 import ru.skypro.homework.dto.Register;
 import ru.skypro.homework.dto.UpdateUser;
 import ru.skypro.homework.dto.User;
-import ru.skypro.homework.entity.AdEntity;
-import ru.skypro.homework.entity.UserEntity;
+import java.ru.skypro.homework.entity.AdEntity;
+import java.ru.skypro.homework.entity.UserEntity;
 
-public abstract class UserMapper extends ru.skypro.homework.mapper.UserMapper {
+public abstract class UserMapper extends java.ru.skypro.homework.mapper.UserMapper {
     public abstract UserEntity toEntity(Register register);
 
     public abstract void updateEntityFromDto(UpdateUser updateUser, UserEntity entity);

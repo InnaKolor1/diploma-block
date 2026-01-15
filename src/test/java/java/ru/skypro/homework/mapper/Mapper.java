@@ -1,4 +1,4 @@
-package ru.skypro.homework.mapper;
+package java.ru.skypro.homework.mapper;
 
 
 public @interface Mapper {

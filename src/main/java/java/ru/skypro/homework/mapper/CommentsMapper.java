@@ -1,10 +1,10 @@
-package ru.skypro.homework.mapper;
+package java.ru.skypro.homework.mapper;
 
 import org.springframework.stereotype.Component;
 import ru.skypro.homework.dto.Comment;
 import ru.skypro.homework.dto.CreateOrUpdateComment;
-import ru.skypro.homework.entity.CommentEntity;
-import ru.skypro.homework.entity.UserEntity;
+import java.ru.skypro.homework.entity.CommentEntity;
+import java.ru.skypro.homework.entity.UserEntity;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;

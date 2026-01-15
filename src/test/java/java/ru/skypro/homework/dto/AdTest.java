@@ -5,7 +5,8 @@ import ru.skypro.homework.dto.Ad;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class AdTest {
+class
+AdTest {
 
     @Test
     void testAdGettersAndSetters() {

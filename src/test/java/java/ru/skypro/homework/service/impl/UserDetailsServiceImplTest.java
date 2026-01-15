@@ -7,7 +7,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import ru.skypro.homework.entity.UserEntity;
+import java.ru.skypro.homework.entity.UserEntity;
 import ru.skypro.homework.dto.Role;
 import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.impl.UserDetailsServiceImpl;

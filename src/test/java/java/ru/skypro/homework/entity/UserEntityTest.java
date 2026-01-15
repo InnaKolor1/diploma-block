@@ -1,4 +1,4 @@
-package ru.skypro.homework.entity;
+package java.ru.skypro.homework.entity;
 
 import org.junit.jupiter.api.Test;
 

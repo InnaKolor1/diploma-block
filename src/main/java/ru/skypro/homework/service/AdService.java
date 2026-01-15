@@ -3,7 +3,7 @@ package ru.skypro.homework.service;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.*;
-import ru.skypro.homework.entity.AdEntity;
+import java.ru.skypro.homework.entity.AdEntity;
 
 public interface AdService {
     Ads getAllAds();

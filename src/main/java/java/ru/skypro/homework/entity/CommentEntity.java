@@ -1,4 +1,4 @@
-package ru.skypro.homework.entity;
+package java.ru.skypro.homework.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -52,3 +52,4 @@ public class CommentEntity {
 
     }
 }
+

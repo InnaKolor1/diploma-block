@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS comments (
     FOREIGN KEY (author_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (ad_id) REFERENCES ads(id) ON DELETE CASCADE
 );
+
  --индексы--
 CREATE INDEX IF NOT EXISTS idx_ads_author ON ads(author_id);
 CREATE INDEX IF NOT EXISTS idx_comments_ad ON comments(ad_id);

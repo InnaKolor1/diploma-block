@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import ru.skypro.homework.entity.UserEntity;
+import java.ru.skypro.homework.entity.UserEntity;
 import ru.skypro.homework.repository.UserRepository;
 
 import java.util.Optional;

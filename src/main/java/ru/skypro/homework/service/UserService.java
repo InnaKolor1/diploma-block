@@ -2,7 +2,7 @@ package ru.skypro.homework.service;
 
 import ru.skypro.homework.dto.UpdateUser;
 import ru.skypro.homework.dto.User;
-import ru.skypro.homework.entity.UserEntity;
+import java.ru.skypro.homework.entity.UserEntity;
 
 public interface UserService {
     User getCurrentUser(String username);

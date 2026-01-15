@@ -10,7 +10,8 @@ import lombok.Setter;
 
 @Setter
 @Schema(description = "Данные для регистрации")
-public class Register {
+public class
+Register {
 
     @Getter
     @NotBlank

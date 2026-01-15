@@ -19,7 +19,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        ru.skypro.homework.entity.UserEntity userEntity = userRepository.findByEmail(username)
+        java.ru.skypro.homework.entity.UserEntity userEntity = userRepository.findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
 
         return User.builder()

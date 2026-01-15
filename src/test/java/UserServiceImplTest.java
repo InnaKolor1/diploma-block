@@ -38,11 +38,11 @@ class UserServiceImplTest {
         String username = "test@example.com";
         UserEntity userEntity = new UserEntity();
         userEntity.setEmail(username);
-        userEntity.setFirstName("John");
+        userEntity.setFirstName("Kisa");
 
         User expectedUser = new User();
         expectedUser.setEmail(username);
-        expectedUser.setFirstName("John");
+        expectedUser.setFirstName("Osya");
 
         when(userRepository.findByEmail(username)).thenReturn(Optional.of(userEntity));
         when(userMapper.toDto(userEntity)).thenReturn(expectedUser);
@@ -51,7 +51,7 @@ class UserServiceImplTest {
 
         assertNotNull(result);
         assertEquals(username, result.getEmail());
-        assertEquals("John", result.getFirstName());
+        assertEquals("Osya", result.getFirstName());
         verify(userRepository, times(1)).findByEmail(username);
     }
 
@@ -69,23 +69,23 @@ class UserServiceImplTest {
     void updateUser_ShouldUpdateAndReturnUser() {
         String username = "test@example.com";
         UpdateUser updateUser = new UpdateUser();
-        updateUser.setFirstName("Jane");
-        updateUser.setLastName("Smith");
+        updateUser.setFirstName("Kisa");
+        updateUser.setLastName("Vorobiyaninov");
         updateUser.setPhone("+78888888888");
 
         UserEntity existingUser = new UserEntity();
         existingUser.setEmail(username);
-        existingUser.setFirstName("John");
-        existingUser.setLastName("Doe");
+        existingUser.setFirstName("Osya");
+        existingUser.setLastName("Bender");
 
         UserEntity updatedUser = new UserEntity();
         updatedUser.setEmail(username);
-        updatedUser.setFirstName("Jane");
-        updatedUser.setLastName("Smith");
+        updatedUser.setFirstName("Kisa");
+        updatedUser.setLastName("Vorobiyaninov");
 
         User expectedUser = new User();
         expectedUser.setEmail(username);
-        expectedUser.setFirstName("Jane");
+        expectedUser.setFirstName("Kisa");
 
         when(userRepository.findByEmail(username)).thenReturn(Optional.of(existingUser));
         when(userRepository.save(any(UserEntity.class))).thenReturn(updatedUser);
@@ -101,7 +101,7 @@ class UserServiceImplTest {
 
     @Test
     void updateUserImage_ShouldUpdateUserImage() {
-        String username = "test@example.com";
+        String username = "kisa_12@example.com";
         String imagePath = "new-avatar.jpg";
 
         UserEntity userEntity = new UserEntity();
@@ -118,7 +118,7 @@ class UserServiceImplTest {
 
     @Test
     void updatePassword_ShouldUpdatePassword_WhenCurrentPasswordIsCorrect() {
-        String username = "test@example.com";
+        String username = "kisa_12@example.com";
         String currentPassword = "currentPassword";
         String newPassword = "newPassword";
         String encodedNewPassword = "encodedNewPassword";
@@ -141,7 +141,7 @@ class UserServiceImplTest {
 
     @Test
     void updatePassword_ShouldThrowException_WhenCurrentPasswordIsIncorrect() {
-        String username = "test@example.com";
+        String username = "kisa_12@example.com";
         String currentPassword = "wrongPassword";
         String newPassword = "newPassword";
 
@@ -160,7 +160,7 @@ class UserServiceImplTest {
 
     @Test
     void getUserEntity_ShouldReturnUserEntity_WhenUserExists() {
-        String username = "test@example.com";
+        String username = "kisa_12@example.com";
         UserEntity expectedUser = new UserEntity();
         expectedUser.setEmail(username);
 

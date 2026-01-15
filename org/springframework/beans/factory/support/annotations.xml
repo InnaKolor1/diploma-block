@@ -1,0 +1,11 @@
+<root>
+    <item name='org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory org.springframework.beans.BeanWrapper autowireConstructor(java.lang.String, org.springframework.beans.factory.support.RootBeanDefinition, java.lang.reflect.Constructor&lt;?&gt;[], java.lang.Object[]) 1'>
+        <annotation name='java.lang.Deprecated'/>
+    </item>
+    <item name='org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory org.springframework.beans.BeanWrapper instantiateUsingFactoryMethod(java.lang.String, org.springframework.beans.factory.support.RootBeanDefinition, java.lang.Object[]) 1'>
+        <annotation name='java.lang.Deprecated'/>
+    </item>
+    <item name='org.springframework.beans.factory.support.ConstructorResolver java.lang.Object[] resolvePreparedArguments(java.lang.String, org.springframework.beans.factory.support.RootBeanDefinition, org.springframework.beans.BeanWrapper, java.lang.reflect.Executable, java.lang.Object[])'>
+        <annotation name='java.lang.Deprecated'/>
+    </item>
+</root>

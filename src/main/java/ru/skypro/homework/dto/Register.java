@@ -27,6 +27,7 @@ public class Register {
     @Getter
     @Schema(description = "роль пользователя")
     private Role role;
+    private String register;
 
     public Register(String username, String password, String firstName, String lastName, String phone, Role role) {
         this.username = username;
@@ -35,11 +36,17 @@ public class Register {
     }
 
     public Register(String register) {
+        this.register = register;
         this.username = getUsername();
         this.password = getPassword();
         this.role = getRole();
     }
 
+    public Register() {
+        this.username = "kisa_12@example.com";
+        this.password = "FatherOfTheRussian'sDemocratic";
+        this.role = Role.USER;
+    }
 
 
     public String getFirstName() {

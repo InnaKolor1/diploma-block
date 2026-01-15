@@ -1,4 +1,7 @@
 <root>
+    <item name='java.lang.IllegalStateException'>
+        <annotation name='java.lang.Deprecated'/>
+    </item>
     <item name='java.lang.Integer'>
         <annotation name='java.lang.Deprecated'/>
     </item>

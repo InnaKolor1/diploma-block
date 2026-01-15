@@ -36,7 +36,7 @@ class UserServiceImplTest {
     @Test
     void getCurrentUser_ShouldReturnUser_WhenUserExists() {
         String username = "test@example.com";
-        UserEntity userEntity = new UserEntity(, );
+        UserEntity userEntity = new UserEntity();
         userEntity.setEmail(username);
         userEntity.setFirstName("Kisa");
 
@@ -73,12 +73,12 @@ class UserServiceImplTest {
         updateUser.setLastName("Vorobiyaninov");
         updateUser.setPhone("+78888888888");
 
-        UserEntity existingUser = new UserEntity(, );
+        UserEntity existingUser = new UserEntity();
         existingUser.setEmail(username);
         existingUser.setFirstName("Osya");
         existingUser.setLastName("Bender");
 
-        UserEntity updatedUser = new UserEntity(, );
+        UserEntity updatedUser = new UserEntity();
         updatedUser.setEmail(username);
         updatedUser.setFirstName("Kisa");
         updatedUser.setLastName("Vorobiyaninov");
@@ -104,7 +104,7 @@ class UserServiceImplTest {
         String username = "kisa_12@example.com";
         String imagePath = "new-avatar.jpg";
 
-        UserEntity userEntity = new UserEntity(, );
+        UserEntity userEntity = new UserEntity();
         userEntity.setEmail(username);
 
         when(userRepository.findByEmail(username)).thenReturn(Optional.of(userEntity));
@@ -123,7 +123,7 @@ class UserServiceImplTest {
         String newPassword = "newPassword";
         String encodedNewPassword = "encodedNewPassword";
 
-        UserEntity userEntity = new UserEntity(, );
+        UserEntity userEntity = new UserEntity();
         userEntity.setEmail(username);
 
         when(userRepository.findByEmail(username)).thenReturn(Optional.of(userEntity));
@@ -145,7 +145,7 @@ class UserServiceImplTest {
         String currentPassword = "wrongPassword";
         String newPassword = "newPassword";
 
-        UserEntity userEntity = new UserEntity(, );
+        UserEntity userEntity = new UserEntity();
         userEntity.setEmail(username);
 
         when(userRepository.findByEmail(username)).thenReturn(Optional.of(userEntity));
@@ -161,7 +161,7 @@ class UserServiceImplTest {
     @Test
     void getUserEntity_ShouldReturnUserEntity_WhenUserExists() {
         String username = "kisa_12@example.com";
-        UserEntity expectedUser = new UserEntity(, );
+        UserEntity expectedUser = new UserEntity();
         expectedUser.setEmail(username);
 
         when(userRepository.findByEmail(username)).thenReturn(Optional.of(expectedUser));

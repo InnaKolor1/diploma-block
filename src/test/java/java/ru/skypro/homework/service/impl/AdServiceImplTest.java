@@ -167,7 +167,7 @@ public class AdServiceImplTest {
                 "image", "test.jpg", "image/jpeg", "test image content".getBytes()
         );
 
-        UserEntity userEntity = new UserEntity(, );
+        UserEntity userEntity = new UserEntity();
         userEntity.setEmail(username);
 
         AdEntity adEntity = new AdEntity();
@@ -184,7 +184,7 @@ public class AdServiceImplTest {
 
             @Override
             public UserEntity toEntity(Register register) {
-                UserEntity userEntity = new UserEntity(, );
+                UserEntity userEntity = new UserEntity();
                 userEntity.setEmail(register.getUsername());
                 return userEntity;
             }
@@ -218,10 +218,10 @@ public class AdServiceImplTest {
         Integer adId = 1;
         String username = "owner@example.com";
 
-        UserEntity userEntity = new UserEntity(, );
+        UserEntity userEntity = new UserEntity();
         userEntity.setRole(Role.USER);
 
-        UserEntity adOwner = new UserEntity(, );
+        UserEntity adOwner = new UserEntity();
 
         AdEntity adEntity = new AdEntity();
         adEntity.setId(Long.valueOf(adId));
@@ -240,10 +240,10 @@ public class AdServiceImplTest {
         Integer adId = 1;
         String username = "notowner@example.com";
 
-        UserEntity userEntity = new UserEntity(, );
+        UserEntity userEntity = new UserEntity();
         userEntity.setRole(Role.USER);
 
-        UserEntity adOwner = new UserEntity(, );
+        UserEntity adOwner = new UserEntity();
 
         AdEntity adEntity = new AdEntity();
         adEntity.setId(Long.valueOf(adId));
@@ -262,7 +262,7 @@ public class AdServiceImplTest {
     @Test
     void getAdsByUser_ShouldReturnUserAds() {
         String username = "user@example.com";
-        UserEntity userEntity = new UserEntity(, );
+        UserEntity userEntity = new UserEntity();
 
         AdEntity adEntity = new AdEntity();
         adEntity.setId(1L);
@@ -308,9 +308,9 @@ public class AdServiceImplTest {
         Integer adId = 1;
         String username = "owner@example.com";
 
-        UserEntity userEntity = new UserEntity(, );
+        UserEntity userEntity = new UserEntity();
 
-        UserEntity adOwner = new UserEntity(, );
+        UserEntity adOwner = new UserEntity();
 
         AdEntity adEntity = new AdEntity();
         adEntity.setId(Long.valueOf(adId));
@@ -329,10 +329,10 @@ public class AdServiceImplTest {
         Integer adId = 1;
         String username = "notowner@example.com";
 
-        UserEntity userEntity = new UserEntity(, );
+        UserEntity userEntity = new UserEntity();
         userEntity.setId(2); // Different ID
 
-        UserEntity adOwner = new UserEntity(, );
+        UserEntity adOwner = new UserEntity();
         adOwner.setId(1); // Different owner
 
         AdEntity adEntity = new AdEntity();

@@ -23,28 +23,28 @@ public class TestRunner implements CommandLineRunner {
         log.info("Проверка наличия тестовых пользователей...");
 
         // тестовый юзер
-        createUserIfNotExists("user@gmail.com", "Ося", "Бендер", "+79002223344", "USER", "1234");
+        createUserIfNotExists("user@gmail.com", "Ося", "Бендер", "+79002223344", "USER");
 
         // админ
-        createUserIfNotExists("admin@gmail.com", "Киса", "Воробьянинов", "+79001112233", "ADMIN", "1234");
+        createUserIfNotExists("admin@gmail.com", "Киса", "Воробьянинов", "+79001112233", "ADMIN");
 
         log.info("Всего пользователей в базе: {}", userRepository.count());
     }
 
     private void createUserIfNotExists(String email, String firstName, String lastName,
-                                       String phone, String role, String password) {
+                                       String phone, String role) {
         Optional<UserEntity> existingUser = userRepository.findByEmail(email);
         if (existingUser.isEmpty()) {
-            UserEntity user = new UserEntity();
+            UserEntity user = new UserEntity(email + "@example.com", "image.jpg", firstName, lastName, 52, 12);
             user.setEmail(email);
             user.setFirstName(firstName);
             user.setLastName(lastName);
             user.setPhone(phone);
             user.setRole(ru.skypro.homework.dto.Role.valueOf(role));
-            user.setPassword(passwordEncoder.encode(password));
+            user.setPassword(passwordEncoder.encode("1234"));
 
             userRepository.save(user);
-            log.info("Создан пользователь: {} / {}", email, password);
+            log.info("Создан пользователь: {} / {}", email, "1234");
         } else {
             log.info("Пользователь уже существует: {}", email);
         }

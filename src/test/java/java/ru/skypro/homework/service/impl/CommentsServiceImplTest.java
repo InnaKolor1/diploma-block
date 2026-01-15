@@ -74,7 +74,7 @@ class CommentsServiceImplTest {
         CreateOrUpdateComment commentDto = new CreateOrUpdateComment();
         commentDto.setText("Test comment");
 
-        UserEntity author = new UserEntity();
+        UserEntity author = new UserEntity(, );
 
         AdEntity ad = new AdEntity();
 
@@ -103,10 +103,10 @@ class CommentsServiceImplTest {
         Integer commentId = 1;
         String username = "owner@example.com";
 
-        UserEntity userEntity = new UserEntity();
+        UserEntity userEntity = new UserEntity(, );
         userEntity.setRole(ru.skypro.homework.dto.Role.USER);
 
-        UserEntity commentAuthor = new UserEntity();
+        UserEntity commentAuthor = new UserEntity(, );
 
         CommentEntity commentEntity = new CommentEntity();
         commentEntity.setAuthor(commentAuthor);
@@ -125,10 +125,10 @@ class CommentsServiceImplTest {
         Integer commentId = 1;
         String username = "notowner@example.com";
 
-        UserEntity userEntity = new UserEntity();
+        UserEntity userEntity = new UserEntity(, );
         userEntity.setRole(ru.skypro.homework.dto.Role.USER);
 
-        UserEntity commentAuthor = new UserEntity();
+        UserEntity commentAuthor = new UserEntity(, );
 
         CommentEntity commentEntity = new CommentEntity();
         commentEntity.setAuthor(commentAuthor);
@@ -151,9 +151,9 @@ class CommentsServiceImplTest {
         CreateOrUpdateComment updateDto = new CreateOrUpdateComment();
         updateDto.setText("Updated comment");
 
-        UserEntity userEntity = new UserEntity();
+        UserEntity userEntity = new UserEntity(, );
 
-        UserEntity commentAuthor = new UserEntity();
+        UserEntity commentAuthor = new UserEntity(, );
 
         CommentEntity commentEntity = new CommentEntity();
         commentEntity.setAuthor(commentAuthor);
@@ -179,9 +179,9 @@ class CommentsServiceImplTest {
         Integer commentId = 1;
         String username = "owner@example.com";
 
-        UserEntity userEntity = new UserEntity();
+        UserEntity userEntity = new UserEntity(, );
 
-        UserEntity commentAuthor = new UserEntity();
+        UserEntity commentAuthor = new UserEntity(, );
 
         CommentEntity commentEntity = new CommentEntity();
         commentEntity.setAuthor(commentAuthor);
@@ -199,9 +199,9 @@ class CommentsServiceImplTest {
         Integer commentId = 1;
         String username = "notowner@example.com";
 
-        UserEntity userEntity = new UserEntity();
+        UserEntity userEntity = new UserEntity(, );
 
-        UserEntity commentAuthor = new UserEntity();
+        UserEntity commentAuthor = new UserEntity(, );
 
         CommentEntity commentEntity = new CommentEntity();
         commentEntity.setAuthor(commentAuthor);

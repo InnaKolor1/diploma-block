@@ -29,7 +29,7 @@ class UserDetailsServiceImplTest {
     @Test
     void loadUserByUsername_ShouldReturnUserDetails_WhenUserExists() {
         String email = "test@example.com";
-        UserEntity userEntity = new UserEntity();
+        UserEntity userEntity = new UserEntity(, );
         userEntity.setEmail(email);
         userEntity.setRole(Role.USER);
 
@@ -61,7 +61,7 @@ class UserDetailsServiceImplTest {
     @Test
     void loadUserByUsername_ShouldReturnCorrectRole_WhenUserIsAdmin() {
         String email = "admin@example.com";
-        UserEntity userEntity = new UserEntity();
+        UserEntity userEntity = new UserEntity(, );
         userEntity.setEmail(email);
         userEntity.setRole(Role.ADMIN);
 

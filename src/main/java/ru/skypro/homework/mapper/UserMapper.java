@@ -48,7 +48,7 @@ public abstract class UserMapper {
 
 
     public UserEntity toEntity(Register register) {
-        UserEntity userEntity = new UserEntity();
+        UserEntity userEntity = new UserEntity(register.getUsername() + "@example.com", "image.jpg", register.getFirstName(), register.getLastName(), 52, 12);
         userEntity.setEmail(register.getUsername());
         userEntity.setFirstName(register.getFirstName());
         userEntity.setLastName(register.getLastName());

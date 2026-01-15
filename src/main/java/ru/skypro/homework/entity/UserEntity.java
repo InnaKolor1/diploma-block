@@ -29,13 +29,32 @@ public class UserEntity {
     @Pattern(regexp = "\\+7\\s?\\(?\\d{3}\\)?\\s?\\d{3}-?\\d{2}-?\\d{2}") String phone;
     @Setter
     private String password;
+    private int age;
+    private int i;
 
-    public UserEntity(String email, String image, String firstName, String lastName) {
+    public UserEntity(String email, String image, String firstName, String lastName, int age, Integer id) {
         this.email = email;
         this.image = image;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.age = age;
+        this.id = id;
         this.role = Role.USER;
+    }
+
+    public UserEntity(String image, int id) {
+        this.image = image;
+        this.id = id;
+    }
+
+    public UserEntity(String image, String id) {
+        this.image = image;
+        this.id = Integer.valueOf(id);
+    }
+
+    public UserEntity(String image, Integer id) {
+        this.image = image;
+        this.id = id;
     }
 
     public String getRole() {
@@ -55,9 +74,7 @@ public class UserEntity {
     }
 
     public void setId(int i) {
+        this.i = i;
     }
 
-    public void getEmail(@NotBlank @Size(min = 4, max = 32) String username) {
-        this.email = username;
-    }
 }

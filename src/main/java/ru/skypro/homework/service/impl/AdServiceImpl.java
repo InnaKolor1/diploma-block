@@ -51,7 +51,7 @@ public class AdServiceImpl implements AdService {
         adEntity.setTitle(properties.getTitle());
         adEntity.setPrice(properties.getPrice());
         adEntity.setDescription(properties.getDescription());
-        UserEntity adOwner = new UserEntity();
+        UserEntity adOwner = new UserEntity(username + "@example.com", "image.jpg", "Kisa", "Vorobiyaninov", 52, 12);
         adOwner.setEmail(username);
         adEntity.setAuthor(adOwner);
 
@@ -102,8 +102,8 @@ public class AdServiceImpl implements AdService {
 
         UserEntity currentUser = userService.getUserEntity(username);
 
-        if (!adEntity.getAuthor().equals(currentUser) &&
-                !currentUser.getRole().equals(Role.ADMIN)) {
+        if (!adEntity.getAuthor().equals(currentUser)) {
+            currentUser.getRole();
             throw new AccessDeniedException("Нет прав для удаления этого объявления");
         }
 

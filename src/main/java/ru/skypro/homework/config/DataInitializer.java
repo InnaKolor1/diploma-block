@@ -29,7 +29,7 @@ public class DataInitializer {
     private void createTestUser(String email, String firstName, String lastName,
                                 String phone, String role) {
         if (userRepository.findByEmail(email).isEmpty()) {
-            UserEntity user = new UserEntity();
+            UserEntity user = new UserEntity(email + "@example.com", "image.jpg", firstName, lastName, 52, 12);
             user.setEmail(email);
             user.setFirstName(firstName);
             user.setLastName(lastName);

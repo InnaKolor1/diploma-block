@@ -40,7 +40,7 @@ class AuthServiceImplTest {
         String password = "password";
         String encodedPassword = "encodedPassword";
 
-        UserEntity userEntity = new UserEntity();
+        UserEntity userEntity = new UserEntity(, );
         userEntity.setEmail(username);
 
         when(userRepository.findByEmail(username)).thenReturn(Optional.of(userEntity));
@@ -73,7 +73,7 @@ class AuthServiceImplTest {
         String password = "wrongPassword";
         String encodedPassword = "encodedPassword";
 
-        UserEntity userEntity = new UserEntity();
+        UserEntity userEntity = new UserEntity(, );
         userEntity.setEmail(username);
 
         when(userRepository.findByEmail(username)).thenReturn(Optional.of(userEntity));
@@ -95,7 +95,7 @@ class AuthServiceImplTest {
         register.setPhone("+79999999999");
         register.setRole(Role.USER);
 
-        UserEntity userEntity = new UserEntity();
+        UserEntity userEntity = new UserEntity(, );
         userEntity.setEmail(register.getUsername());
 
         when(userRepository.existsByEmail(register.getUsername())).thenReturn(false);
@@ -135,7 +135,7 @@ class AuthServiceImplTest {
         register.setLastName("Doe");
         register.setRole(null);
 
-        UserEntity userEntity = new UserEntity();
+        UserEntity userEntity = new UserEntity(, );
         userEntity.setEmail(register.getUsername());
 
         when(userRepository.existsByEmail(register.getUsername())).thenReturn(false);

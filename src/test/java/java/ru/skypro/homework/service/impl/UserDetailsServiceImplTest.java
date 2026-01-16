@@ -1,4 +1,4 @@
-package java.ru.skypro.homework.service.lmpl;
+package java.ru.skypro.homework.service.impl;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,7 +31,6 @@ class UserDetailsServiceImplTest {
         String email = "test@example.com";
         UserEntity userEntity = new UserEntity();
         userEntity.setEmail(email);
-        userEntity.setPassword("encodedPassword");
         userEntity.setRole(Role.USER);
 
         when(userRepository.findByEmail(email)).thenReturn(Optional.of(userEntity));
@@ -64,7 +63,6 @@ class UserDetailsServiceImplTest {
         String email = "admin@example.com";
         UserEntity userEntity = new UserEntity();
         userEntity.setEmail(email);
-        userEntity.setPassword("encodedPassword");
         userEntity.setRole(Role.ADMIN);
 
         when(userRepository.findByEmail(email)).thenReturn(Optional.of(userEntity));

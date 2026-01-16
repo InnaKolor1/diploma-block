@@ -41,6 +41,6 @@ public interface AdMapper {
     @Mapping(target = "comments", ignore = true)
     @Mapping(target = "image", ignore = true)
     default void updateEntityFromDto(CreateOrUpdateAd createOrUpdateAd, @org.mapstruct.MappingTarget AdEntity entity) {
-        
+
     }
 }

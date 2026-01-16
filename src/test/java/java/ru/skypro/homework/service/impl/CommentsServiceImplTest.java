@@ -1,4 +1,4 @@
-package java.ru.skypro.homework.service.lmpl;
+package java.ru.skypro.homework.service.impl;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,7 +11,7 @@ import ru.skypro.homework.dto.CreateOrUpdateComment;
 import ru.skypro.homework.entity.AdEntity;
 import ru.skypro.homework.entity.CommentEntity;
 import ru.skypro.homework.entity.UserEntity;
-import ru.skypro.homework.mapper.CommentMapper;
+import java.ru.skypro.homework.mapper.CommentMapper;
 import ru.skypro.homework.repository.CommentRepository;
 import ru.skypro.homework.service.AdService;
 import ru.skypro.homework.service.impl.CommentsServiceImpl;
@@ -47,9 +47,7 @@ class CommentsServiceImplTest {
     void getComments_ShouldReturnComments_WhenCommentsExist() {
         Integer adId = 1;
         CommentEntity commentEntity1 = new CommentEntity();
-        commentEntity1.setId(1);
         CommentEntity commentEntity2 = new CommentEntity();
-        commentEntity2.setId(2);
         List<CommentEntity> commentEntities = Arrays.asList(commentEntity1, commentEntity2);
 
         Comment comment1 = new Comment();
@@ -77,13 +75,10 @@ class CommentsServiceImplTest {
         commentDto.setText("Test comment");
 
         UserEntity author = new UserEntity();
-        author.setId(1);
 
         AdEntity ad = new AdEntity();
-        ad.setId(adId);
 
         CommentEntity commentEntity = new CommentEntity();
-        commentEntity.setId(1);
 
         Comment expectedComment = new Comment();
         expectedComment.setPk(1);
@@ -109,14 +104,11 @@ class CommentsServiceImplTest {
         String username = "owner@example.com";
 
         UserEntity userEntity = new UserEntity();
-        userEntity.setId(1);
         userEntity.setRole(ru.skypro.homework.dto.Role.USER);
 
         UserEntity commentAuthor = new UserEntity();
-        commentAuthor.setId(1);
 
         CommentEntity commentEntity = new CommentEntity();
-        commentEntity.setId(commentId);
         commentEntity.setAuthor(commentAuthor);
 
         when(userService.getUserEntity(username)).thenReturn(userEntity);
@@ -134,14 +126,11 @@ class CommentsServiceImplTest {
         String username = "notowner@example.com";
 
         UserEntity userEntity = new UserEntity();
-        userEntity.setId(2); // Different ID
         userEntity.setRole(ru.skypro.homework.dto.Role.USER);
 
         UserEntity commentAuthor = new UserEntity();
-        commentAuthor.setId(1); // Different author
 
         CommentEntity commentEntity = new CommentEntity();
-        commentEntity.setId(commentId);
         commentEntity.setAuthor(commentAuthor);
 
         when(userService.getUserEntity(username)).thenReturn(userEntity);
@@ -163,13 +152,10 @@ class CommentsServiceImplTest {
         updateDto.setText("Updated comment");
 
         UserEntity userEntity = new UserEntity();
-        userEntity.setId(1);
 
         UserEntity commentAuthor = new UserEntity();
-        commentAuthor.setId(1);
 
         CommentEntity commentEntity = new CommentEntity();
-        commentEntity.setId(commentId);
         commentEntity.setAuthor(commentAuthor);
 
         Comment expectedComment = new Comment();
@@ -194,13 +180,10 @@ class CommentsServiceImplTest {
         String username = "owner@example.com";
 
         UserEntity userEntity = new UserEntity();
-        userEntity.setId(1);
 
         UserEntity commentAuthor = new UserEntity();
-        commentAuthor.setId(1);
 
         CommentEntity commentEntity = new CommentEntity();
-        commentEntity.setId(commentId);
         commentEntity.setAuthor(commentAuthor);
 
         when(commentRepository.findById(commentId)).thenReturn(Optional.of(commentEntity));
@@ -217,13 +200,10 @@ class CommentsServiceImplTest {
         String username = "notowner@example.com";
 
         UserEntity userEntity = new UserEntity();
-        userEntity.setId(2); // Different ID
 
         UserEntity commentAuthor = new UserEntity();
-        commentAuthor.setId(1); // Different author
 
         CommentEntity commentEntity = new CommentEntity();
-        commentEntity.setId(commentId);
         commentEntity.setAuthor(commentAuthor);
 
         when(commentRepository.findById(commentId)).thenReturn(Optional.of(commentEntity));

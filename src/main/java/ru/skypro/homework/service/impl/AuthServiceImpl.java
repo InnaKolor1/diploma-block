@@ -1,9 +1,8 @@
 package ru.skypro.homework.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,7 +13,7 @@ import ru.skypro.homework.mapper.UserMapper;
 import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.AuthService;
 
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
@@ -26,24 +25,36 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public boolean login(String username, String password) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-        if (!passwordEncoder.matches(password, userDetails.getPassword())) {
-            throw new BadCredentialsException("Неверный пароль");
+        try {
+            var userDetails = userDetailsService.loadUserByUsername(username);
+            if (!passwordEncoder.matches(password, userDetails.getPassword())) {
+                throw new BadCredentialsException("Invalid password");
+            }
+            return true;
+        } catch (Exception e) {
+            log.error("Login failed for user: {}", username, e);
+            throw new BadCredentialsException("Invalid username or password");
         }
-        return true;
     }
 
     @Override
     public boolean register(Register register) {
-        if (userRepository.existsByEmail(register.getUsername())) {
+        if (userRepository.findByEmail(register.getUsername()).isPresent()) {
+            log.warn("User already exists: {}", register.getUsername());
             return false;
         }
 
-        UserEntity userEntity = userMapper.toEntity(register);
-        userEntity.setPassword(passwordEncoder.encode(register.getPassword()));
-        userEntity.setRole(register.getRole() != null ? register.getRole() : Role.USER);
+        try {
+            UserEntity userEntity = userMapper.toEntity(register);
+            userEntity.setPassword(passwordEncoder.encode(register.getPassword()));
+            userEntity.setRole(register.getRole() != null ? register.getRole() : Role.USER);
 
-        userRepository.save(userEntity);
-        return true;
+            userRepository.save(userEntity);
+            log.info("User registered successfully: {}", register.getUsername());
+            return true;
+        } catch (Exception e) {
+            log.error("Registration failed for user: {}", register.getUsername(), e);
+            return false;
+        }
     }
 }

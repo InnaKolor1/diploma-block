@@ -1,4 +1,4 @@
-package java.ru.skypro.homework.service.lmpl;
+package java.ru.skypro.homework.service.impl;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,7 +42,6 @@ class AuthServiceImplTest {
 
         UserEntity userEntity = new UserEntity();
         userEntity.setEmail(username);
-        userEntity.setPassword(encodedPassword);
 
         when(userRepository.findByEmail(username)).thenReturn(Optional.of(userEntity));
         when(passwordEncoder.matches(password, encodedPassword)).thenReturn(true);
@@ -76,7 +75,6 @@ class AuthServiceImplTest {
 
         UserEntity userEntity = new UserEntity();
         userEntity.setEmail(username);
-        userEntity.setPassword(encodedPassword);
 
         when(userRepository.findByEmail(username)).thenReturn(Optional.of(userEntity));
         when(passwordEncoder.matches(password, encodedPassword)).thenReturn(false);
@@ -166,3 +164,4 @@ class AuthServiceImplTest {
         verify(userRepository, never()).save(any());
     }
 }
+

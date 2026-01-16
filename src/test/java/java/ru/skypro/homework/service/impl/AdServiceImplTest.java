@@ -1,4 +1,4 @@
-package java.ru.skypro.homework.service.lmpl;
+package java.ru.skypro.homework.service.impl;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -6,16 +6,18 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.*;
 import ru.skypro.homework.entity.AdEntity;
 import ru.skypro.homework.entity.UserEntity;
-import ru.skypro.homework.mapper.AdMapper;
+import ru.skypro.homework.mapper.UserMapper;
 import ru.skypro.homework.repository.AdRepository;
-import ru.skypro.homework.service.impl.AdServiceImpl;
+import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.UserService;
+import ru.skypro.homework.service.impl.AdServiceImpl;
+import ru.skypro.homework.service.impl.UserServiceImpl;
 
-import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -26,35 +28,65 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class AdsServiceImplTest {
+class AdServiceImplTest {
 
     @Mock
     private AdRepository adRepository;
-
-    @Mock
-    private AdMapper adMapper;
 
     @Mock
     private UserService userService;
 
     @InjectMocks
     private AdServiceImpl adsService;
+    @Mock
+    private UserRepository userRepository;
+    @Mock
+    private UserMapper userMapper;
+
+    private AdServiceImplTest() {
+    }
+
+    public static AdServiceImplTest createAdServiceImplTest() {
+        return new AdServiceImplTest();
+    }
+
     @Test
     void getAllAds_ShouldReturnAds_WhenAdsExist() {
         AdEntity adEntity1 = new AdEntity();
-        adEntity1.setId(1);
+        adEntity1.setId(1L);
         AdEntity adEntity2 = new AdEntity();
-        adEntity2.setId(2);
+        adEntity2.setId(2L);
         List<AdEntity> adEntities = Arrays.asList(adEntity1, adEntity2);
 
-        Ad ad1 = new Ad();
+        Ad ad1 = new Ad(1L, "Test Description");
         ad1.setPk(1);
-        Ad ad2 = new Ad();
+        Ad ad2 = new Ad(2L, "Another Description");
         ad2.setPk(2);
 
         when(adRepository.findAll()).thenReturn(adEntities);
-        when(adMapper.toDto(adEntity1)).thenReturn(ad1);
-        when(adMapper.toDto(adEntity2)).thenReturn(ad2);
+        new UserMapper() {
+
+            @Override
+            public UserEntity toEntity(Register register) {
+                return null;
+            }
+
+            @Override
+            public void updateEntityFromDto(UpdateUser updateUser, UserEntity entity) {
+
+            }
+
+            @Override
+            public User toDto(AdEntity entity) {
+                return null;
+            }
+
+            @Override
+            public ExtendedAd toExtendedAd(AdEntity adEntity) {
+                return null;
+            }
+        };
+
 
         Ads result = adsService.getAllAds();
 
@@ -79,11 +111,33 @@ class AdsServiceImplTest {
     void getExtendedAd_ShouldReturnExtendedAd_WhenAdExists() {
         Integer adId = 1;
         AdEntity adEntity = new AdEntity();
-        adEntity.setId(adId);
+        adEntity.setId(Long.valueOf(adId));
         ExtendedAd extendedAd = new ExtendedAd();
         extendedAd.setPk(adId);
 
         when(adRepository.findById(adId)).thenReturn(Optional.of(adEntity));
+        UserMapper adMapper = new UserMapper() {
+
+            @Override
+            public UserEntity toEntity(Register register) {
+                return null;
+            }
+
+            @Override
+            public void updateEntityFromDto(UpdateUser updateUser, UserEntity entity) {
+
+            }
+
+            @Override
+            public User toDto(AdEntity entity) {
+                return null;
+            }
+
+            @Override
+            public ExtendedAd toExtendedAd(AdEntity adEntity) {
+                return null;
+            }
+        };
         when(adMapper.toExtendedAd(adEntity)).thenReturn(extendedAd);
 
         ExtendedAd result = adsService.getExtendedAd(adId);
@@ -98,7 +152,7 @@ class AdsServiceImplTest {
         Integer adId = 999;
         when(adRepository.findById(adId)).thenReturn(Optional.empty());
 
-        assertThrows(EntityNotFoundException.class, () -> {
+        T t = assertThrows(ru.skypro.homework.service.impl.EntityNotFoundException.class, () -> {
             adsService.getExtendedAd(adId);
         });
     }
@@ -116,19 +170,42 @@ class AdsServiceImplTest {
         );
 
         UserEntity userEntity = new UserEntity();
-        userEntity.setId(1);
         userEntity.setEmail(username);
 
         AdEntity adEntity = new AdEntity();
-        adEntity.setId(1);
+        adEntity.setId(1L);
 
         Ad expectedAd = new Ad();
         expectedAd.setPk(1);
 
         when(userService.getUserEntity(username)).thenReturn(userEntity);
-        when(adMapper.toEntity(properties)).thenReturn(adEntity);
+        PasswordEncoder userPasswordEncoder = mock(PasswordEncoder.class);
+        when(userPasswordEncoder.encode(any())).thenReturn("encodedPassword");
+        userService = new UserServiceImpl(userRepository, userMapper, userPasswordEncoder);
+        new UserMapper() {
+
+            @Override
+            public UserEntity toEntity(Register register) {
+                UserEntity userEntity = new UserEntity();
+                userEntity.setEmail(register.getUsername());
+                return userEntity;
+            }
+            @Override
+            public void updateEntityFromDto(UpdateUser updateUser, UserEntity entity) {
+
+            }
+
+            @Override
+            public User toDto(AdEntity entity) {
+                return null;
+            }
+
+            @Override
+            public ExtendedAd toExtendedAd(AdEntity adEntity) {
+                return null;
+            }
+        };
         when(adRepository.save(any(AdEntity.class))).thenReturn(adEntity);
-        when(adMapper.toDto(adEntity)).thenReturn(expectedAd);
 
         Ad result = adsService.addAd(properties, image, username);
 
@@ -144,14 +221,12 @@ class AdsServiceImplTest {
         String username = "owner@example.com";
 
         UserEntity userEntity = new UserEntity();
-        userEntity.setId(1);
         userEntity.setRole(Role.USER);
 
         UserEntity adOwner = new UserEntity();
-        adOwner.setId(1);
 
         AdEntity adEntity = new AdEntity();
-        adEntity.setId(adId);
+        adEntity.setId(Long.valueOf(adId));
         adEntity.setAuthor(adOwner);
 
         when(userService.getUserEntity(username)).thenReturn(userEntity);
@@ -168,14 +243,12 @@ class AdsServiceImplTest {
         String username = "notowner@example.com";
 
         UserEntity userEntity = new UserEntity();
-        userEntity.setId(2);
         userEntity.setRole(Role.USER);
 
         UserEntity adOwner = new UserEntity();
-        adOwner.setId(1);
 
         AdEntity adEntity = new AdEntity();
-        adEntity.setId(adId);
+        adEntity.setId(Long.valueOf(adId));
         adEntity.setAuthor(adOwner);
 
         when(userService.getUserEntity(username)).thenReturn(userEntity);
@@ -192,10 +265,9 @@ class AdsServiceImplTest {
     void getAdsByUser_ShouldReturnUserAds() {
         String username = "user@example.com";
         UserEntity userEntity = new UserEntity();
-        userEntity.setId(1);
 
         AdEntity adEntity = new AdEntity();
-        adEntity.setId(1);
+        adEntity.setId(1L);
         List<AdEntity> userAds = List.of(adEntity);
 
         Ad ad = new Ad();
@@ -203,7 +275,27 @@ class AdsServiceImplTest {
 
         when(userService.getUserEntity(username)).thenReturn(userEntity);
         when(adRepository.findByAuthorId(1)).thenReturn(userAds);
-        when(adMapper.toDto(adEntity)).thenReturn(ad);
+        UserMapper adMapper = new UserMapper() {
+            @Override
+            public UserEntity toEntity(Register register) {
+                return null;
+            }
+
+            @Override
+            public void updateEntityFromDto(UpdateUser updateUser, UserEntity entity) {
+
+            }
+
+            @Override
+            public User toDto(AdEntity entity) {
+                return null;
+            }
+
+            @Override
+            public ExtendedAd toExtendedAd(AdEntity adEntity) {
+                return null;
+            }
+        };
 
         Ads result = adsService.getAdsByUser(username);
 
@@ -219,13 +311,11 @@ class AdsServiceImplTest {
         String username = "owner@example.com";
 
         UserEntity userEntity = new UserEntity();
-        userEntity.setId(1);
 
         UserEntity adOwner = new UserEntity();
-        adOwner.setId(1);
 
         AdEntity adEntity = new AdEntity();
-        adEntity.setId(adId);
+        adEntity.setId(Long.valueOf(adId));
         adEntity.setAuthor(adOwner);
 
         when(adRepository.findById(adId)).thenReturn(Optional.of(adEntity));
@@ -248,7 +338,7 @@ class AdsServiceImplTest {
         adOwner.setId(1); // Different owner
 
         AdEntity adEntity = new AdEntity();
-        adEntity.setId(adId);
+        adEntity.setId(Long.valueOf(adId));
         adEntity.setAuthor(adOwner);
 
         when(adRepository.findById(adId)).thenReturn(Optional.of(adEntity));
@@ -271,3 +361,4 @@ class AdsServiceImplTest {
         assertFalse(result);
     }
 }
+

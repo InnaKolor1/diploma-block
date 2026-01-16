@@ -35,6 +35,10 @@ class AuthControllerTest {
     @MockBean
     private AuthService authService;
 
+    AuthControllerTest(AuthService authService) {
+        this.authService = authService;
+    }
+
     @Test
     void login_ShouldReturnOk_WhenCredentialsAreValid() throws Exception {
         Login login = new Login();

@@ -1,0 +1,8 @@
+<root>
+    <item name='org.hibernate.type.descriptor.sql.internal.ArrayDdlTypeImpl'>
+        <annotation name='java.lang.Deprecated'/>
+    </item>
+    <item name='org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType'>
+        <annotation name='java.lang.Deprecated'/>
+    </item>
+</root>

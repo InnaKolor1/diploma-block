@@ -14,7 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.*;
 import ru.skypro.homework.service.AdService;
 
-import javax.validation.Valid;
 import java.security.Principal;
 
 @Slf4j
@@ -57,7 +56,7 @@ public class AdsController {
             }
     )
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Ad> addAd(@RequestPart("properties") @Valid CreateOrUpdateAd properties,
+    public ResponseEntity<Ad> addAd(@RequestPart("properties") CreateOrUpdateAd properties,
                                     @RequestPart("image") MultipartFile image,
                                     Principal principal) {
         log.info("Adding new ad with title: {} by user: {}", properties.getTitle(), principal.getName());
@@ -117,7 +116,7 @@ public class AdsController {
     )
     @PatchMapping("/{id}")
     public ResponseEntity<Ad> updateAds(@PathVariable("id") Integer id,
-                                        @Valid @RequestBody CreateOrUpdateAd createOrUpdateAd,
+                                        @RequestBody CreateOrUpdateAd createOrUpdateAd,
                                         Principal principal) {
         log.info("Updating ad with id: {} by user: {}", id, principal.getName());
         Ad ad = adsService.updateAd(id, createOrUpdateAd, principal.getName());

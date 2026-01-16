@@ -27,4 +27,16 @@ public class User {
 
     @Schema(description = "ссылка на аватар пользователя")
     private String image;
+
+    public Object getTitle() {
+        return null;
+    }
+
+    public void setRole(String role) {
+        this.role = Role.valueOf(role);
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
 }

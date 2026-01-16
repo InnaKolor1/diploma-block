@@ -1,11 +1,10 @@
 package ru.skypro.homework.entity;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
-
-import javax.persistence.*;
-import java.time.Instant;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import lombok.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "comments")
@@ -21,14 +20,38 @@ public class CommentEntity {
     @Column(name = "text", nullable = false, length = 64)
     private String text;
 
-    @Column(name = "created_at", nullable = false)
-    private Instant createdAt;
+    @Setter
+    @Column(name = "created_at")
+    private LocalDateTime createdAt = LocalDateTime.now();
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "author_id", nullable = false)
+    @Setter
+    @ManyToOne
+    @JoinColumn(name = "author_id")
     private UserEntity author;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ad_id", nullable = false)
+    @Setter
+    @ManyToOne
+    @JoinColumn(name = "ad_id")
     private AdEntity ad;
+
+
+    public Integer getAuthorId() {
+        return author.getId();
+    }
+
+    public Integer getAdId() {
+        return ad.getId();
+    }
+
+    public void setText(@NotBlank @Size(min = 8, max = 64) String text) {
+        this.text = text;
+    }
+
+    public void setAuthorId(Integer authorId) {
+    }
+
+    public void setAdId(Integer adId) {
+
+    }
 }
+

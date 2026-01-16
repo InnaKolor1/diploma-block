@@ -1,0 +1,8 @@
+<root>
+    <item name='org.springframework.beans.factory.BeanCreationException'>
+        <annotation name='java.lang.Deprecated'/>
+    </item>
+    <item name='org.springframework.beans.factory.UnsatisfiedDependencyException'>
+        <annotation name='java.lang.Deprecated'/>
+    </item>
+</root>

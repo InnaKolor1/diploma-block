@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +14,6 @@ import ru.skypro.homework.dto.Comments;
 import ru.skypro.homework.dto.CreateOrUpdateComment;
 import ru.skypro.homework.service.CommentsService;
 
-import javax.validation.Valid;
 import java.security.Principal;
 
 @Slf4j
@@ -62,7 +60,7 @@ public class CommentsController {
     )
     @PostMapping("/{id}/comments")
     public ResponseEntity<Comment> addComment(@PathVariable("id") Integer id,
-                                              @Valid @RequestBody CreateOrUpdateComment createOrUpdateComment,
+                                              @RequestBody CreateOrUpdateComment createOrUpdateComment,
                                               Principal principal) {
         log.info("Adding comment to ad with id: {} by user: {}", id, principal.getName());
         Comment comment = commentsService.addComment(id, createOrUpdateComment, principal.getName());
@@ -104,7 +102,7 @@ public class CommentsController {
     @PatchMapping("/{adId}/comments/{commentId}")
     public ResponseEntity<Comment> updateComment(@PathVariable("adId") Integer adId,
                                                  @PathVariable("commentId") Integer commentId,
-                                                 @Valid @RequestBody CreateOrUpdateComment createOrUpdateComment,
+                                                 @RequestBody CreateOrUpdateComment createOrUpdateComment,
                                                  Principal principal) {
         log.info("Updating comment with id: {} for ad with id: {} by user: {}", commentId, adId, principal.getName());
         Comment comment = commentsService.updateComment(adId, commentId, createOrUpdateComment, principal.getName());

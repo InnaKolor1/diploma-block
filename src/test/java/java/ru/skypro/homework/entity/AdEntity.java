@@ -1,10 +1,11 @@
 package java.ru.skypro.homework.entity;
 
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
+import ru.skypro.homework.entity.CommentEntity;
 import ru.skypro.homework.entity.UserEntity;
 
-import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
 
@@ -38,7 +39,7 @@ public class AdEntity {
 
     @OneToMany(mappedBy = "ad", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
-    private List<java.ru.skypro.homework.entity.CommentEntity> comments;
+    private List<CommentEntity> comments;
 
     @Override
     public final boolean equals(Object o) {
@@ -47,7 +48,7 @@ public class AdEntity {
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        AdEntity adEntity = (AdEntity) o;
+        ru.skypro.homework.entity.AdEntity adEntity = (ru.skypro.homework.entity.AdEntity) o;
         return getId() != null && Objects.equals(getId(), adEntity.getId());
     }
 

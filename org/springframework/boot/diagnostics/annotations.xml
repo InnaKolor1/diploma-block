@@ -1,0 +1,8 @@
+<root>
+    <item name='org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter'>
+        <annotation name='java.lang.Deprecated'/>
+    </item>
+    <item name='org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter logger'>
+        <annotation name='java.lang.Deprecated'/>
+    </item>
+</root>

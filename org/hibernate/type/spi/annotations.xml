@@ -1,8 +1,0 @@
-<root>
-    <item name='org.hibernate.type.spi.TypeConfiguration'>
-        <annotation name='java.lang.Deprecated'/>
-    </item>
-    <item name='org.hibernate.type.spi.TypeConfiguration.Scope'>
-        <annotation name='java.lang.Deprecated'/>
-    </item>
-</root>

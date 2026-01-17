@@ -10,7 +10,10 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
+/**
+ * Глобальный обработчик исключений для REST контроллеров.
+ * Перехватывает исключения и преобразует их в соответствующие HTTP ответы.
+ */
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -26,19 +29,39 @@ public class GlobalExceptionHandler {
         log.warn("Доступ запрещен: {}", ex.getMessage());
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
+    /**
+     * Обрабатывает исключения {@link EntityNotFoundException}.
+     * Возвращает HTTP статус 404 Not Found.
+     *
+     * @param ex перехваченное исключение
+     * @return ResponseEntity с сообщением об ошибке
+     */
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<String> handleEntityNotFound(EntityNotFoundException ex) {
         log.warn("Объект не найден: {}", ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
+    /**
+     * Обрабатывает исключения {@link IllegalArgumentException}.
+     * Возвращает HTTP статус 400 Bad Request.
+     *
+     * @param ex перехваченное исключение
+     * @return ResponseEntity с сообщением об ошибке
+     */
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<String> handleIllegalArgument(IllegalArgumentException ex) {
         log.warn("Неверные данные: {}", ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
-
+    /**
+     * Обрабатывает исключения {@link MethodArgumentNotValidException}.
+     * Возвращает HTTP статус 400 Bad Request с детализацией ошибок валидации.
+     *
+     * @param ex перехваченное исключение
+     * @return ResponseEntity с сообщением об ошибке валидации
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<String> handleValidationExceptions(MethodArgumentNotValidException ex) {
         log.warn("Ошибка валидации: {}", ex.getMessage());
@@ -47,13 +70,25 @@ public class GlobalExceptionHandler {
                 .collect(java.util.stream.Collectors.joining(", "));
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ошибка валидации: " + errorMessage);
     }
-
+    /**
+     * Обрабатывает исключения {@link ConstraintViolationException}.
+     * Возвращает HTTP статус 400 Bad Request.
+     *
+     * @param ex перехваченное исключение
+     * @return ResponseEntity с сообщением об ошибке
+     */
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<String> handleConstraintViolation(ConstraintViolationException ex) {
         log.warn("Нарушение ограничений: {}", ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Нарушение ограничений: " + ex.getMessage());
     }
-
+    /**
+     * Обрабатывает все остальные исключения {@link Exception}.
+     * Возвращает HTTP статус 500 Internal Server Error.
+     *
+     * @param ex перехваченное исключение
+     * @return ResponseEntity с общим сообщением об ошибке
+     */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleGenericException(Exception ex) {
         log.error("Внутренняя ошибка сервера", ex);

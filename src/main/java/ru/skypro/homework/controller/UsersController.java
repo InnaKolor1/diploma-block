@@ -22,6 +22,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.Principal;
 import java.util.UUID;
+/**
+ * REST контроллер для управления профилем пользователя.
+ * Обрабатывает запросы связанные с получением и обновлением данных пользователя,
+ * сменой пароля и управлением аватаром.
+ */
 
 @Slf4j
 @CrossOrigin(value = "http://localhost:3000")
@@ -40,6 +45,13 @@ public class UsersController {
                     @ApiResponse(responseCode = "403", description = "Forbidden")
             }
     )
+    /**
+     * Изменяет пароль текущего аутентифицированного пользователя.
+     *
+     * @param newPassword объект с текущим и новым паролем
+     * @return ResponseEntity со статусом 200 OK при успешной смене пароля,
+     *         или 403 Forbidden при неверном текущем пароле
+     */
     @PostMapping("/set_password")
     public ResponseEntity<Void> setPassword(@RequestBody NewPassword newPassword,
                                             Principal principal) {
@@ -62,6 +74,13 @@ public class UsersController {
                     @ApiResponse(responseCode = "401", description = "Unauthorized")
             }
     )
+    /**
+     * Обновляет информацию о текущем пользователе.
+     *
+     * @param updateUser объект с обновляемыми данными пользователя
+     * @return ResponseEntity с обновленным объектом {@link UpdateUser} и статусом 200 OK,
+     *         или 401 Unauthorized при ошибке аутентификации
+     */
     @PatchMapping("/me")
     public ResponseEntity<User> updateUser(@RequestBody UpdateUser updateUser,
                                            Principal principal) {
@@ -82,6 +101,12 @@ public class UsersController {
                     @ApiResponse(responseCode = "401", description = "Unauthorized")
             }
     )
+    /**
+     * Получает информацию о текущем аутентифицированном пользователе.
+     *
+     * @return ResponseEntity с объектом {@link User} и статусом 200 OK,
+     *         или 401 Unauthorized при ошибке аутентификации
+     */
     @GetMapping("/me")
     public ResponseEntity<User> getUser(Principal principal) {
         log.info("Getting current user info for: {}", principal.getName());
@@ -96,6 +121,12 @@ public class UsersController {
                     @ApiResponse(responseCode = "401", description = "Unauthorized")
             }
     )
+    /**
+     * Обновляет аватар текущего пользователя.
+     * @param image файл изображения для загрузки
+     * @return ResponseEntity со статусом 200 OK при успешной загрузке,
+     *         или 401 Unauthorized при ошибке аутентификации
+     */
     @PatchMapping(value = "/me/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> updateUserImage(@RequestParam("image") MultipartFile image,
                                                 Principal principal) {

@@ -15,7 +15,10 @@ import ru.skypro.homework.dto.CreateOrUpdateComment;
 import ru.skypro.homework.service.CommentsService;
 
 import java.security.Principal;
-
+/**
+ * REST контроллер для управления комментариями к объявлениям.
+ * Обрабатывает HTTP запросы связанные с созданием, получением, обновлением и удалением комментариев.
+ */
 @Slf4j
 @CrossOrigin(value = "http://localhost:3000")
 @RestController
@@ -24,7 +27,13 @@ import java.security.Principal;
 public class CommentsController {
 
     private final CommentsService commentsService;
-
+    /**
+     * Получает все комментарии к указанному объявлению.
+     *
+     * @param id идентификатор объявления
+     * @return ResponseEntity с объектом {@link Comments} и статусом 200 OK,
+     *         или 404 Not Found если объявление не существует
+     */
     @Operation(
             summary = "Получение комментариев объявления",
             responses = {
@@ -58,6 +67,15 @@ public class CommentsController {
                     @ApiResponse(responseCode = "404", description = "Not found")
             }
     )
+    /**
+     * Добавляет новый комментарий к объявлению.
+     * Требуется аутентификация пользователя.
+     *
+     * @param id идентификатор объявления
+     * @param comment данные комментария
+     * @return ResponseEntity с созданным комментарием и статусом 200 OK,
+     *         или 401 Unauthorized при ошибке аутентификации
+     */
     @PostMapping("/{id}/comments")
     public ResponseEntity<Comment> addComment(@PathVariable("id") Integer id,
                                               @RequestBody CreateOrUpdateComment createOrUpdateComment,
@@ -76,6 +94,16 @@ public class CommentsController {
                     @ApiResponse(responseCode = "404", description = "Not found")
             }
     )
+    /**
+     * Удаляет комментарий.
+     * Доступно только администраторам или авторам комментария.
+     *
+     * @param adId идентификатор объявления
+     * @param commentId идентификатор комментария
+     * @return ResponseEntity со статусом 200 OK при успешном удалении,
+     *         403 Forbidden при недостаточных правах,
+     *         401 Unauthorized при ошибке аутентификации
+     */
     @DeleteMapping("/{adId}/comments/{commentId}")
     public ResponseEntity<Void> deleteComment(@PathVariable("adId") Integer adId,
                                               @PathVariable("commentId") Integer commentId,
@@ -99,6 +127,15 @@ public class CommentsController {
                     @ApiResponse(responseCode = "404", description = "Not found")
             }
     )
+    /**
+     * Обновляет комментарий.
+     * Доступно только администраторам или авторам комментария.
+     *
+     * @param adId идентификатор объявления
+     * @param commentId идентификатор комментария
+     * @param comment обновленные данные комментария
+     * @return ResponseEntity с обновленным комментарием и статусом 200 OK
+     */
     @PatchMapping("/{adId}/comments/{commentId}")
     public ResponseEntity<Comment> updateComment(@PathVariable("adId") Integer adId,
                                                  @PathVariable("commentId") Integer commentId,

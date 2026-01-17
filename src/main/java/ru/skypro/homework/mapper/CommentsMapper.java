@@ -6,8 +6,9 @@ import ru.skypro.homework.dto.Comment;
 import ru.skypro.homework.dto.CreateOrUpdateComment;
 import ru.skypro.homework.entity.CommentEntity;
 import ru.skypro.homework.entity.UserEntity;
+import ru.skypro.homework.service.UserMapper;
 
-@Mapper(componentModel = "spring", uses = {UserMapper.class})
+@Mapper(componentModel = "spring", uses = {UserMapper.class}) // Используем UserMapper для преобразования author
 public interface CommentsMapper {
 
     @Mapping(target = "id", ignore = true)
@@ -31,4 +32,8 @@ public interface CommentsMapper {
     void updateEntityFromDto(CreateOrUpdateComment createOrUpdateComment, @org.mapstruct.MappingTarget CommentEntity entity);
 
     void updateEntity(CreateOrUpdateComment createOrUpdateComment, CommentEntity commentEntity);
+
+    <R> R toDto(CommentEntity entity);
+
+    CommentEntity toEntity(CreateOrUpdateComment comment);
 }

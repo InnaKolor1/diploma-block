@@ -2,9 +2,8 @@ package ru.skypro.homework.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.*;
 import ru.skypro.homework.entity.AdEntity;
@@ -12,28 +11,34 @@ import ru.skypro.homework.entity.UserEntity;
 import ru.skypro.homework.mapper.AdMapper;
 import ru.skypro.homework.repository.AdRepository;
 import ru.skypro.homework.service.AdService;
+import ru.skypro.homework.service.ImageService;
 import ru.skypro.homework.service.UserService;
-import jakarta.persistence.EntityNotFoundException;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
+/**
+ * Реализация {@link AdService} для управления объявлениями.
+ */
 @Slf4j
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class AdServiceImpl implements AdService {
 
     private final AdRepository adRepository;
-    private final UserService userService;
     private final AdMapper adMapper;
+    private final UserService userService;
+    private final ImageService imageService;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
+    @Transactional(readOnly = true)
     public Ads getAllAds() {
+        log.info("Getting all ads");
         List<AdEntity> adEntities = adRepository.findAll();
         List<Ad> ads = adEntities.stream()
                 .map(adMapper::toDto)
@@ -45,19 +50,19 @@ public class AdServiceImpl implements AdService {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public Ad addAd(CreateOrUpdateAd properties, MultipartFile image, String username) {
-        UserEntity author = userService.getUserEntity(username);
+        log.info("Adding new ad for user: {}", username);
 
-        AdEntity adEntity = new AdEntity();
-        adEntity.setTitle(properties.getTitle());
-        adEntity.setPrice(properties.getPrice());
-        adEntity.setDescription(properties.getDescription());
+        UserEntity author = userService.getUserEntity(username);
+        AdEntity adEntity = adMapper.toEntity(properties);
         adEntity.setAuthor(author);
 
         if (image != null && !image.isEmpty()) {
-            String imagePath = saveAdImage(image);
+            String imagePath = imageService.saveImage(image);
             adEntity.setImage(imagePath);
         }
 
@@ -65,50 +70,65 @@ public class AdServiceImpl implements AdService {
         return adMapper.toDto(savedAd);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
+    @Transactional(readOnly = true)
     public ExtendedAd getExtendedAd(Integer id) {
+        log.info("Getting extended ad with id: {}", id);
         AdEntity adEntity = adRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Объявление не найдено"));
+                .orElseThrow(() -> new EntityNotFoundException("Ad not found with id: " + id));
         return adMapper.toExtendedAd(adEntity);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void removeAd(Integer id, String username) {
+        log.info("Removing ad with id: {} by user: {}", id, username);
+        UserEntity user = userService.getUserEntity(username);
         AdEntity adEntity = adRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Объявление не найдено"));
+                .orElseThrow(() -> new EntityNotFoundException("Ad not found with id: " + id));
 
-        UserEntity currentUser = userService.getUserEntity(username);
+        if (!user.getRole().equals(Role.ADMIN) && !adEntity.getAuthor().getId().equals(user.getId())) {
+            throw new SecurityException("No permission to delete this ad");
+        }
 
-        if (!adEntity.getAuthor().equals(currentUser) &&
-                !currentUser.getRole().equals(Role.ADMIN)) {
-            throw new AccessDeniedException("Нет прав для удаления этого объявления");
+        if (adEntity.getImage() != null) {
+            imageService.deleteImage(adEntity.getImage());
         }
 
         adRepository.delete(adEntity);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public Ad updateAd(Integer id, CreateOrUpdateAd createOrUpdateAd, String username) {
+    public Ad updateAd(Integer id, CreateOrUpdateAd updateAd, String username) {
+        log.info("Updating ad with id: {} by user: {}", id, username);
+        UserEntity user = userService.getUserEntity(username);
         AdEntity adEntity = adRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Объявление не найдено"));
+                .orElseThrow(() -> new EntityNotFoundException("Ad not found with id: " + id));
 
-        UserEntity currentUser = userService.getUserEntity(username);
-
-        if (!adEntity.getAuthor().equals(currentUser) &&
-                !currentUser.getRole().equals(Role.ADMIN)) {
-            throw new AccessDeniedException("Нет прав для редактирования этого объявления");
+        if (!user.getRole().equals(Role.ADMIN) && !adEntity.getAuthor().getId().equals(user.getId())) {
+            throw new SecurityException("No permission to update this ad");
         }
 
-        adEntity.setTitle(createOrUpdateAd.getTitle());
-        adEntity.setPrice(createOrUpdateAd.getPrice());
-        adEntity.setDescription(createOrUpdateAd.getDescription());
-
+        adMapper.updateEntityFromDto(updateAd, adEntity);
         AdEntity updatedAd = adRepository.save(adEntity);
         return adMapper.toDto(updatedAd);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
+    @Transactional(readOnly = true)
     public Ads getAdsByUser(String username) {
+        log.info("Getting ads for user: {}", username);
         UserEntity user = userService.getUserEntity(username);
         List<AdEntity> userAds = adRepository.findByAuthorId(user.getId());
 
@@ -122,53 +142,69 @@ public class AdServiceImpl implements AdService {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void updateAdImage(Integer id, MultipartFile image, String username) {
+        log.info("Updating image for ad with id: {} by user: {}", id, username);
+        UserEntity user = userService.getUserEntity(username);
         AdEntity adEntity = adRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Объявление не найдено"));
+                .orElseThrow(() -> new EntityNotFoundException("Ad not found with id: " + id));
 
-        UserEntity currentUser = userService.getUserEntity(username);
-
-        if (!adEntity.getAuthor().equals(currentUser) &&
-                !currentUser.getRole().equals(Role.ADMIN)) {
-            throw new AccessDeniedException("Нет прав для обновления изображения");
+        if (!user.getRole().equals(Role.ADMIN) && !adEntity.getAuthor().getId().equals(user.getId())) {
+            throw new SecurityException("No permission to update this ad");
         }
 
-        String imagePath = saveAdImage(image);
-        adEntity.setImage(imagePath);
+        if (adEntity.getImage() != null) {
+            imageService.deleteImage(adEntity.getImage());
+        }
+
+        String newImagePath = imageService.saveImage(image);
+        adEntity.setImage(newImagePath);
         adRepository.save(adEntity);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
+    public byte[] getAdImage(Integer id) {
+        log.info("Getting image for ad with id: {}", id);
+        AdEntity adEntity = adRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Ad not found with id: " + id));
+
+        if (adEntity.getImage() == null) {
+            throw new EntityNotFoundException("Image not found for ad with id: " + id);
+        }
+
+        return imageService.getImage(adEntity.getImage());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = true)
     public AdEntity getAdEntity(Integer id) {
         return adRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Объявление не найдено"));
+                .orElseThrow(() -> new EntityNotFoundException("Ad not found with id: " + id));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
+    @Transactional(readOnly = true)
     public boolean isAdOwner(Integer adId, String username) {
-        AdEntity adEntity = adRepository.findById(adId).orElse(null);
-        if (adEntity == null) return false;
-
-        UserEntity userEntity = userService.getUserEntity(username);
-        return adEntity.getAuthor().equals(userEntity);
-    }
-
-    private String saveAdImage(MultipartFile image) {
         try {
-            String originalFilename = image.getOriginalFilename();
-            String extension = originalFilename != null ?
-                    originalFilename.substring(originalFilename.lastIndexOf(".")) : ".jpg";
-            String filename = "ad_" + UUID.randomUUID() + extension;
-            Path path = Paths.get("images/" + filename);
-
-            Files.createDirectories(path.getParent());
-            Files.write(path, image.getBytes());
-
-            return filename;
-        } catch (IOException e) {
-            log.error("Ошибка при сохранении изображения объявления", e);
-            throw new RuntimeException("Ошибка при сохранении изображения", e);
+            AdEntity adEntity = adRepository.findById(adId)
+                    .orElseThrow(() -> new EntityNotFoundException("Ad not found"));
+            UserEntity userEntity = userService.getUserEntity(username);
+            return adEntity.getAuthor().getId().equals(userEntity.getId());
+        } catch (Exception e) {
+            log.warn("Error checking ad ownership: {}", e.getMessage());
+            return false;
         }
     }
 }

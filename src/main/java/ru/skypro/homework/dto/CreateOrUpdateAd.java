@@ -6,8 +6,10 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
-
-
+/**
+ * DTO для создания или обновления объявления.
+ * Содержит основные данные объявления с валидацией полей.
+ */
 @Data
 @Schema(description = "Создание или обновление объявления")
 public class CreateOrUpdateAd {

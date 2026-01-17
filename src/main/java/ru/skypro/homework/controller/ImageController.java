@@ -10,12 +10,22 @@ import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
+/**
+ * REST контроллер для получения изображений.
+ * Обрабатывает запросы на получение файлов изображений по их именам.
+ */
 @Slf4j
 @RestController
 @RequestMapping("/images")
 public class ImageController {
-
+    /**
+     * Получает изображение по имени файла.
+     * Поддерживает форматы JPEG, PNG и GIF.
+     * Добавлены заголовки для предотвращения кэширования.
+     *
+     * @param filename имя файла изображения
+     * @return массив байтов изображения с соответствующим Content-Type
+     */
     @GetMapping("/{filename:.+}")
     public ResponseEntity<Resource> getImage(@PathVariable String filename) {
         try {
@@ -24,10 +34,12 @@ public class ImageController {
             Resource resource = new UrlResource(path.toUri());
 
             if (resource.exists() && resource.isReadable()) {
+                // Определяем Content-Type
                 String contentType = determineContentType(filename);
 
                 return ResponseEntity.ok()
                         .contentType(MediaType.parseMediaType(contentType))
+                        // Заголовки для предотвращения кэширования
                         .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
                         .body(resource);
             } else {

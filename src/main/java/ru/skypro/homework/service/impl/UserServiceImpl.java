@@ -10,10 +10,13 @@ import ru.skypro.homework.dto.UpdateUser;
 import ru.skypro.homework.dto.User;
 import ru.skypro.homework.entity.AdEntity;
 import ru.skypro.homework.entity.UserEntity;
-import ru.skypro.homework.mapper.UserMapper;
+import ru.skypro.homework.service.UserMapper;
 import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.UserService;
 
+/**
+ * Реализация {@link UserService} для управления пользователями.
+ */
 @Service
 @Slf4j
 public class UserServiceImpl implements UserService {
@@ -60,6 +63,27 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("Неверный текущий пароль");
         }
 
+    }
+    /**
+     * Нормализует номер телефона для хранения в базе данных.
+     * Удаляет лишние пробелы и обрезает до максимальной длины.
+     *
+     * @param phone исходный номер телефона
+     * @return нормализованный номер телефона
+     */
+    private String normalizePhoneNumber(String phone) {
+        if (phone == null) {
+            return null;
+        }
+
+        String normalized = phone.replaceAll("\\s+", " ").trim();
+
+        if (normalized.length() > 20) {
+            log.warn("Phone number too long, truncating: {}", phone);
+            normalized = normalized.substring(0, 20);
+        }
+
+        return normalized;
     }
 
     @Override

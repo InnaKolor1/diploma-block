@@ -15,7 +15,10 @@ import ru.skypro.homework.dto.*;
 import ru.skypro.homework.service.AdService;
 
 import java.security.Principal;
-
+/**
+ * REST контроллер для управления объявлениями.
+ * Обрабатывает HTTP запросы связанные с созданием, получением, обновлением и удалением объявлений.
+ */
 @Slf4j
 @CrossOrigin(value = "http://localhost:3000")
 @RestController
@@ -36,6 +39,11 @@ public class AdsController {
                     )
             }
     )
+    /**
+     * Получает список всех объявлений.
+     *
+     * @return ResponseEntity с объектом {@link Ads} и статусом 200 OK
+     */
     @GetMapping
     public ResponseEntity<Ads> getAllAds() {
         log.info("Getting all ads");
@@ -55,6 +63,16 @@ public class AdsController {
                     @ApiResponse(responseCode = "401", description = "Unauthorized")
             }
     )
+    /**
+     * Создает новое объявление.
+     * Требуется аутентификация пользователя.
+     *
+     * @param properties данные объявления
+     * @param image изображение объявления
+     * @param authentication объект аутентификации Spring Security
+     * @return ResponseEntity с созданным объявлением и статусом 201 Created,
+     *         или 401 Unauthorized при ошибке аутентификации
+     */
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Ad> addAd(@RequestPart("properties") CreateOrUpdateAd properties,
                                     @RequestPart("image") MultipartFile image,
@@ -77,6 +95,12 @@ public class AdsController {
                     @ApiResponse(responseCode = "404", description = "Not found")
             }
     )
+    /**
+     * Получает расширенную информацию об объявлении по идентификатору.
+     * @param id идентификатор объявления
+     * @return ResponseEntity с объектом {@link ExtendedAd} и статусом 200 OK,
+     *         или 404 Not Found если объявление не существует
+     */
     @GetMapping("/{id}")
     public ResponseEntity<ExtendedAd> getAds(@PathVariable("id") Integer id) {
         log.info("Getting ad with id: {}", id);
@@ -93,6 +117,16 @@ public class AdsController {
                     @ApiResponse(responseCode = "404", description = "Not found")
             }
     )
+    /**
+     * Удаляет объявление по идентификатору.
+     * Доступно только администраторам или владельцам объявления.
+     *
+     * @param id идентификатор объявления
+     * @param authentication объект аутентификации Spring Security
+     * @return ResponseEntity со статусом 204 No Content при успешном удалении,
+     *         403 Forbidden при недостаточных правах,
+     *         401 Unauthorized при ошибке аутентификации
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> removeAd(@PathVariable("id") Integer id, Principal principal) {
         log.info("Removing ad with id: {} by user: {}", id, principal.getName());
@@ -114,6 +148,16 @@ public class AdsController {
                     @ApiResponse(responseCode = "404", description = "Not found")
             }
     )
+    /**
+     * Обновляет информацию об объявлении.
+     * Доступно только администраторам или владельцам объявления.
+     *
+     * @param id идентификатор объявления
+     * @param updateAd обновленные данные объявления
+     * @return ResponseEntity с обновленным объявлением и статусом 200 OK,
+     *         403 Forbidden при недостаточных правах,
+     *         401 Unauthorized при ошибке аутентификации
+     */
     @PatchMapping("/{id}")
     public ResponseEntity<Ad> updateAds(@PathVariable("id") Integer id,
                                         @RequestBody CreateOrUpdateAd createOrUpdateAd,
@@ -135,6 +179,11 @@ public class AdsController {
                     @ApiResponse(responseCode = "401", description = "Unauthorized")
             }
     )
+    /**
+     * Получает список объявлений текущего аутентифицированного пользователя.
+     * @return ResponseEntity с объектом {@link Ads} и статусом 200 OK,
+     *         или 401 Unauthorized при ошибке аутентификации
+     */
     @GetMapping("/me")
     public ResponseEntity<Ads> getAdsMe(Principal principal) {
         log.info("Getting current user's ads for: {}", principal.getName());
@@ -151,6 +200,16 @@ public class AdsController {
                     @ApiResponse(responseCode = "404", description = "Not found")
             }
     )
+    /**
+     * Обновляет изображение объявления.
+     * Доступно только администраторам или владельцам объявления.
+     *
+     * @param id идентификатор объявления
+     * @param image новое изображение
+     * @return ResponseEntity со статусом 200 OK при успешном обновлении,
+     *         403 Forbidden при недостаточных правах,
+     *         401 Unauthorized при ошибке аутентификации
+     */
     @PatchMapping(value = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> updateImage(@PathVariable("id") Integer id,
                                             @RequestParam("image") MultipartFile image,

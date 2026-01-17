@@ -7,7 +7,10 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
-
+/**
+ * DTO для регистрации нового пользователя.
+ * Содержит данные, необходимые для создания учетной записи пользователя.
+ */
 @Setter
 @Schema(description = "Данные для регистрации")
 public class

@@ -8,7 +8,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.skypro.homework.dto.Role;
-
+/**
+ * JPA сущность для представления пользователя в базе данных.
+ * Соответствует таблице 'users' в базе данных.
+ * Содержит информацию о пользователе и его связи с объявлениями и комментариями.
+ */
 @Getter
 @Entity
 @Table(name = "users")
@@ -20,6 +24,12 @@ public class UserEntity {
     @Setter
     private String firstName;
     private String lastName;
+    /**
+     * Уникальный идентификатор пользователя,Роль пользователя в системе,
+     * Номер телефона пользователя,пароль пользователя,
+     * возраст,Уникальный идентификатор пользователя используется как логин.
+     * Генерируется автоматически базой данных.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -31,7 +41,11 @@ public class UserEntity {
     private String password;
     private int age;
     private int i;
-
+    /**
+     * Email пользователя,Имя файла аватара пользователя,Имя пользователя,
+     * Фамилия пользователя,возраст,Уникальный идентификатор пользователя используется как логин.
+     * Должен быть уникальным и не может быть null.
+     */
     public UserEntity(String email, String image, String firstName, String lastName, int age, Integer id) {
         this.email = email;
         this.image = image;

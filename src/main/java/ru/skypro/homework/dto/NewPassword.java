@@ -6,8 +6,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
-
-
+/**
+ * DTO для смены пароля пользователя.
+ * Содержит текущий и новый пароль для проверки и обновления.
+ */
 @Data
 @Schema(description = "Обновление пароля")
 public class NewPassword {

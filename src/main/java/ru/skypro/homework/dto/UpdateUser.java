@@ -6,7 +6,11 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
-
+/**
+ * DTO для обновления данных пользователя.
+ * Используется при редактировании профиля пользователя.
+ * Все поля обязательны для заполнения и проходят валидацию.
+ */
 @Data
 @Schema(description = "Обновление данных пользователя")
 public class UpdateUser {

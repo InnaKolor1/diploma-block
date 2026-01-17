@@ -4,7 +4,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
-
+/**
+ * DTO для аутентификации пользователя.
+ * Содержит учетные данные для входа в систему.
+ */
 @Data
 @Schema(description = "Данные для авторизации")
 public class Login {

@@ -5,7 +5,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
-
+/**
+ * DTO для создания или обновления комментария.
+ * Содержит текстовое содержимое комментария.
+ */
 @Data
 @Schema(description = "Создание или обновление комментария")
 public class CreateOrUpdateComment {

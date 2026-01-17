@@ -1,138 +1,135 @@
 package ru.skypro.homework.service.impl;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.skypro.homework.dto.Comment;
 import ru.skypro.homework.dto.Comments;
 import ru.skypro.homework.dto.CreateOrUpdateComment;
+import ru.skypro.homework.entity.AdEntity;
 import ru.skypro.homework.entity.CommentEntity;
 import ru.skypro.homework.entity.UserEntity;
 import ru.skypro.homework.mapper.CommentsMapper;
 import ru.skypro.homework.repository.CommentRepository;
-import ru.skypro.homework.repository.UserRepository;
+import ru.skypro.homework.service.AdService;
 import ru.skypro.homework.service.CommentsService;
+import ru.skypro.homework.service.UserService;
 
-import java.util.HashMap;
+import jakarta.persistence.EntityNotFoundException;
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Реализация {@link CommentsService} для управления комментариями.
+ */
 @Slf4j
 @Service
-@RequiredArgsConstructor
 @Transactional
+@RequiredArgsConstructor
 public class CommentsServiceImpl implements CommentsService {
 
     private final CommentRepository commentRepository;
-    private final UserRepository userRepository;
-    private final CommentsMapper commentsMapper;
+    private final CommentsMapper commentMapper;
+    private final UserService userService;
+    private final AdService adsService;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
+    @Transactional(readOnly = true)
     public Comments getComments(Integer adId) {
-        log.debug("Getting comments for ad id: {}", adId);
+        log.info("Getting comments for ad with id: {}", adId);
+        List<CommentEntity> commentEntities = commentRepository.findAllByAdIdOrderByCreatedAtDesc(adId);
 
-        List<CommentEntity> commentEntities = commentRepository.findByAdId(adId);
-
-        List<Object> authorIds = commentEntities.stream()
-                .map(CommentEntity::getAuthorId)
-                .distinct()
-                .collect(Collectors.toList());
-
-
-        List<Comment> comments = commentEntities.stream()
-                .map(comment -> {
-                    Map<Object, UserEntity> authors = new HashMap<>();
-                    for (Object user : userRepository.findAllByIdIn(authorIds)) {
-                        if (authors.put(user, (UserEntity) user) != null) {
-                            throw new IllegalStateException("Duplicate key");
-                        }
-                    }
-                    UserEntity author = authors.get(comment.getAuthorId());
-                    return commentsMapper.toDto(comment, author);
-                })
+        List<Object> comments = commentEntities.stream()
+                .map((CommentEntity entity) -> commentMapper.toDto(entity))
                 .collect(Collectors.toList());
 
         Comments result = new Comments();
         result.setCount(comments.size());
         result.setResults(comments);
-
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    @Transactional
-    public Comment addComment(Integer adId, CreateOrUpdateComment createOrUpdateComment, String username) {
-        log.debug("Adding comment to ad id: {} by user: {}", adId, username);
+    public Comment addComment(Integer adId, CreateOrUpdateComment comment, String username) {
+        log.info("Adding comment to ad with id: {} by user: {}", adId, username);
 
-        UserEntity author = userRepository.findByEmail(username)
-                .orElseThrow(() -> new EntityNotFoundException("User not found: " + username));
+        UserEntity author = userService.getUserEntity(username);
+        AdEntity ad = adsService.getAdEntity(adId);
 
-        CommentEntity commentEntity = commentsMapper.toEntity(createOrUpdateComment, adId);
+        CommentEntity commentEntity = commentMapper.toEntity(comment);
+        commentEntity.setAuthor(author);
+        commentEntity.setAd(ad);
+        commentEntity.setCreatedAt(LocalDateTime.from(Instant.now()));
+
         CommentEntity savedComment = commentRepository.save(commentEntity);
-
-        return commentsMapper.toDto(savedComment, author);
+        return commentMapper.toDto(savedComment);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    @Transactional
+    @PreAuthorize("hasRole('ADMIN') or @commentsServiceImpl.isCommentOwner(#commentId, authentication.name)")
     public void deleteComment(Integer adId, Integer commentId, String username) {
-        log.debug("Deleting comment id: {} from ad id: {} by user: {}", commentId, adId, username);
+        log.info("Deleting comment with id: {} from ad with id: {} by user: {}", commentId, adId, username);
 
-        CommentEntity commentEntity = commentRepository.findById(commentId)
-                .orElseThrow(() -> new EntityNotFoundException("Comment not found with id: " + commentId));
+        UserEntity user = userService.getUserEntity(username);
+        CommentEntity commentEntity = commentRepository.findByIdAndAdId(commentId, adId)
+                .orElseThrow(() -> new EntityNotFoundException("Comment not found"));
 
-        commentEntity.getAdId();
-        throw new EntityNotFoundException("Comment not found in ad with id: " + adId);
+        if (!user.getRole().equals(ru.skypro.homework.dto.Role.ADMIN) &&
+                !commentEntity.getAuthor().getId().equals(user.getId())) {
+            throw new SecurityException("No permission to delete this comment");
+        }
 
+        commentRepository.delete(commentEntity);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    @Transactional
-    public Comment updateComment(Integer adId, Integer commentId, CreateOrUpdateComment createOrUpdateComment, String username) {
-        log.debug("Updating comment id: {} in ad id: {} by user: {}", commentId, adId, username);
+    @PreAuthorize("hasRole('ADMIN') or @commentsServiceImpl.isCommentOwner(#commentId, authentication.name)")
+    public Comment updateComment(Integer adId, Integer commentId, CreateOrUpdateComment comment, String username) {
+        log.info("Updating comment with id: {} for ad with id: {} by user: {}", commentId, adId, username);
 
-        CommentEntity commentEntity = commentRepository.findById(commentId)
-                .orElseThrow(() -> new EntityNotFoundException("Comment not found with id: " + commentId));
+        UserEntity user = userService.getUserEntity(username);
+        CommentEntity commentEntity = commentRepository.findByIdAndAdId(commentId, adId)
+                .orElseThrow(() -> new EntityNotFoundException("Comment not found"));
 
-        if (!commentEntity.getAdId().equals(adId)) {
-            throw new EntityNotFoundException("Comment not found in ad with id: " + adId);
+        if (!commentEntity.getAuthor().getId().equals(user.getId())) {
+            throw new SecurityException("No permission to update this comment");
         }
 
-        UserEntity user = userRepository.findByEmail(username)
-                .orElseThrow(() -> new EntityNotFoundException("User not found: " + username));
-
-        boolean isAuthor = commentEntity.getAuthorId().equals(user.getId());
-        boolean isAdmin = "ADMIN".equals(user.getRole());
-
-        if (!isAuthor && !isAdmin) {
-            throw new AccessDeniedException("You don't have permission to update this comment");
-        }
-
-        commentsMapper.updateEntity(createOrUpdateComment, commentEntity);
+        commentMapper.updateEntityFromDto(comment, commentEntity);
         CommentEntity updatedComment = commentRepository.save(commentEntity);
-
-        UserEntity author = userRepository.findById((Integer) commentEntity.getAuthorId())
-                .orElse(null);
-
-        return commentsMapper.toDto(updatedComment, author);
+        return commentMapper.toDto(updatedComment);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
+    @Transactional(readOnly = true)
     public boolean isCommentOwner(Integer commentId, String username) {
-        CommentEntity commentEntity = commentRepository.findById(commentId).orElse(null);
-        if (commentEntity == null) {
+        try {
+            CommentEntity commentEntity = commentRepository.findById(commentId)
+                    .orElseThrow(() -> new EntityNotFoundException("Comment not found"));
+            UserEntity userEntity = userService.getUserEntity(username);
+            return commentEntity.getAuthor().getId().equals(userEntity.getId());
+        } catch (Exception e) {
+            log.warn("Error checking comment ownership: {}", e.getMessage());
             return false;
         }
-
-        UserEntity user = userRepository.findByEmail(username).orElse(null);
-        if (user == null) {
-            return false;
-        }
-
-        return commentEntity.getAuthorId().equals(user.getId());
     }
 }

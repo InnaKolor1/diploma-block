@@ -1,20 +1,19 @@
 package ru.skypro.homework.service.impl;
 
+
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import ru.skypro.homework.dto.Ad;
-import ru.skypro.homework.dto.Ads;
-import ru.skypro.homework.dto.CreateOrUpdateAd;
-import ru.skypro.homework.dto.ExtendedAd;
+import ru.skypro.homework.dto.*;
 import ru.skypro.homework.entity.AdEntity;
 import ru.skypro.homework.entity.UserEntity;
-
+import ru.skypro.homework.mapper.AdMapper;
 import ru.skypro.homework.repository.AdRepository;
-import ru.skypro.homework.repository.UserRepository;
-import ru.skypro.homework.service.AdService;
+import ru.skypro.homework.service.UserService;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -27,57 +26,62 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class AdServiceImpl implements AdService {
 
     private final AdRepository adRepository;
-    private final UserRepository userRepository;
-
-    private final String imageDir = "images/";
+    private final UserService userService;
+    private final AdMapper adMapper;
 
     @Override
     public Ads getAllAds() {
         List<AdEntity> adEntities = adRepository.findAll();
-        Ads ads = new Ads();
-        ads.setCount(adEntities.size());
-        ads.setResults(adEntities.stream().map(adMapper::toDto).collect(Collectors.toList()));
-        return ads;
+        List<Ad> ads = adEntities.stream()
+                .map(entity -> adMapper.toDto(entity, entity.getAuthor()))
+                .collect(Collectors.toList());
+
+        Ads result = new Ads();
+        result.setCount(ads.size());
+        result.setResults(ads);
+        return result;
     }
 
     @Override
-    public Ad addAd(CreateOrUpdateAd createOrUpdateAd, MultipartFile image, String username) {
-        UserEntity author = userRepository.findByEmail(username)
-                .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public Ad addAd(CreateOrUpdateAd properties, MultipartFile image, String username) {
+        UserEntity author = userService.getUserEntity(username);
 
-        AdEntity adEntity = adMapper.toEntity(createOrUpdateAd);
+        AdEntity adEntity = new AdEntity();
+        adEntity.setTitle(properties.getTitle());
+        adEntity.setPrice(properties.getPrice());
+        adEntity.setDescription(properties.getDescription());
         adEntity.setAuthor(author);
 
         if (image != null && !image.isEmpty()) {
-            String imagePath = saveImage(image);
+            String imagePath = saveAdImage(image);
             adEntity.setImage(imagePath);
         }
 
         AdEntity savedAd = adRepository.save(adEntity);
-        return adMapper.toDto(savedAd);
+        return adMapper.toDto(savedAd, author);
     }
 
     @Override
     public ExtendedAd getExtendedAd(Integer id) {
         AdEntity adEntity = adRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Объявление не найдено"));
+                .orElseThrow(() -> new EntityNotFoundException("Объявление не найдено"));
         return adMapper.toExtendedAd(adEntity);
     }
 
     @Override
     public void removeAd(Integer id, String username) {
         AdEntity adEntity = adRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Объявление не найдено"));
+                .orElseThrow(() -> new EntityNotFoundException("Объявление не найдено"));
 
-        UserEntity user = userRepository.findByEmail(username)
-                .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
+        UserEntity currentUser = userService.getUserEntity(username);
 
-        if (!adEntity.getAuthor().getId().equals(user.getId()) && !user.getRole().equals(Role.ADMIN)) {
-            throw new RuntimeException("Недостаточно прав для удаления объявления");
+        if (!adEntity.getAuthor().equals(currentUser) &&
+                !currentUser.getRole().equals(Role.ADMIN)) {
+            throw new AccessDeniedException("Нет прав для удаления этого объявления");
         }
 
         adRepository.delete(adEntity);
@@ -86,71 +90,85 @@ public class AdServiceImpl implements AdService {
     @Override
     public Ad updateAd(Integer id, CreateOrUpdateAd createOrUpdateAd, String username) {
         AdEntity adEntity = adRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Объявление не найдено"));
+                .orElseThrow(() -> new EntityNotFoundException("Объявление не найдено"));
 
-        UserEntity user = userRepository.findByEmail(username)
-                .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
+        UserEntity currentUser = userService.getUserEntity(username);
 
-        if (!adEntity.getAuthor().getId().equals(user.getId())) {
-            throw new RuntimeException("Недостаточно прав для редактирования объявления");
+        if (!adEntity.getAuthor().equals(currentUser) &&
+                !currentUser.getRole().equals(Role.ADMIN)) {
+            throw new AccessDeniedException("Нет прав для редактирования этого объявления");
         }
 
-        adMapper.updateEntityFromDto(createOrUpdateAd, adEntity);
+        adEntity.setTitle(createOrUpdateAd.getTitle());
+        adEntity.setPrice(createOrUpdateAd.getPrice());
+        adEntity.setDescription(createOrUpdateAd.getDescription());
+
         AdEntity updatedAd = adRepository.save(adEntity);
-        return adMapper.toDto(updatedAd);
+        return adMapper.toDto(updatedAd, currentUser);
     }
 
     @Override
     public Ads getAdsByUser(String username) {
-        UserEntity user = userRepository.findByEmail(username)
-                .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
+        UserEntity user = userService.getUserEntity(username);
+        List<AdEntity> userAds = adRepository.findByAuthorId(user.getId());
 
-        List<AdEntity> adEntities = adRepository.findByAuthor(user);
-        Ads ads = new Ads();
-        ads.setCount(adEntities.size());
-        ads.setResults(adEntities.stream().map(adMapper::toDto).collect(Collectors.toList()));
-        return ads;
+        List<Ad> ads = userAds.stream()
+                .map(entity -> adMapper.toDto(entity, user))
+                .collect(Collectors.toList());
+
+        Ads result = new Ads();
+        result.setCount(ads.size());
+        result.setResults(ads);
+        return result;
     }
 
     @Override
     public void updateAdImage(Integer id, MultipartFile image, String username) {
         AdEntity adEntity = adRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Объявление не найдено"));
+                .orElseThrow(() -> new EntityNotFoundException("Объявление не найдено"));
 
-        UserEntity user = userRepository.findByEmail(username)
-                .orElseThrow(() -> new RuntimeException("Пользователь не найден"));
+        UserEntity currentUser = userService.getUserEntity(username);
 
-        if (!adEntity.getAuthor().getId().equals(user.getId())) {
-            throw new RuntimeException("Недостаточно прав для обновления изображения объявления");
+        if (!adEntity.getAuthor().equals(currentUser) &&
+                !currentUser.getRole().equals(Role.ADMIN)) {
+            throw new AccessDeniedException("Нет прав для обновления изображения");
         }
 
-        if (image != null && !image.isEmpty()) {
-            String imagePath = saveImage(image);
-            adEntity.setImage(imagePath);
-            adRepository.save(adEntity);
-        }
+        String imagePath = saveAdImage(image);
+        adEntity.setImage(imagePath);
+        adRepository.save(adEntity);
     }
 
     @Override
-    public AdEntity getAdEntity(Integer adId) {
-        return adRepository.findById(adId).orElse( null );
+    public AdEntity getAdEntity(Integer id) {
+        return adRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Объявление не найдено"));
     }
 
-    private String saveImage(MultipartFile image) {
+    @Override
+    public boolean isAdOwner(Integer adId, String username) {
+        AdEntity adEntity = adRepository.findById(adId).orElse(null);
+        if (adEntity == null) return false;
+
+        UserEntity userEntity = userService.getUserEntity(username);
+        return adEntity.getAuthor().equals(userEntity);
+    }
+
+    private String saveAdImage(MultipartFile image) {
         try {
             String originalFilename = image.getOriginalFilename();
             String extension = originalFilename != null ?
                     originalFilename.substring(originalFilename.lastIndexOf(".")) : ".jpg";
-            String filename = UUID.randomUUID() + extension;
-            Path path = Paths.get(imageDir + filename);
+            String filename = "ad_" + UUID.randomUUID() + extension;
+            Path path = Paths.get("images/" + filename);
 
             Files.createDirectories(path.getParent());
             Files.write(path, image.getBytes());
 
             return filename;
         } catch (IOException e) {
-            log.error("Ошибка сохранения изображения", e);
-            throw new RuntimeException("Ошибка сохранения изображения", e);
+            log.error("Ошибка при сохранении изображения объявления", e);
+            throw new RuntimeException("Ошибка при сохранении изображения", e);
         }
     }
 }

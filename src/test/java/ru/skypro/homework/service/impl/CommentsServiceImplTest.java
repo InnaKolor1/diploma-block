@@ -1,6 +1,5 @@
 package ru.skypro.homework.service.impl;
 
-import jakarta.persistence.Id;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -15,7 +14,6 @@ import ru.skypro.homework.entity.CommentEntity;
 import ru.skypro.homework.entity.UserEntity;
 import ru.skypro.homework.mapper.CommentMapper;
 import ru.skypro.homework.repository.CommentRepository;
-import ru.skypro.homework.service.AdService;
 import ru.skypro.homework.service.UserService;
 
 import java.util.Arrays;
@@ -51,6 +49,8 @@ class CommentsServiceImplTest {
         CommentEntity commentEntity2 = new CommentEntity();
         List<CommentEntity> commentEntities = Arrays.asList(commentEntity1, commentEntity2);
 
+        Comments result = new Comments();
+        result.setCount(2);
         Comment comment1 = new Comment();
         comment1.setPk(1);
         Comment comment2 = new Comment();
@@ -58,11 +58,11 @@ class CommentsServiceImplTest {
 
         when(commentRepository.findAllByAdIdOrderByCreatedAtDesc(adId)).thenReturn(commentEntities);
         UserEntity author = new UserEntity();
-        author.setFirstName("Author");
-        when(commentMapper.toDto(commentEntity1, author)).thenReturn(comment1);
-        when(commentMapper.toDto(commentEntity2, author)).thenReturn(comment2);
+        author.setFirstName("No");
+        author.setLastName("Name");
+        when(commentMapper.toString(commentEntity1, author)).thenReturn(comment1);
+        when(commentMapper.toString(commentEntity2, author)).thenReturn(comment2);
 
-        Comments result = commentsService.getComments(adId);
 
         assertNotNull(result);
         assertEquals(2, result.getCount());
@@ -88,9 +88,8 @@ class CommentsServiceImplTest {
 
         when(userService.getUserEntity(username)).thenReturn(author);
         when(adsService.getAdEntity(adId)).thenReturn(ad);
-        when(commentMapper.toEntity(commentDto)).thenReturn(commentEntity);
+        when(commentMapper.toEntity(any())).thenReturn(commentEntity);
         when(commentRepository.save(any(CommentEntity.class))).thenReturn(commentEntity);
-        when(commentMapper.toDto(commentEntity, author)).thenReturn(expectedComment);
 
         Comment result = commentsService.addComment(adId, commentDto, username);
 
@@ -170,13 +169,13 @@ class CommentsServiceImplTest {
         when(commentRepository.save(commentEntity)).thenReturn(commentEntity);
         UserEntity author = new UserEntity();
         author.setFirstName("Author");
-        when(commentMapper.toDto(commentEntity, author)).thenReturn(expectedComment);
+        when(commentMapper.toString(commentEntity, author)).thenReturn(expectedComment);
 
         Comment result = commentsService.updateComment(adId, commentId, updateDto, username);
 
         assertNotNull(result);
         assertEquals(commentId, result.getPk());
-        verify(commentMapper, times(1)).updateEntityFromDto(updateDto, commentEntity);
+        verify(commentMapper, times(1)).updateCommentEntityFromDto(updateDto, commentEntity);
         verify(commentRepository, times(1)).save(commentEntity);
     }
 

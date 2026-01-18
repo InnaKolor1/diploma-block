@@ -95,7 +95,7 @@ class UserServiceImplTest {
         User result = userService.updateUser(username, updateUser);
 
         assertNotNull(result);
-        assertEquals("Jane", result.getFirstName());
+        assertEquals("KisaVorobiyaninov79001112233", result);
         verify(userMapper, times(1)).updateEntityFromDto(updateUser, existingUser);
         verify(userRepository, times(1)).save(existingUser);
     }

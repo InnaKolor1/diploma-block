@@ -1,4 +1,6 @@
-  --юзеры--
+
+
+--юзеры
 CREATE TABLE IF NOT EXISTS users(
     id SERIAL PRIMARY KEY,
     email VARCHAR(32) NOT NULL UNIQUE,
@@ -10,7 +12,7 @@ CREATE TABLE IF NOT EXISTS users(
     password VARCHAR(255) NOT NULL
 );
 
- --объявления--
+--объявления
 CREATE TABLE IF NOT EXISTS ads(
     id SERIAL PRIMARY KEY,
     title VARCHAR(32) NOT NULL,
@@ -21,18 +23,12 @@ CREATE TABLE IF NOT EXISTS ads(
     FOREIGN KEY (author_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
- --комменты--
-CREATE TABLE IF NOT EXISTS comments(
-    id SERIAL PRIMARY KEY,
-    text VARCHAR(64) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    author_id INTEGER NOT NULL,
-    ad_id INTEGER NOT NULL,
-    FOREIGN KEY (author_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (ad_id) REFERENCES ads(id) ON DELETE CASCADE
-);
 
- --индексы--
-CREATE INDEX IF NOT EXISTS idx_ads_author ON ads(author_id);
-CREATE INDEX IF NOT EXISTS idx_comments_ad ON comments(ad_id);
-CREATE INDEX IF NOT EXISTS idx_comments_author ON comments(author_id);
+--индексы
+CREATE INDEX IF NOT EXISTS idx_ads_author ON ads(author_id)
+
+CREATE SCHEMA IF NOT EXISTS diplom;
+
+--права
+GRANT ALL ON SCHEMA diplom TO diplom;
+GRANT USAGE ON SCHEMA diplom TO diplom;

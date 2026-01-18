@@ -1,27 +1,50 @@
 package ru.skypro.homework.mapper;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
+import ru.skypro.homework.dto.Comment;
 import ru.skypro.homework.dto.CreateOrUpdateComment;
 import ru.skypro.homework.entity.CommentEntity;
-import ru.skypro.homework.entity.UserEntity;
 
-@Configuration
-@Mapper(componentModel = "spring")
-public interface CommentMapper {
+@Component
+public class CommentMapper {
 
-    @Bean
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "adId", ignore = true)
-    @Mapping(target = "text", source = "text")
-    @Mapping(target = "createdAt", ignore = true)
-    @Mapping(target = "author", ignore = true)
-    @Mapping(target = "ad", ignore = true)
-    default boolean map(CreateOrUpdateComment value, CommentEntity commentEntity) {
-            return true;
+    public Comment toDto(CommentEntity entity) {
+        if (entity == null) {
+            return null;
+        }
+
+        Comment comment = new Comment();
+        comment.setPk(entity.getId());
+        comment.setText(entity.getText());
+
+        if (entity.getCreatedAt() != null) {
+            comment.setCreatedAt(entity.getCreatedAt()
+                    .atZone(java.time.ZoneId.systemDefault())
+                    .toInstant()
+                    .toEpochMilli());
+        }
+
+        if (entity.getAuthor() != null) {
+            comment.setAuthor(entity.getAuthor().getId());
+            comment.setAuthorFirstName(entity.getAuthor().getFirstName());
+            comment.setAuthorImage(entity.getAuthor().getImage());
+        }
+
+        return comment;
     }
 
-    Object toString(CommentEntity commentEntity, UserEntity author);
+    public void map(CreateOrUpdateComment dto, CommentEntity entity) {
+        if (dto != null && entity != null) {
+            entity.setText(dto.getText());
+        }
+    }
+
+    public CommentEntity toEntity(CreateOrUpdateComment dto) {
+        CommentEntity entity = new CommentEntity();
+        entity.setText(dto.getText());
+        return entity;
+
+
+
+    }
 }

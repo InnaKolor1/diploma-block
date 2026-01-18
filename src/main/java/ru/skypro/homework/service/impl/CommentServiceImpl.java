@@ -32,11 +32,12 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Comments getComments(Integer adId) {
-        List<CommentEntity> commentEntities = commentRepository.findByAdId(adId);
+        List<CommentEntity> commentEntities = commentRepository.findAllByAd_IdOrderByCreatedAtDesc(adId);
         Comments comments = new Comments();
         comments.setCount(commentEntities.size());
         comments.setResults(commentEntities.stream()
-                .map(commentEntity -> commentMapper.toString(commentEntity, commentEntity.getAuthor())).toList());
+                .map(commentMapper::toDto)
+                .collect(Collectors.toList()));
         return comments;
     }
 
@@ -54,13 +55,13 @@ public class CommentServiceImpl implements CommentService {
         commentEntity.setAuthor(author);
 
         CommentEntity savedComment = commentRepository.save(commentEntity);
-        return (Comment) commentMapper.toString(savedComment, author);
+        return commentMapper.toDto(savedComment);
     }
 
     @Override
     public void deleteComment(Integer adId, Integer commentId, String username) {
-        CommentEntity commentEntity = commentRepository.findById(commentId)
-                .orElseThrow(() -> new RuntimeException("Comment not found"));
+        CommentEntity commentEntity = commentRepository.findByIdAndAd_Id(commentId, adId)
+                .orElseThrow(() -> new RuntimeException("Comment not found or doesn't belong to this ad"));
 
         UserEntity user = userRepository.findByEmail(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -74,8 +75,8 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Comment updateComment(Integer adId, Integer commentId, CreateOrUpdateComment createOrUpdateComment, String username) {
-        CommentEntity commentEntity = commentRepository.findById(commentId)
-                .orElseThrow(() -> new RuntimeException("Comment not found"));
+        CommentEntity commentEntity = commentRepository.findByIdAndAd_Id(commentId, adId)
+                .orElseThrow(() -> new RuntimeException("Comment not found or doesn't belong to this ad"));
 
         UserEntity user = userRepository.findByEmail(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -85,9 +86,8 @@ public class CommentServiceImpl implements CommentService {
         }
 
         commentMapper.map(createOrUpdateComment, commentEntity);
-        commentRepository.save(commentEntity);
-
-        return null;
+        CommentEntity updatedComment = commentRepository.save(commentEntity);
+        return commentMapper.toDto(updatedComment);  // Возвращайте DTO
     }
 
     public boolean isCommentOwner(Integer commentId, String username) {

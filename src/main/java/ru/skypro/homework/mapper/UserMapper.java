@@ -1,40 +1,38 @@
 package ru.skypro.homework.mapper;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 import ru.skypro.homework.dto.Register;
-import ru.skypro.homework.dto.UpdateUser;
+import ru.skypro.homework.dto.Role;
 import ru.skypro.homework.dto.User;
 import ru.skypro.homework.entity.UserEntity;
 
-@Mapper(componentModel = "spring")
-public interface UserMapper {
+@Component
+public class UserMapper {
 
-    @Mapping(target = "email", source = "username   ")
-    @Bean
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "image", constant = "default.jpg")
-    @Mapping(target = "phone", source = "phone")
-    UserEntity toEntity(Register register);
+    public User toDto(UserEntity entity) {
+        if (entity == null) {
+            return null;
+        }
 
-    @Bean
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "email", ignore = true)
-    @Mapping(target = "password", ignore = true)
-    @Mapping(target = "image", ignore = true)
-    @Mapping(target = "role", ignore = true)
-    UserEntity toEntity(UpdateUser updateUser);
+        User dto = new User();
+        dto.setId(entity.getId());
+        dto.setEmail(entity.getEmail());
+        dto.setFirstName(entity.getFirstName());
+        dto.setLastName(entity.getLastName());
+        dto.setPhone(entity.getPhone());
+        dto.setRole(entity.getRole().name());
+        dto.setImage(entity.getImage());
 
-    @Bean
-    @Mapping(target = "toDto", source = "entity")
-    @Mapping(target = "image", expression = "java(entity.getImage() != null ? \"/images/\" + entity.getImage() : null)")
-    User toDto(UserEntity entity);
+        return dto;
+    }
 
-    @Bean
-    @Mapping(target = "email", source = "email")
-    @Mapping(target = "password", constant = "1234")
-    @Mapping(target = "image", constant = "default.jpg")
-    @Mapping(target = "role", constant = "USER")
-    UserEntity toEntity(User user);
+    public UserEntity toEntity(Register register) {
+        UserEntity entity = new UserEntity();
+        entity.setEmail(register.getUsername());
+        entity.setFirstName(register.getFirstName());
+        entity.setLastName(register.getLastName());
+        entity.setPhone(register.getPhone());
+        entity.setRole(Role.USER);
+        return entity;
+    }
 }

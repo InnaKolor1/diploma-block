@@ -1,0 +1,5 @@
+<root>
+    <item name='org.hibernate.boot.model.internal.AnnotatedColumn void addColumnBinding(org.hibernate.mapping.SimpleValue)'>
+        <annotation name='org.jetbrains.annotations.NonBlocking'/>
+    </item>
+</root>

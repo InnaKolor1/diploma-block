@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "comments")
 public class CommentEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -26,10 +25,4 @@ public class CommentEntity {
     @ManyToOne
     @JoinColumn(name = "ad_id", nullable = false)
     private AdEntity ad;
-    private Object adId;
-
-    public Integer getAdId() {
-        return (Integer) adId;
-    }
-
-    }
+}

@@ -36,7 +36,7 @@ public class AdServiceImpl implements AdService {
     public Ads getAllAds() {
         List<AdEntity> adEntities = adRepository.findAll();
         List<Ad> ads = adEntities.stream()
-                .map(entity -> adMapper.toDto(entity, entity.getAuthor()))
+                .map(adMapper::toDto)
                 .collect(Collectors.toList());
 
         Ads result = new Ads();
@@ -62,7 +62,7 @@ public class AdServiceImpl implements AdService {
         }
 
         AdEntity savedAd = adRepository.save(adEntity);
-        return adMapper.toDto(savedAd, author);
+        return adMapper.toDto(savedAd);
     }
 
     @Override
@@ -104,7 +104,7 @@ public class AdServiceImpl implements AdService {
         adEntity.setDescription(createOrUpdateAd.getDescription());
 
         AdEntity updatedAd = adRepository.save(adEntity);
-        return adMapper.toDto(updatedAd, currentUser);
+        return adMapper.toDto(updatedAd);
     }
 
     @Override
@@ -113,7 +113,7 @@ public class AdServiceImpl implements AdService {
         List<AdEntity> userAds = adRepository.findByAuthorId(user.getId());
 
         List<Ad> ads = userAds.stream()
-                .map(entity -> adMapper.toDto(entity, user))
+                .map(adMapper::toDto)
                 .collect(Collectors.toList());
 
         Ads result = new Ads();

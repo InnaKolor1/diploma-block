@@ -5,9 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.*;
 import ru.skypro.homework.entity.AdEntity;
 import ru.skypro.homework.entity.UserEntity;
@@ -85,7 +83,7 @@ class AdServiceImplTest {
         when(userService.getUserEntity("kisa@example.com")).thenReturn(userEntity);
         PasswordEncoder userPasswordEncoder = mock(PasswordEncoder.class);
         when(userPasswordEncoder.encode(any())).thenReturn("encodedPassword");
-        userService = new UserServiceImpl(userRepository, userMapper, userPasswordEncoder);
+        userService = new UserServiceImpl(userMapper, userPasswordEncoder);
 
         Ads result = adsService.getAllAds();
 

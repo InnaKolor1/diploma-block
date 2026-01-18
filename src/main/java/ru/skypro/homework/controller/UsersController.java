@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -64,7 +66,7 @@ public class UsersController {
     )
     @PatchMapping("/me")
     public ResponseEntity<User> updateUser(@RequestBody UpdateUser updateUser,
-                                           Principal principal) {
+                                        Principal principal) {
         log.info("Updating user info for: {}", principal.getName());
         User user = userService.updateUser(principal.getName(), updateUser);
         return ResponseEntity.ok(user);
@@ -83,9 +85,9 @@ public class UsersController {
             }
     )
     @GetMapping("/me")
-    public ResponseEntity<User> getUser(Principal principal) {
-        log.info("Getting current user info for: {}", principal.getName());
-        User user = userService.getCurrentUser(principal.getName());
+    public ResponseEntity<User> getUser() {
+        log.info("Getting current user info");
+        User user = userService.getCurrentUser();
         return ResponseEntity.ok(user);
     }
 

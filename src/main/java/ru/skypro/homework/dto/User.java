@@ -41,6 +41,9 @@ public class User {
         this.image = image;
     }
 
+    public User() {
+    }
+
     public User toDto(User user) {
         this.id = user.getId();
         this.email = user.getEmail();

@@ -22,6 +22,7 @@ public class Ad {
 
     @Schema(description = "заголовок объявления")
     private String title;
+    private String phone;
 
     public Ad() {
         this.id = null;
@@ -32,9 +33,9 @@ public class Ad {
         this.image = "";
     }
 
-    public Ad(Long id, String description) {
-
-        this.id = id;
+    public Ad(int id, String description) {
+        this.pk = id;
         this.description = description;
     }
+
 }

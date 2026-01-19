@@ -1,0 +1,10 @@
+.git
+.gitignore
+target/
+*.iml
+.idea/
+*.log
+logs/
+node_modules/
+*.md
+docker-compose.override.yml

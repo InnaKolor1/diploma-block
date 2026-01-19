@@ -19,7 +19,7 @@ public class TestRunner implements CommandLineRunner {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public void run(String... args) {
+    public void run(String[] args) {
         log.info("Проверка наличия тестовых пользователей...");
 
         // тестовый юзер
@@ -35,7 +35,7 @@ public class TestRunner implements CommandLineRunner {
                                        String phone, String role) {
         Optional<UserEntity> existingUser = userRepository.findByEmail(email);
         if (existingUser.isEmpty()) {
-            UserEntity user = new UserEntity(email + "@example.com", "image.jpg", firstName, lastName, 52, 12);
+            UserEntity user = new UserEntity();
             user.setEmail(email);
             user.setFirstName(firstName);
             user.setLastName(lastName);

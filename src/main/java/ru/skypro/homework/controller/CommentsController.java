@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.skypro.homework.dto.Comment;
 import ru.skypro.homework.dto.Comments;
 import ru.skypro.homework.dto.CreateOrUpdateComment;
-import ru.skypro.homework.service.CommentsService;
+import ru.skypro.homework.service.CommentService;
 
 import java.security.Principal;
 
@@ -23,7 +23,7 @@ import java.security.Principal;
 @RequiredArgsConstructor
 public class CommentsController {
 
-    private final CommentsService commentsService;
+    private final CommentService commentService;
 
     @Operation(
             summary = "Получение комментариев объявления",
@@ -41,7 +41,7 @@ public class CommentsController {
     @GetMapping("/{id}/comments")
     public ResponseEntity<Comments> getComments(@PathVariable("id") Integer id) {
         log.info("Getting comments for ad with id: {}", id);
-        Comments comments = commentsService.getComments(id);
+        Comments comments = commentService.getComments(id);
         return ResponseEntity.ok(comments);
     }
 
@@ -63,7 +63,7 @@ public class CommentsController {
                                               @RequestBody CreateOrUpdateComment createOrUpdateComment,
                                               Principal principal) {
         log.info("Adding comment to ad with id: {} by user: {}", id, principal.getName());
-        Comment comment = commentsService.addComment(id, createOrUpdateComment, principal.getName());
+        Comment comment = commentService    .addComment(id, createOrUpdateComment, principal.getName());
         return ResponseEntity.ok(comment);
     }
 
@@ -81,7 +81,7 @@ public class CommentsController {
                                               @PathVariable("commentId") Integer commentId,
                                               Principal principal) {
         log.info("Deleting comment with id: {} from ad with id: {} by user: {}", commentId, adId, principal.getName());
-        commentsService.deleteComment(adId, commentId, principal.getName());
+        commentService.deleteComment(adId, commentId, principal.getName());
         return ResponseEntity.ok().build();
     }
 
@@ -105,7 +105,7 @@ public class CommentsController {
                                                  @RequestBody CreateOrUpdateComment createOrUpdateComment,
                                                  Principal principal) {
         log.info("Updating comment with id: {} for ad with id: {} by user: {}", commentId, adId, principal.getName());
-        Comment comment = commentsService.updateComment(adId, commentId, createOrUpdateComment, principal.getName());
+        Comment comment = commentService.updateComment(adId, commentId, createOrUpdateComment, principal.getName());
         return ResponseEntity.ok(comment);
     }
 }

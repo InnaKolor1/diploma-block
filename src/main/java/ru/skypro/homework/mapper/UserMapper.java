@@ -1,65 +1,45 @@
 package ru.skypro.homework.mapper;
 
 import org.springframework.stereotype.Component;
-import ru.skypro.homework.dto.*;
-import ru.skypro.homework.entity.AdEntity;
+import ru.skypro.homework.dto.Register;
+import ru.skypro.homework.dto.Role;
+import ru.skypro.homework.dto.UpdateUser;
+import ru.skypro.homework.dto.User;
 import ru.skypro.homework.entity.UserEntity;
 
 @Component
-public abstract class UserMapper {
+public class UserMapper {
 
-
-    public User toDto(UserEntity userEntity) {
-        if (userEntity == null) {
+    public User toDto(UserEntity entity) {
+        if (entity == null) {
             return null;
         }
 
-        User user = new User();
-        user.setEmail(userEntity.getEmail());
-        user.setFirstName(userEntity.getFirstName());
-        user.setLastName(userEntity.getLastName());
-        user.setPhone(userEntity.getPhone());
-        user.setRole(userEntity.getRole());
-        if (userEntity.getImage() != null && !userEntity.getImage().isEmpty()) {
-            user.setImage("/images/" + userEntity.getImage());
-        }
+        User dto = new User();
+        dto.setId(entity.getId());
+        dto.setEmail(entity.getEmail());
+        dto.setFirstName(entity.getFirstName());
+        dto.setLastName(entity.getLastName());
+        dto.setPhone(entity.getPhone());
+        dto.setRole(entity.getRole().name());
+        dto.setImage(entity.getImage());
 
-        return user;
+        return dto;
     }
-
-
-    public AdEntity toEntity(CreateOrUpdateAd createOrUpdateAd, Integer authorId, String imageFilename) {
-        if (createOrUpdateAd == null) {
-            return null;
-        }
-
-        AdEntity adEntity = new AdEntity();
-        adEntity.setTitle(createOrUpdateAd.getTitle());
-        adEntity.setPrice(createOrUpdateAd.getPrice());
-        adEntity.setDescription(createOrUpdateAd.getDescription());
-        adEntity.setAuthorId(authorId);
-
-        if (imageFilename != null && !imageFilename.isEmpty()) {
-            adEntity.setImage(imageFilename);
-        }
-
-        return adEntity;
-    }
-
 
     public UserEntity toEntity(Register register) {
-        UserEntity userEntity = new UserEntity(register.getUsername() + "@example.com", "image.jpg", register.getFirstName(), register.getLastName(), 52, 12);
-        userEntity.setEmail(register.getUsername());
-        userEntity.setFirstName(register.getFirstName());
-        userEntity.setLastName(register.getLastName());
-        userEntity.setPhone(register.getPhone());
-        userEntity.setRole(register.getRole() != null ? register.getRole() : Role.USER);
-        return userEntity;
+        UserEntity entity = new UserEntity();
+        entity.setEmail(register.getUsername());
+        entity.setFirstName(register.getFirstName());
+        entity.setLastName(register.getLastName());
+        entity.setPhone(register.getPhone());
+        entity.setRole(Role.USER);
+        return entity;
     }
 
-    public abstract void updateEntityFromDto(UpdateUser updateUser, UserEntity entity);
-
-    public abstract User toDto(AdEntity entity);
-
-    public abstract ExtendedAd toExtendedAd(AdEntity adEntity);
+    public void updateEntityFromDto(UpdateUser updateUser, UserEntity existingUser) {
+        existingUser.setFirstName(updateUser.getFirstName());
+        existingUser.setLastName(updateUser.getLastName());
+        existingUser.setPhone(updateUser.getPhone());
+    }
 }

@@ -1,5 +1,0 @@
-<root>
-    <item name='org.springframework.cglib.core.ClassNameReader java.lang.String getClassName(org.springframework.asm.ClassReader)'>
-        <annotation name='java.lang.Deprecated'/>
-    </item>
-</root>

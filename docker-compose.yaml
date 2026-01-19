@@ -1,0 +1,39 @@
+services:
+  postgres:
+    image: postgres:14-alpine
+    container_name: diploma-postgres
+    environment:
+      POSTGRES_DB: diplom_bd
+      POSTGRES_USER: diplom
+      POSTGRES_PASSWORD: 1234
+      LANG: en_US.UTF-8
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U diplom -d diplom_bd"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    ports:
+
+  app:
+    build: .
+    container_name: diploma-app
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/diplom_bd
+      SPRING_DATASOURCE_USERNAME: diplom
+      SPRING_DATASOURCE_PASSWORD: 1234
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SERVER_PORT: 8082
+      FILE_STORAGE_PATH: /app/images
+      SPRING_PROFILES_ACTIVE: docker
+    volumes:
+      - ./images:/app/images
+      - ./logs:/app/logs
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

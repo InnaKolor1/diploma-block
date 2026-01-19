@@ -1,0 +1,5 @@
+<root>
+    <item name='org.hibernate.query.sqm.tree.domain.AbstractSqmPath'>
+        <annotation name='java.lang.Deprecated'/>
+    </item>
+</root>

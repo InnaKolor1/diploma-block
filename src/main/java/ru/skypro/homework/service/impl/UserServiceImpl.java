@@ -1,71 +1,79 @@
 package ru.skypro.homework.service.impl;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
+import lombok.Getter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.skypro.homework.dto.UpdateUser;
-import ru.skypro.homework.dto.User;
-import ru.skypro.homework.entity.AdEntity;
+import org.springframework.web.multipart.MultipartFile;
+import ru.skypro.homework.dto.*;
 import ru.skypro.homework.entity.UserEntity;
-import ru.skypro.homework.mapper.UserMapper;
 import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.UserService;
 
+@Getter
 @Service
-@Slf4j
-@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final UserMapper userMapper;
-    private PasswordEncoder passwordEncoder = null;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, ru.skypro.homework.mapper.UserMapper userMapper, PasswordEncoder userPasswordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.userMapper = userMapper;
-        if (userPasswordEncoder != null) {
-            this.passwordEncoder = userPasswordEncoder;
-        }
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
-    public User getCurrentUser(String username) {
-        UserEntity userEntity = getUserEntity(username);
-        new AdEntity();
-        return userMapper.toDto(userEntity);
+    public User getCurrentUser() {
+        return null;
     }
 
     @Override
-    public User updateUser(String username, UpdateUser updateUser) {
-        UserEntity userEntity = getUserEntity(username);
-        userMapper.updateEntityFromDto(updateUser, userEntity);
-        userRepository.save(userEntity);
-        return userMapper.toDto(userEntity);
+    public User updateUser(UpdateUser updateUser) {
+        User user = new User();
+        user.setFirstName(updateUser.getFirstName());
+        user.setLastName(updateUser.getLastName());
+        user.setPhone(updateUser.getPhone());
+        return user;
     }
 
     @Override
-    public void updateUserImage(String username, String imagePath) {
-        UserEntity userEntity = getUserEntity(username);
-        userRepository.save(userEntity);
+    public NewPassword updatePassword(NewPassword newPassword) {
+        String encodedPassword = passwordEncoder.encode(newPassword.getNewPassword());
+        newPassword.setNewPassword(encodedPassword);
+        return newPassword;
     }
 
     @Override
-    @PreAuthorize("#username == authentication.principal.username")
-    public void updatePassword(String username, String currentPassword, String newPassword) {
-        UserEntity userEntity = getUserEntity(username);
+    public String getCurrentUser(String name) {
+        return name;
+    }
 
-        if (!passwordEncoder.matches(currentPassword, String.valueOf(userEntity.getClass()))) {
-            throw new IllegalArgumentException("Неверный текущий пароль");
-        }
+    @Override
+    public void updatePassword(String name, String currentPassword, String newPassword) {
+    }
+
+    @Override
+    public User updateUser(String name, UpdateUser updateUser) {
+        User user = new User();
+        user.setFirstName(updateUser.getFirstName());
+        user.setLastName(updateUser.getLastName());
+        user.setPhone(updateUser.getPhone());
+        return user;
+    }
+
+    @Override
+    public void updateUserImage(String name, String imagePath) {
 
     }
 
     @Override
     public UserEntity getUserEntity(String username) {
-        return userRepository.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден: " + username));
+        return null;
     }
+
+    @Override
+    public User updateUserImage(MultipartFile image) {
+        return updateUserImage(image);
+    }
+
 }

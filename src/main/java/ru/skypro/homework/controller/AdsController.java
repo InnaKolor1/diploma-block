@@ -11,8 +11,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.skypro.homework.dto.*;
-import ru.skypro.homework.service.AdService;
+import ru.skypro.homework.dto.Ad;
+import ru.skypro.homework.dto.Ads;
+import ru.skypro.homework.dto.CreateOrUpdateAd;
+import ru.skypro.homework.dto.ExtendedAd;
+import ru.skypro.homework.service.impl.AdService;
 
 import java.security.Principal;
 
@@ -23,7 +26,7 @@ import java.security.Principal;
 @RequiredArgsConstructor
 public class AdsController {
 
-    private final AdService adsService;
+    private final AdService adService;
 
     @Operation(
             summary = "Получение всех объявлений",
@@ -39,7 +42,7 @@ public class AdsController {
     @GetMapping
     public ResponseEntity<Ads> getAllAds() {
         log.info("Getting all ads");
-        Ads ads = adsService.getAllAds();
+        Ads ads = adService.getAllAds();
         return ResponseEntity.ok(ads);
     }
 
@@ -56,11 +59,11 @@ public class AdsController {
             }
     )
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Ad> addAd(@RequestPart("properties") CreateOrUpdateAd properties,
+    public ResponseEntity<Ad> addAd(@RequestPart("properties") CreateOrUpdateAd createOrUpdateAd,
                                     @RequestPart("image") MultipartFile image,
                                     Principal principal) {
-        log.info("Adding new ad with title: {} by user: {}", properties.getTitle(), principal.getName());
-        Ad ad = adsService.addAd(properties, image, principal.getName());
+        log.info("Adding new ad by user: {}", principal.getName());
+        Ad ad = adService.addAd(createOrUpdateAd, image, principal.getName());
         return ResponseEntity.status(HttpStatus.CREATED).body(ad);
     }
 
@@ -73,14 +76,13 @@ public class AdsController {
                             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                                     schema = @Schema(implementation = ExtendedAd.class))
                     ),
-                    @ApiResponse(responseCode = "401", description = "Unauthorized"),
                     @ApiResponse(responseCode = "404", description = "Not found")
             }
     )
     @GetMapping("/{id}")
     public ResponseEntity<ExtendedAd> getAds(@PathVariable("id") Integer id) {
         log.info("Getting ad with id: {}", id);
-        ExtendedAd extendedAd = adsService.getExtendedAd(id);
+        ExtendedAd extendedAd = adService.getExtendedAd(id);
         return ResponseEntity.ok(extendedAd);
     }
 
@@ -96,7 +98,7 @@ public class AdsController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> removeAd(@PathVariable("id") Integer id, Principal principal) {
         log.info("Removing ad with id: {} by user: {}", id, principal.getName());
-        adsService.removeAd(id, principal.getName());
+        adService.removeAd(id, principal.getName());
         return ResponseEntity.noContent().build();
     }
 
@@ -115,11 +117,11 @@ public class AdsController {
             }
     )
     @PatchMapping("/{id}")
-    public ResponseEntity<User> updateAds(@PathVariable("id") Integer id,
-                                          @RequestBody CreateOrUpdateAd createOrUpdateAd,
-                                          Principal principal) {
+    public ResponseEntity<Ad> updateAds(@PathVariable("id") Integer id,
+                                        @RequestBody CreateOrUpdateAd createOrUpdateAd,
+                                        Principal principal) {
         log.info("Updating ad with id: {} by user: {}", id, principal.getName());
-        User ad = adsService.updateAd(id, createOrUpdateAd, principal.getName());
+        Ad ad = adService.updateAd(id, createOrUpdateAd, principal.getName());
         return ResponseEntity.ok(ad);
     }
 
@@ -137,8 +139,8 @@ public class AdsController {
     )
     @GetMapping("/me")
     public ResponseEntity<Ads> getAdsMe(Principal principal) {
-        log.info("Getting current user's ads for: {}", principal.getName());
-        Ads ads = adsService.getAdsByUser(principal.getName());
+        log.info("Getting ads for current user: {}", principal.getName());
+        Ads ads = adService.getAdsByUser(principal.getName());
         return ResponseEntity.ok(ads);
     }
 
@@ -156,7 +158,7 @@ public class AdsController {
                                             @RequestParam("image") MultipartFile image,
                                             Principal principal) {
         log.info("Updating image for ad with id: {} by user: {}", id, principal.getName());
-        adsService.updateAdImage(id, image, principal.getName());
+        adService.updateAdImage(id, image, principal.getName());
         return ResponseEntity.ok().build();
     }
 }

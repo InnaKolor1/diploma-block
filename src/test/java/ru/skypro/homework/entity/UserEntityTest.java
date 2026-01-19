@@ -1,8 +1,9 @@
 package ru.skypro.homework.entity;
 
+import jakarta.persistence.Entity;
 import org.junit.jupiter.api.Test;
 
-
+@Entity
 class UserEntityTest {
 
     @Test

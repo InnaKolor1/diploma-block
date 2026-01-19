@@ -1,11 +1,8 @@
 <root>
-    <item name='org.springframework.data.jpa.repository.query.AbstractJpaQuery jakarta.persistence.Query doCreateCountQuery(org.springframework.data.jpa.repository.query.JpaParametersParameterAccessor)'>
+    <item name='org.springframework.data.jpa.repository.query.QueryUtils jakarta.persistence.criteria.Expression&lt;T&gt; toExpressionRecursively(jakarta.persistence.criteria.From&lt;?,?&gt;, org.springframework.data.mapping.PropertyPath)'>
         <annotation name='java.lang.Deprecated'/>
     </item>
-    <item name='org.springframework.data.jpa.repository.query.PartTreeJpaQuery'>
-        <annotation name='java.lang.Deprecated'/>
-    </item>
-    <item name='org.springframework.data.jpa.repository.query.PartTreeJpaQuery PartTreeJpaQuery(org.springframework.data.jpa.repository.query.JpaQueryMethod, jakarta.persistence.EntityManager)'>
+    <item name='org.springframework.data.jpa.repository.query.QueryUtils jakarta.persistence.criteria.Expression&lt;T&gt; toExpressionRecursively(jakarta.persistence.criteria.From&lt;?,?&gt;, org.springframework.data.mapping.PropertyPath, boolean)'>
         <annotation name='java.lang.Deprecated'/>
     </item>
 </root>

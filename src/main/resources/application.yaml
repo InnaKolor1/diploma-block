@@ -10,6 +10,7 @@ spring:
       idle-timeout: 30000
       connection-timeout: 30000
 
+
   jpa:
     hibernate:
       ddl-auto: create-drop
@@ -26,7 +27,7 @@ spring:
       max-request-size: 10MB
 
 server:
-  port: 8081
+  port: 8083
   servlet:
     context-path: /
 

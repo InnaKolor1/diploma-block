@@ -1,18 +1,5 @@
 <root>
-    <item name='java.lang.IllegalStateException'>
-        <annotation name='java.lang.Deprecated'/>
-    </item>
-    <item name='java.lang.IllegalStateException IllegalStateException()'>
-        <annotation name='java.lang.Deprecated'/>
-    </item>
-    <item name='java.lang.IllegalStateException serialVersionUID'>
-        <annotation name='java.lang.Deprecated'/>
-        <annotation name='org.jetbrains.annotations.NotNull'/>
-    </item>
     <item name='java.lang.Integer'>
-        <annotation name='java.lang.Deprecated'/>
-    </item>
-    <item name='java.lang.Long'>
         <annotation name='java.lang.Deprecated'/>
     </item>
     <item name='java.lang.Object'>

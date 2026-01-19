@@ -14,4 +14,8 @@ public class Comments {
 
     @Schema(description = "список комментариев")
     private List<Comment> results;
+
+    public void setResults(List<Object> reversed) {
+
+    }
 }

@@ -1,19 +1,10 @@
-FROM maven:3.9-eclipse-temurin-21 AS build
-WORKDIR /app
-COPY pom.xml .
-COPY src ./src
-RUN mvn clean package -DskipTests
+FROM arm64v8/openjdk:17-slim
 
-FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
-COPY --from=build /app/target/*.jar app.jar
+
+RUN apt-get update && apt-get install -y maven
 
 RUN mkdir -p /app/images
+EXPOSE 8083
 
-ENV JAVA_OPTS="-Xmx512m -Xms256m -Djava.security.egd=file:/dev/./urandom"
-
-EXPOSE 8081
-
-ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]
-
-}
+CMD ["java", "-jar", "target/*.jar"]

@@ -48,7 +48,7 @@ class UserServiceImplTest {
         when(userRepository.findByEmail(username)).thenReturn(Optional.of(userEntity));
         when(userMapper.toDto(userEntity)).thenReturn(expectedUser);
 
-        User result = userService.getCurrentUser(username);
+        User result = userService.getCurrentUser();
 
         assertNotNull(result);
         assertEquals(username, result.getEmail());

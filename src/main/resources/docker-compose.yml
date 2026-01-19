@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:14-alpine
+    container_name: diploma-postgres
+    environment:
+      POSTGRES_DB: diplom_bd
+      POSTGRES_USER: diplom
+      POSTGRES_PASSWORD: 1234
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - diploma-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U diplom -d diplom_bd"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    container_name: diploma-app
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/diplom_bd
+      SPRING_DATASOURCE_USERNAME: diplom
+      SPRING_DATASOURCE_PASSWORD: 1234
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SERVER_PORT: 8081
+      FILE_STORAGE_PATH: /app/images
+      SPRING_PROFILES_ACTIVE: docker
+    ports:
+      - "8081:8081"
+    volumes:
+      - ./images:/app/images
+      - ./logs:/app/logs
+    networks:
+      - diploma-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+
+networks:
+  diploma-network:
+    driver: bridge

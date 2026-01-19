@@ -83,7 +83,7 @@ class AdServiceImplTest {
         when(userService.getUserEntity("kisa@example.com")).thenReturn(userEntity);
         PasswordEncoder userPasswordEncoder = mock(PasswordEncoder.class);
         when(userPasswordEncoder.encode(any())).thenReturn("encodedPassword");
-        userService = new UserServiceImpl(userMapper, userPasswordEncoder);
+        userService = new UserServiceImpl(userRepository, userPasswordEncoder);
 
         Ads result = adsService.getAllAds();
 

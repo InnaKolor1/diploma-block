@@ -1,5 +1,6 @@
 package ru.skypro.homework.service.impl;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -60,8 +61,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void deleteComment(Integer adId, Integer commentId, String username) {
-        CommentEntity commentEntity = commentRepository.findByIdAndAd_Id(commentId, adId)
-                .orElseThrow(() -> new RuntimeException("Comment not found or doesn't belong to this ad"));
+        CommentEntity commentEntity = commentRepository.findByIdAndAd_Id(commentId, adId);
 
         UserEntity user = userRepository.findByEmail(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -75,8 +75,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Comment updateComment(Integer adId, Integer commentId, CreateOrUpdateComment createOrUpdateComment, String username) {
-        CommentEntity commentEntity = commentRepository.findByIdAndAd_Id(commentId, adId)
-                .orElseThrow(() -> new RuntimeException("Comment not found or doesn't belong to this ad"));
+        CommentEntity commentEntity = commentRepository.findByIdAndAd_Id(commentId, adId);
 
         UserEntity user = userRepository.findByEmail(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -87,7 +86,7 @@ public class CommentServiceImpl implements CommentService {
 
         commentMapper.map(createOrUpdateComment, commentEntity);
         CommentEntity updatedComment = commentRepository.save(commentEntity);
-        return commentMapper.toDto(updatedComment);  // Возвращайте DTO
+        return commentMapper.toDto(updatedComment);
     }
 
     public boolean isCommentOwner(Integer commentId, String username) {

@@ -3,6 +3,7 @@ package ru.skypro.homework.mapper;
 import org.springframework.stereotype.Component;
 import ru.skypro.homework.dto.Register;
 import ru.skypro.homework.dto.Role;
+import ru.skypro.homework.dto.UpdateUser;
 import ru.skypro.homework.dto.User;
 import ru.skypro.homework.entity.UserEntity;
 
@@ -34,5 +35,11 @@ public class UserMapper {
         entity.setPhone(register.getPhone());
         entity.setRole(Role.USER);
         return entity;
+    }
+
+    public void updateEntityFromDto(UpdateUser updateUser, UserEntity existingUser) {
+        existingUser.setFirstName(updateUser.getFirstName());
+        existingUser.setLastName(updateUser.getLastName());
+        existingUser.setPhone(updateUser.getPhone());
     }
 }

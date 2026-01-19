@@ -3,7 +3,7 @@ package ru.skypro.homework.dto;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-class AdTest {
+class  AdTest {
 
     @Test
     void testAdGettersAndSetters() {

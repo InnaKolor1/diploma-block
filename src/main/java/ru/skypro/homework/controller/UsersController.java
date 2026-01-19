@@ -66,7 +66,7 @@ public class UsersController {
     )
     @PatchMapping("/me")
     public ResponseEntity<User> updateUser(@RequestBody UpdateUser updateUser,
-                                        Principal principal) {
+                                         Principal principal) {
         log.info("Updating user info for: {}", principal.getName());
         User user = userService.updateUser(principal.getName(), updateUser);
         return ResponseEntity.ok(user);

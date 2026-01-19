@@ -60,8 +60,8 @@ class CommentsServiceImplTest {
         UserEntity author = new UserEntity();
         author.setFirstName("No");
         author.setLastName("Name");
-        when(commentMapper.toString(commentEntity1, author)).thenReturn(comment1);
-        when(commentMapper.toString(commentEntity2, author)).thenReturn(comment2);
+        when(commentMapper.toDto(commentEntity1)).thenReturn(comment1);
+        when(commentMapper.toDto(commentEntity2)).thenReturn(comment2);
 
 
         assertNotNull(result);

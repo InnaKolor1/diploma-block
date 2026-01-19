@@ -72,3 +72,4 @@ class UserDetailsServiceImplTest {
                 .anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN")));
     }
 }
+

@@ -1,10 +1,12 @@
 package ru.skypro.homework.mapper.mapper;
 
 import org.mapstruct.*;
+import org.springframework.stereotype.Component;
 import ru.skypro.homework.dto.Comment;
 import ru.skypro.homework.dto.CreateOrUpdateComment;
 import ru.skypro.homework.entity.CommentEntity;
 
+@Component
 @Mapper(componentModel = "spring")
 public interface CommentMapper {
 

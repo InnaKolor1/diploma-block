@@ -63,9 +63,9 @@ class AdMapperTest {
         assertEquals(1000, result.getPrice());
         assertEquals("Test description", result.getDescription());
         assertEquals("/images/image.jpg", result.getImage());
-        assertEquals("John", result.getAuthorFirstName());
-        assertEquals("Doe", result.getAuthorLastName());
-        assertEquals("john@example.com", result.getEmail());
-        assertEquals("+79991234567", result.getPhone());
+        assertEquals("Kisa", result.getAuthorFirstName());
+        assertEquals("Vorobyaninov", result.getAuthorLastName());
+        assertEquals("kisaa12@example.com", result.getEmail());
+        assertEquals("+70001112233", result.getPhone());
     }
 }

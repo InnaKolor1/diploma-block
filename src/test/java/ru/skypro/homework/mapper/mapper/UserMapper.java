@@ -7,8 +7,6 @@ import ru.skypro.homework.dto.UpdateUser;
 import ru.skypro.homework.dto.User;
 import ru.skypro.homework.entity.UserEntity;
 
-import javax.swing.text.html.parser.Entity;
-
 @Mapper(componentModel = "spring")
 @Configuration
 public interface UserMapper<Role> {
@@ -23,7 +21,7 @@ public interface UserMapper<Role> {
     @Mapping(target = "email", source = "lastName")
     @Mapping(target = "password", source = "password")
     int map(Role value);
-    
+
     @Mapping(target = "id", source = "role")
     @Mapping(target = "ads", source = "role")
     @Mapping(target = "comments", source = "role")

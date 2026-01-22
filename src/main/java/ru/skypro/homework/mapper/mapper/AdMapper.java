@@ -1,13 +1,17 @@
 package ru.skypro.homework.mapper.mapper;
 
+import lombok.Data;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.springframework.stereotype.Component;
 import ru.skypro.homework.dto.Ad;
 import ru.skypro.homework.dto.ExtendedAd;
 import ru.skypro.homework.entity.AdEntity;
 
+@Component
 @Mapper()
 public interface AdMapper {
+
 
     @Mapping(target = "phone", source = "price")
     @Mapping(target = "pk", source = "id")

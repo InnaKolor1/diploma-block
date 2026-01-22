@@ -19,7 +19,7 @@ public class CommentEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer adId;
 
-   @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ad_id", nullable = false)
     @ToString.Exclude
     private AdEntity ad;

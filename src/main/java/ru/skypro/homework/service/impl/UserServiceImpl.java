@@ -1,79 +1,83 @@
 package ru.skypro.homework.service.impl;
 
-
-import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-import ru.skypro.homework.dto.*;
+import org.springframework.transaction.annotation.Transactional;
+import ru.skypro.homework.dto.UpdateUser;
+import ru.skypro.homework.dto.User;
 import ru.skypro.homework.entity.UserEntity;
+import ru.skypro.homework.mapper.mapper.UserMapper;
 import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.UserService;
 
-@Getter
+@Slf4j
 @Service
+@RequiredArgsConstructor
+@Transactional
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserMapper userMapper;
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     @Override
     public User getCurrentUser() {
-        return null;
+        return getCurrentUser(getCurrentUser().getFirstName());
+    }
+
+    private String updateUser(String image) {
+        return image;
+    }
+
+
+    @Override
+    public User getCurrentUser(String username) {
+        UserEntity userEntity = userRepository.findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return userMapper.toDto(userEntity);
     }
 
     @Override
-    public User updateUser(UpdateUser updateUser) {
-        User user = new User();
-        user.setFirstName(updateUser.getFirstName());
-        user.setLastName(updateUser.getLastName());
-        user.setPhone(updateUser.getPhone());
-        return user;
+    public User updateUser(String username, UpdateUser updateUser) {
+        UserEntity existingUser = userRepository.findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        userMapper.updateEntity(updateUser, existingUser);
+        UserEntity savedUser = userRepository.save(existingUser);
+
+        return userMapper.toDto(savedUser);
     }
 
     @Override
-    public NewPassword updatePassword(NewPassword newPassword) {
-        String encodedPassword = passwordEncoder.encode(newPassword.getNewPassword());
-        newPassword.setNewPassword(encodedPassword);
-        return newPassword;
+    public void updatePassword(String username, String currentPassword, String newPassword) {
+        UserEntity user = userRepository.findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
+            throw new IllegalArgumentException("Current password is incorrect");
+        }
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
     }
 
     @Override
-    public String getCurrentUser(String name) {
-        return name;
-    }
+    public void updateUserImage(String username) {
+        UserEntity user = userRepository.findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-    @Override
-    public void updatePassword(String name, String currentPassword, String newPassword) {
-    }
-
-    @Override
-    public User updateUser(String name, UpdateUser updateUser) {
-        User user = new User();
-        user.setFirstName(updateUser.getFirstName());
-        user.setLastName(updateUser.getLastName());
-        user.setPhone(updateUser.getPhone());
-        return user;
-    }
-
-    @Override
-    public void updateUserImage(String name, String imagePath) {
-
+        String imagePath = "image_path";
+        user.setImage(imagePath);
+        userRepository.save(user);
     }
 
     @Override
     public UserEntity getUserEntity(String username) {
-        return null;
+        return userRepository.findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
-
-    @Override
-    public User updateUserImage(MultipartFile image) {
-        return updateUserImage(image);
-    }
-
 }

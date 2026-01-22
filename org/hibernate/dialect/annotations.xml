@@ -1,0 +1,20 @@
+<root>
+    <item name='org.hibernate.dialect.Database'>
+        <annotation name='java.lang.Deprecated'/>
+    </item>
+    <item name='org.hibernate.dialect.Database DB2'>
+        <annotation name='java.lang.Deprecated'/>
+    </item>
+    <item name='org.hibernate.dialect.Database DERBY'>
+        <annotation name='java.lang.Deprecated'/>
+    </item>
+    <item name='org.hibernate.dialect.Database ENTERPRISEDB'>
+        <annotation name='java.lang.Deprecated'/>
+    </item>
+    <item name='org.hibernate.dialect.Database H2'>
+        <annotation name='java.lang.Deprecated'/>
+    </item>
+    <item name='org.hibernate.dialect.Database HSQL'>
+        <annotation name='java.lang.Deprecated'/>
+    </item>
+</root>

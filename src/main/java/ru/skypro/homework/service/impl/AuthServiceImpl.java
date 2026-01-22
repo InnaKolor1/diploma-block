@@ -9,7 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.skypro.homework.dto.Register;
 import ru.skypro.homework.entity.UserEntity;
-import ru.skypro.homework.mapper.UserMapper;
+import ru.skypro.homework.mapper.mapper.UserMapper;
 import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.AuthService;
 
@@ -41,9 +41,11 @@ public class AuthServiceImpl implements AuthService {
         if (userRepository.existsByEmail(register.getUsername())) {
             return false;
         }
-        UserEntity user = userMapper.toEntity(register);
+
+        UserEntity user = userMapper.registerToEntity(register);
         user.setPassword(passwordEncoder.encode(register.getPassword()));
         userRepository.save(user);
+
         return true;
     }
 }

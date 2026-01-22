@@ -1,20 +1,20 @@
 package ru.skypro.homework.service.impl;
 
-
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.*;
 import ru.skypro.homework.entity.AdEntity;
 import ru.skypro.homework.entity.UserEntity;
-import ru.skypro.homework.mapper.AdMapper;
+import ru.skypro.homework.mapper.mapper.AdMapper;
 import ru.skypro.homework.repository.AdRepository;
+import ru.skypro.homework.service.AdService;
 import ru.skypro.homework.service.UserService;
 
+import jakarta.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class AdServiceImpl implements AdService {
 
     private final AdRepository adRepository;
@@ -46,7 +47,6 @@ public class AdServiceImpl implements AdService {
     }
 
     @Override
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public Ad addAd(CreateOrUpdateAd properties, MultipartFile image, String username) {
         UserEntity author = userService.getUserEntity(username);
 
@@ -137,21 +137,6 @@ public class AdServiceImpl implements AdService {
         String imagePath = saveAdImage(image);
         adEntity.setImage(imagePath);
         adRepository.save(adEntity);
-    }
-
-    @Override
-    public AdEntity getAdEntity(Integer id) {
-        return adRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Объявление не найдено"));
-    }
-
-    @Override
-    public boolean isAdOwner(Integer adId, String username) {
-        AdEntity adEntity = adRepository.findById(adId).orElse(null);
-        if (adEntity == null) return false;
-
-        UserEntity userEntity = userService.getUserEntity(username);
-        return adEntity.getAuthor().equals(userEntity);
     }
 
     private String saveAdImage(MultipartFile image) {

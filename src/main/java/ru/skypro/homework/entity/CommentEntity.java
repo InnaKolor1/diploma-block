@@ -25,8 +25,7 @@ public class CommentEntity {
     @ManyToOne
     @JoinColumn(name = "ad_id", nullable = false)
     private AdEntity ad;
+    private Object adId;
 
-    public CommentEntity orElseThrow(Object o) {
-        return null;
-    }
+
 }

@@ -2,6 +2,7 @@ package ru.skypro.homework.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+
 /**
  * DTO для передачи данных пользователя.
  * Содержит полную информацию о пользователе системы.
@@ -30,16 +31,4 @@ public class User {
 
     @Schema(description = "ссылка на аватар пользователя")
     private String image;
-
-    public Object getTitle() {
-        return null;
-    }
-
-    public void setRole(String role) {
-        this.role = Role.valueOf(role);
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
 }

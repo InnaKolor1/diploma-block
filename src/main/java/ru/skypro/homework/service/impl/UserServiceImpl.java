@@ -1,69 +1,69 @@
 package ru.skypro.homework.service.impl;
 
-
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.UpdateUser;
 import ru.skypro.homework.dto.User;
-import ru.skypro.homework.entity.AdEntity;
 import ru.skypro.homework.entity.UserEntity;
-import ru.skypro.homework.service.UserMapper;
+import ru.skypro.homework.mapper.UserMapper;
 import ru.skypro.homework.repository.UserRepository;
+import ru.skypro.homework.service.ImageService;
 import ru.skypro.homework.service.UserService;
 
 /**
  * Реализация {@link UserService} для управления пользователями.
  */
-@Service
 @Slf4j
+@Service
+@Transactional
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
-    private PasswordEncoder passwordEncoder = null;
+    private final PasswordEncoder passwordEncoder;
+    private final ImageService imageService;
 
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, PasswordEncoder userPasswordEncoder) {
-        this.userRepository = userRepository;
-        this.userMapper = userMapper;
-        if (userPasswordEncoder != null) {
-            this.passwordEncoder = userPasswordEncoder;
-        }
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
+    @Transactional(readOnly = true)
     public User getCurrentUser(String username) {
-        UserEntity userEntity = getUserEntity(username);
-        new AdEntity();
+        log.info("Getting current user: {}", username);
+        UserEntity userEntity = userRepository.findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         return userMapper.toDto(userEntity);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public User updateUser(String username, UpdateUser updateUser) {
-        UserEntity userEntity = getUserEntity(username);
-        userMapper.updateEntityFromDto(updateUser, userEntity);
-        userRepository.save(userEntity);
-        return userMapper.toDto(userEntity);
-    }
+        log.info("Updating user: {}", username);
+        UserEntity userEntity = userRepository.findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-    @Override
-    public void updateUserImage(String username, String imagePath) {
-        UserEntity userEntity = getUserEntity(username);
-        userRepository.save(userEntity);
-    }
-
-    @Override
-    @PreAuthorize("#username == authentication.principal.username")
-    public void updatePassword(String username, String currentPassword, String newPassword) {
-        UserEntity userEntity = getUserEntity(username);
-
-        if (!passwordEncoder.matches(currentPassword, String.valueOf(userEntity.getClass()))) {
-            throw new IllegalArgumentException("Неверный текущий пароль");
+        if (updateUser.getFirstName() != null) {
+            userEntity.setFirstName(updateUser.getFirstName());
+        }
+        if (updateUser.getLastName() != null) {
+            userEntity.setLastName(updateUser.getLastName());
+        }
+        if (updateUser.getPhone() != null) {
+            userEntity.setPhone(normalizePhoneNumber(updateUser.getPhone()));
         }
 
+        UserEntity savedEntity = userRepository.save(userEntity);
+        return userMapper.toDto(savedEntity);
     }
+
     /**
      * Нормализует номер телефона для хранения в базе данных.
      * Удаляет лишние пробелы и обрезает до максимальной длины.
@@ -86,9 +86,48 @@ public class UserServiceImpl implements UserService {
         return normalized;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
+    public void updateUserImage(String username, MultipartFile image) {
+        log.info("Updating user image: {}", username);
+        UserEntity userEntity = userRepository.findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        if (userEntity.getImage() != null) {
+            imageService.deleteImage(userEntity.getImage());
+        }
+
+        String newImagePath = imageService.saveImage(image);
+        userEntity.setImage(newImagePath);
+        userRepository.save(userEntity);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updatePassword(String username, String currentPassword, String newPassword) {
+        log.info("Updating password for user: {}", username);
+        UserEntity userEntity = userRepository.findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        if (!passwordEncoder.matches(currentPassword, userEntity.getPassword())) {
+            throw new IllegalArgumentException("Current password is incorrect");
+        }
+
+        userEntity.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(userEntity);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = true)
     public UserEntity getUserEntity(String username) {
         return userRepository.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден: " + username));
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 }

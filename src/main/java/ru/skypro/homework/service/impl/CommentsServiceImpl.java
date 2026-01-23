@@ -11,15 +11,14 @@ import ru.skypro.homework.dto.CreateOrUpdateComment;
 import ru.skypro.homework.entity.AdEntity;
 import ru.skypro.homework.entity.CommentEntity;
 import ru.skypro.homework.entity.UserEntity;
-import ru.skypro.homework.mapper.CommentsMapper;
+import ru.skypro.homework.mapper.CommentMapper;
 import ru.skypro.homework.repository.CommentRepository;
-import ru.skypro.homework.service.AdService;
+import ru.skypro.homework.service.AdsService;
 import ru.skypro.homework.service.CommentsService;
 import ru.skypro.homework.service.UserService;
 
-import jakarta.persistence.EntityNotFoundException;
+import javax.persistence.EntityNotFoundException;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,9 +32,9 @@ import java.util.stream.Collectors;
 public class CommentsServiceImpl implements CommentsService {
 
     private final CommentRepository commentRepository;
-    private final CommentsMapper commentMapper;
+    private final CommentMapper commentMapper;
     private final UserService userService;
-    private final AdService adsService;
+    private final AdsService adsService;
 
     /**
      * {@inheritDoc}
@@ -46,8 +45,8 @@ public class CommentsServiceImpl implements CommentsService {
         log.info("Getting comments for ad with id: {}", adId);
         List<CommentEntity> commentEntities = commentRepository.findAllByAdIdOrderByCreatedAtDesc(adId);
 
-        List<Object> comments = commentEntities.stream()
-                .map((CommentEntity entity) -> commentMapper.toDto(entity))
+        List<Comment> comments = commentEntities.stream()
+                .map(commentMapper::toDto)
                 .collect(Collectors.toList());
 
         Comments result = new Comments();
@@ -69,7 +68,7 @@ public class CommentsServiceImpl implements CommentsService {
         CommentEntity commentEntity = commentMapper.toEntity(comment);
         commentEntity.setAuthor(author);
         commentEntity.setAd(ad);
-        commentEntity.setCreatedAt(LocalDateTime.from(Instant.now()));
+        commentEntity.setCreatedAt(Instant.now());
 
         CommentEntity savedComment = commentRepository.save(commentEntity);
         return commentMapper.toDto(savedComment);
@@ -88,7 +87,7 @@ public class CommentsServiceImpl implements CommentsService {
                 .orElseThrow(() -> new EntityNotFoundException("Comment not found"));
 
         if (!user.getRole().equals(ru.skypro.homework.dto.Role.ADMIN) &&
-                !commentEntity.getAuthor().getId().equals(user.getId())) {
+            !commentEntity.getAuthor().getId().equals(user.getId())) {
             throw new SecurityException("No permission to delete this comment");
         }
 

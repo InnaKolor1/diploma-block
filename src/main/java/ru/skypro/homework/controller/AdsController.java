@@ -1,44 +1,31 @@
 package ru.skypro.homework.controller;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.*;
-import ru.skypro.homework.service.AdService;
+import ru.skypro.homework.service.AdsService;
 
-import java.security.Principal;
+import javax.validation.Valid;
+
 /**
  * REST контроллер для управления объявлениями.
  * Обрабатывает HTTP запросы связанные с созданием, получением, обновлением и удалением объявлений.
  */
 @Slf4j
-@CrossOrigin(value = "http://localhost:3000")
 @RestController
-@RequestMapping("/ads")
 @RequiredArgsConstructor
+@CrossOrigin(value = "http://localhost:3000")
+@RequestMapping("/ads")
 public class AdsController {
 
-    private final AdService adsService;
+    private final AdsService adsService;
 
-    @Operation(
-            summary = "Получение всех объявлений",
-            responses = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "OK",
-                            content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = Ads.class))
-                    )
-            }
-    )
     /**
      * Получает список всех объявлений.
      *
@@ -51,18 +38,6 @@ public class AdsController {
         return ResponseEntity.ok(ads);
     }
 
-    @Operation(
-            summary = "Добавление объявления",
-            responses = {
-                    @ApiResponse(
-                            responseCode = "201",
-                            description = "Created",
-                            content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = Ad.class))
-                    ),
-                    @ApiResponse(responseCode = "401", description = "Unauthorized")
-            }
-    )
     /**
      * Создает новое объявление.
      * Требуется аутентификация пользователя.
@@ -74,49 +49,36 @@ public class AdsController {
      *         или 401 Unauthorized при ошибке аутентификации
      */
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Ad> addAd(@RequestPart("properties") CreateOrUpdateAd properties,
+    public ResponseEntity<Ad> addAd(@RequestPart("properties") @Valid CreateOrUpdateAd properties,
                                     @RequestPart("image") MultipartFile image,
-                                    Principal principal) {
-        log.info("Adding new ad with title: {} by user: {}", properties.getTitle(), principal.getName());
-        Ad ad = adsService.addAd(properties, image, principal.getName());
-        return ResponseEntity.status(HttpStatus.CREATED).body(ad);
+                                    Authentication authentication) {
+        log.info("Adding new ad by user: {}", authentication.getName());
+        try {
+            Ad ad = adsService.addAd(properties, image, authentication.getName());
+            return ResponseEntity.status(HttpStatus.CREATED).body(ad);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 
-    @Operation(
-            summary = "Получение информации об объявлении",
-            responses = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "OK",
-                            content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = ExtendedAd.class))
-                    ),
-                    @ApiResponse(responseCode = "401", description = "Unauthorized"),
-                    @ApiResponse(responseCode = "404", description = "Not found")
-            }
-    )
     /**
      * Получает расширенную информацию об объявлении по идентификатору.
+     *
      * @param id идентификатор объявления
      * @return ResponseEntity с объектом {@link ExtendedAd} и статусом 200 OK,
      *         или 404 Not Found если объявление не существует
      */
     @GetMapping("/{id}")
-    public ResponseEntity<ExtendedAd> getAds(@PathVariable("id") Integer id) {
-        log.info("Getting ad with id: {}", id);
-        ExtendedAd extendedAd = adsService.getExtendedAd(id);
-        return ResponseEntity.ok(extendedAd);
+    public ResponseEntity<ExtendedAd> getAds(@PathVariable Integer id) {
+        log.info("Getting extended ad with id: {}", id);
+        try {
+            ExtendedAd extendedAd = adsService.getExtendedAd(id);
+            return ResponseEntity.ok(extendedAd);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
-    @Operation(
-            summary = "Удаление объявления",
-            responses = {
-                    @ApiResponse(responseCode = "204", description = "No Content"),
-                    @ApiResponse(responseCode = "401", description = "Unauthorized"),
-                    @ApiResponse(responseCode = "403", description = "Forbidden"),
-                    @ApiResponse(responseCode = "404", description = "Not found")
-            }
-    )
     /**
      * Удаляет объявление по идентификатору.
      * Доступно только администраторам или владельцам объявления.
@@ -128,94 +90,85 @@ public class AdsController {
      *         401 Unauthorized при ошибке аутентификации
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> removeAd(@PathVariable("id") Integer id, Principal principal) {
-        log.info("Removing ad with id: {} by user: {}", id, principal.getName());
-        adsService.removeAd(id, principal.getName());
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<?> removeAd(@PathVariable Integer id, Authentication authentication) {
+        log.info("Removing ad with id: {} by user: {}", id, authentication.getName());
+        try {
+            adsService.removeAd(id, authentication.getName());
+            return ResponseEntity.noContent().build();
+        } catch (SecurityException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 
-    @Operation(
-            summary = "Обновление информации об объявлении",
-            responses = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "OK",
-                            content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = Ad.class))
-                    ),
-                    @ApiResponse(responseCode = "401", description = "Unauthorized"),
-                    @ApiResponse(responseCode = "403", description = "Forbidden"),
-                    @ApiResponse(responseCode = "404", description = "Not found")
-            }
-    )
     /**
      * Обновляет информацию об объявлении.
      * Доступно только администраторам или владельцам объявления.
      *
      * @param id идентификатор объявления
      * @param updateAd обновленные данные объявления
+     * @param authentication объект аутентификации Spring Security
      * @return ResponseEntity с обновленным объявлением и статусом 200 OK,
      *         403 Forbidden при недостаточных правах,
      *         401 Unauthorized при ошибке аутентификации
      */
     @PatchMapping("/{id}")
-    public ResponseEntity<Ad> updateAds(@PathVariable("id") Integer id,
-                                        @RequestBody CreateOrUpdateAd createOrUpdateAd,
-                                        Principal principal) {
-        log.info("Updating ad with id: {} by user: {}", id, principal.getName());
-        Ad ad = adsService.updateAd(id, createOrUpdateAd, principal.getName());
-        return ResponseEntity.ok(ad);
+    public ResponseEntity<Ad> updateAds(@PathVariable Integer id,
+                                        @RequestBody @Valid CreateOrUpdateAd updateAd,
+                                        Authentication authentication) {
+        log.info("Updating ad with id: {} by user: {}", id, authentication.getName());
+        try {
+            Ad ad = adsService.updateAd(id, updateAd, authentication.getName());
+            return ResponseEntity.ok(ad);
+        } catch (SecurityException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 
-    @Operation(
-            summary = "Получение объявлений авторизованного пользователя",
-            responses = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "OK",
-                            content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = Ads.class))
-                    ),
-                    @ApiResponse(responseCode = "401", description = "Unauthorized")
-            }
-    )
     /**
      * Получает список объявлений текущего аутентифицированного пользователя.
+     *
+     * @param authentication объект аутентификации Spring Security
      * @return ResponseEntity с объектом {@link Ads} и статусом 200 OK,
      *         или 401 Unauthorized при ошибке аутентификации
      */
     @GetMapping("/me")
-    public ResponseEntity<Ads> getAdsMe(Principal principal) {
-        log.info("Getting current user's ads for: {}", principal.getName());
-        Ads ads = adsService.getAdsByUser(principal.getName());
-        return ResponseEntity.ok(ads);
+    public ResponseEntity<Ads> getAdsMe(Authentication authentication) {
+        log.info("Getting ads for user: {}", authentication.getName());
+        try {
+            Ads ads = adsService.getAdsByUser(authentication.getName());
+            return ResponseEntity.ok(ads);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 
-    @Operation(
-            summary = "Обновление картинки объявления",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "OK"),
-                    @ApiResponse(responseCode = "401", description = "Unauthorized"),
-                    @ApiResponse(responseCode = "403", description = "Forbidden"),
-                    @ApiResponse(responseCode = "404", description = "Not found")
-            }
-    )
     /**
      * Обновляет изображение объявления.
      * Доступно только администраторам или владельцам объявления.
      *
      * @param id идентификатор объявления
      * @param image новое изображение
+     * @param authentication объект аутентификации Spring Security
      * @return ResponseEntity со статусом 200 OK при успешном обновлении,
      *         403 Forbidden при недостаточных правах,
      *         401 Unauthorized при ошибке аутентификации
      */
     @PatchMapping(value = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Void> updateImage(@PathVariable("id") Integer id,
-                                            @RequestParam("image") MultipartFile image,
-                                            Principal principal) {
-        log.info("Updating image for ad with id: {} by user: {}", id, principal.getName());
-        adsService.updateAdImage(id, image, principal.getName());
-        return ResponseEntity.ok().build();
+    public ResponseEntity<?> updateImage(@PathVariable Integer id,
+                                         @RequestParam("image") MultipartFile image,
+                                         Authentication authentication) {
+        log.info("Updating image for ad with id: {} by user: {}", id, authentication.getName());
+        try {
+            adsService.updateAdImage(id, image, authentication.getName());
+            return ResponseEntity.ok().build();
+        } catch (SecurityException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 }

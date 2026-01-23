@@ -1,67 +1,11 @@
-# Платформа по перепродаже вещей- Бэкенд
+# Avito-like Platform
 
-## Описание проекта
- Rest API сервис для платформы объявлений о продаже вещей.
- 
-# Текущий статус 
-Бэкенд реализован
-
-## Уже реализовано
-✅Этап 1: Написание DTO и контроллеров
-
-####
-✅Этап 2:Сущности, репозитории, маперы
-
-####
-✅Этап 3:Авторизация, аутентификация, сервисы
-
-####
-✅Этап 4: Работа с изображениями, тестирование
-
-## 📁 Структура проекта
-```
-src/main/java/ru/skypro/homework/
-├── config/          # Конфигурационные классы
-├── controller/      # REST контроллеры
-├── dto/            # Data Transfer Objects
-├── entity/         # JPA сущности
-├── handler/        # Обработчики исключений
-├── mapper/         # MapStruct мапперы
-├── repository/     # Spring Data репозитории
-└── service/        # Бизнес-логика
-```
-
-### DTO (Data Transfer Object)
-- [x] `Login.java` - аутентификация
-- [x] `Register.java` - регистрация
-- [x] `NewPassword.java` - смена пороля
-- [x] `User.java` - данные пользователя
-- [x] `UpdateUser.java` - обновления профиля
-- [x] `Ad.java` - объявления
-- [x] `ExtendedAd.java` - детали объявления
-- [x] `Ads.java` - список объявлений
-- [x] `CreateOrUpdateAd.java` - создание/обновление
-- [x] `Comment.java` - комментарий
-- [x] `Comments.java` - список комментариев
-- [x] `CreateOrUpdateComment.java` - создание/оюновление
-- [x] `Role.java` - роли пользователей
-
-### Контролерры
-- [x] `ImageController.java` - /images
-- [x] `AuthController.java` - /login
-- [x] `UserController.java` - /users/**
-- [x] `AdsController.java` - /ads/**
-- [x] `CommentsController.java` - /ads/*/coments/**
-
-### Сущности (Entity)
-- [x] `AdEntity.java` - объявление
-- [x] `CommentEntity.java` - комментарий
-- [x] `UserEntity.java` - пользователь
-
+## 📖 Описание проекта
+Бэкенд-приложение для доски объявлений (аналог Avito). Позволяет пользователям размещать объявления, комментировать их, управлять профилем.
 
 ## 👥 Команда разработчиков
-- Куцак Инеза Демуровна
-- Морозова Мария Николаевна
+- Морозова Мария
+- Куцак Инеза
 
 ## 🛠 Технологии и библиотеки
 - **Java 17**
@@ -69,7 +13,8 @@ src/main/java/ru/skypro/homework/
 - **PostgreSQL** - реляционная база данных
 - **Liquibase** - управление миграциями БД
 - **MapStruct** - маппинг объектов
-- **OpenAPI** - документация API
+- **Spring Security** - аутентификация и авторизация
+- **Swagger/OpenAPI** - документация API
 - **Lombok** - сокращение кода
 - **Maven** - сборка проекта
 
@@ -83,7 +28,7 @@ src/main/java/ru/skypro/homework/
 ### Настройка базы данных:
 ```sql
 CREATE DATABASE diplom_bd;
-CREATE USER postgres WITH PASSWORD '1234';
+CREATE USER diplom WITH PASSWORD '1234';
 GRANT ALL PRIVILEGES ON DATABASE diplom_bd TO postgres;
 ```
 
@@ -96,13 +41,26 @@ mvn spring-boot:run
 ```
 
 ### Тестовые пользователи:
-- **Админ:** admin@gmail.com / пароль: 1234
-- **Пользователь:** user@gmail.com / пароль: 1234
+- **Админ:** admin@gmail.com / пароль: password123
+- **Пользователь:** user@gmail.com / пароль: password123
 
 ## 📚 API Документация
 После запуска приложения документация доступна по адресу:
+- Swagger UI: http://localhost:8080/swagger-ui.html
+- OpenAPI спецификация: http://localhost:8080/v3/api-docs
 
-- OpenAPI спецификация: http://localhost:8081/v3/api-docs
+## 📁 Структура проекта
+```
+src/main/java/ru/skypro/homework/
+├── config/          # Конфигурационные классы
+├── controller/      # REST контроллеры
+├── dto/            # Data Transfer Objects
+├── entity/         # JPA сущности
+├── handler/        # Обработчики исключений
+├── mapper/         # MapStruct мапперы
+├── repository/     # Spring Data репозитории
+└── service/        # Бизнес-логика
+```
 
 ## 🔐 Роли и доступы
 - **USER**: Может создавать/редактировать/удалять свои объявления и комментарии

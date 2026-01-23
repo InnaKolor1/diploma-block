@@ -1,10 +1,12 @@
 package ru.skypro.homework.entity;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
-import lombok.*;
-import java.time.LocalDateTime;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+
+import javax.persistence.*;
+import java.time.Instant;
+
 /**
  * JPA сущность для представления комментария в базе данных.
  * Соответствует таблице 'comments' в базе данных.
@@ -16,6 +18,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CommentEntity {
+
     /**
      * Уникальный идентификатор комментария.
      * Генерируется автоматически базой данных.
@@ -23,20 +26,20 @@ public class CommentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     /**
      * Текст комментария.
      * Не может быть null, максимальная длина 64 символа.
      */
     @Column(name = "text", nullable = false, length = 64)
     private String text;
+
     /**
      * Дата и время создания комментария.
      * Не может быть null, хранится как временная метка.
      */
-
-    @Column(name = "created_at")
-    private LocalDateTime createdAt = LocalDateTime.now();
-
+    @Column(name = "created_at", nullable = false)
+    private Instant createdAt;
 
     /**
      * Автор комментария.
@@ -55,26 +58,4 @@ public class CommentEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ad_id", nullable = false)
     private AdEntity ad;
-
-
-
-    public Integer getAuthorId() {
-        return author.getId();
-    }
-
-    public Integer getAdId() {
-        return ad.getId();
-    }
-
-    public void setText(@NotBlank @Size(min = 8, max = 64) String text) {
-        this.text = text;
-    }
-
-    public void setAuthorId(Integer authorId) {
-    }
-
-    public void setAdId(Integer adId) {
-
-    }
 }
-

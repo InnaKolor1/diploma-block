@@ -1,14 +1,15 @@
 package ru.skypro.homework.service;
 
+import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.UpdateUser;
 import ru.skypro.homework.dto.User;
 import ru.skypro.homework.entity.UserEntity;
+
 /**
  * Сервис для управления пользователями.
  * Предоставляет методы для работы с профилем пользователя, включая получение информации,
  * обновление данных, смену пароля и управление аватаром.
  */
-
 public interface UserService {
     /**
      * Получает информацию о текущем аутентифицированном пользователе.
@@ -33,11 +34,11 @@ public interface UserService {
      * Старое изображение удаляется при наличии нового.
      *
      * @param username email пользователя
-     * @param 'image' файл изображения для загрузки
+     * @param image файл изображения для загрузки
      * @throws org.springframework.security.core.userdetails.UsernameNotFoundException если пользователь не найден
      * @throws RuntimeException если произошла ошибка при сохранении изображения
      */
-    void updateUserImage(String username, String imagePath);
+    void updateUserImage(String username, MultipartFile image);
     /**
      * Изменяет пароль пользователя.
      * Выполняет проверку текущего пароля перед установкой нового.

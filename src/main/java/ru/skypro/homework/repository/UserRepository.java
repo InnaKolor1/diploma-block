@@ -6,9 +6,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.skypro.homework.entity.UserEntity;
 
-import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
+
 /**
  * Репозиторий для работы с сущностью {@link UserEntity}.
  * Предоставляет методы для доступа к данным пользователей в базе данных.
@@ -16,6 +15,7 @@ import java.util.Optional;
  */
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Integer> {
+
     /**
      * Находит пользователя по email.
      *
@@ -23,6 +23,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
      * @return {@link Optional} с найденным пользователем или пустой Optional если не найден
      */
     Optional<UserEntity> findByEmail(String email);
+
     /**
      * Проверяет существование пользователя с указанным email.
      *
@@ -31,7 +32,15 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
      */
     boolean existsByEmail(String email);
 
-    Collection<Object> findAllByIdIn(List<Object> authorIds);
+    /**
+     * Находит пользователя по идентификатору.
+     * Унаследованный метод от {@link JpaRepository}.
+     *
+     * @param id идентификатор пользователя
+     * @return {@link Optional} с найденным пользователем или пустой Optional если не найден
+     */
+    Optional<UserEntity> findById(Integer id);
+
     /**
      * Находит пользователя по email с использованием JPQL запроса.
      * Альтернативный метод для {@link #findByEmail(String)}.

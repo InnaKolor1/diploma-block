@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.skypro.homework.entity.UserEntity;
 import ru.skypro.homework.repository.UserRepository;
 
-import jakarta.persistence.EntityNotFoundException;
+import javax.persistence.EntityNotFoundException;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -59,7 +59,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      */
     private Collection<? extends GrantedAuthority> getAuthorities(UserEntity userEntity) {
         return Collections.singletonList(
-                new SimpleGrantedAuthority("ROLE_" + userEntity.getRole())
+                new SimpleGrantedAuthority("ROLE_" + userEntity.getRole().name())
         );
     }
 }

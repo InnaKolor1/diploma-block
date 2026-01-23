@@ -28,7 +28,7 @@ public interface CommentsService {
      * @param comment данные комментария
      * @param username email автора комментария
      * @return созданный комментарий
-     * @throws jakarta.persistence.EntityNotFoundException если объявление не найдено
+     * @throws javax.persistence.EntityNotFoundException если объявление не найдено
      */
     Comment addComment(Integer adId, CreateOrUpdateComment comment, String username);
 
@@ -39,7 +39,7 @@ public interface CommentsService {
      * @param adId идентификатор объявления
      * @param commentId идентификатор комментария
      * @param username email пользователя, выполняющего операцию
-     * @throws jakarta.persistence.EntityNotFoundException если комментарий не найден
+     * @throws javax.persistence.EntityNotFoundException если комментарий не найден
      * @throws SecurityException если пользователь не имеет прав на удаление
      */
     @PreAuthorize("hasRole('ADMIN') or @commentsServiceImpl.isCommentOwner(#commentId, authentication.name)")
@@ -54,7 +54,7 @@ public interface CommentsService {
      * @param comment обновленные данные комментария
      * @param username email пользователя, выполняющего операцию
      * @return обновленный комментарий
-     * @throws jakarta.persistence.EntityNotFoundException если комментарий не найден
+     * @throws javax.persistence.EntityNotFoundException если комментарий не найден
      * @throws SecurityException если пользователь не имеет прав на обновление
      */
     @PreAuthorize("hasRole('ADMIN') or @commentsServiceImpl.isCommentOwner(#commentId, authentication.name)")

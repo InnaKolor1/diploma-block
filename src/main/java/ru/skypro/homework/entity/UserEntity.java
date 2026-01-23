@@ -1,94 +1,94 @@
 package ru.skypro.homework.entity;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
 import ru.skypro.homework.dto.Role;
+
+import javax.persistence.*;
+import java.util.List;
+
 /**
  * JPA сущность для представления пользователя в базе данных.
  * Соответствует таблице 'users' в базе данных.
  * Содержит информацию о пользователе и его связи с объявлениями и комментариями.
  */
-@Getter
 @Entity
 @Table(name = "users")
-@NoArgsConstructor(force = true)
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserEntity {
 
-    private final String image;
-    private String email;
-    @Setter
-    private String firstName;
-    private String lastName;
     /**
-     * Уникальный идентификатор пользователя,Роль пользователя в системе,
-     * Номер телефона пользователя,пароль пользователя,
-     * возраст,Уникальный идентификатор пользователя используется как логин.
+     * Уникальный идентификатор пользователя.
      * Генерируется автоматически базой данных.
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Setter
-    private Role role;
-    private @NotBlank
-    @Pattern(regexp = "\\+7\\s?\\(?\\d{3}\\)?\\s?\\d{3}-?\\d{2}-?\\d{2}") String phone;
-    @Setter
-    private String password;
-    private int age;
-    private int i;
+
     /**
-     * Email пользователя,Имя файла аватара пользователя,Имя пользователя,
-     * Фамилия пользователя,возраст,Уникальный идентификатор пользователя используется как логин.
+     * Email пользователя, используется как логин.
      * Должен быть уникальным и не может быть null.
      */
-    public UserEntity(String email, String image, String firstName, String lastName, int age, Integer id) {
-        this.email = email;
-        this.image = image;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.age = age;
-        this.id = id;
-        this.role = Role.USER;
-    }
+    @Column(name = "email", nullable = false, unique = true, length = 32)
+    private String email;
 
-    public UserEntity(String image, int id) {
-        this.image = image;
-        this.id = id;
-    }
+    /**
+     * Имя пользователя.
+     * Не может быть null, максимальная длина 16 символов.
+     */
+    @Column(name = "first_name", nullable = false, length = 16)
+    private String firstName;
 
-    public UserEntity(String image, String id) {
-        this.image = image;
-        this.id = Integer.valueOf(id);
-    }
+    /**
+     * Фамилия пользователя.
+     * Не может быть null, максимальная длина 16 символов.
+     */
+    @Column(name = "last_name", nullable = false, length = 16)
+    private String lastName;
 
-    public UserEntity(String image, Integer id) {
-        this.image = image;
-        this.id = id;
-    }
+    /**
+     * Номер телефона пользователя.
+     * Может быть null, максимальная длина 20 символов.
+     */
+    @Column(name = "phone", length = 20)
+    private String phone;
 
-    public String getRole() {
-            return null;
-    }
+    /**
+     * Роль пользователя в системе.
+     * Определяет уровень доступа пользователя.
+     */
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
+    private Role role;
 
-    public void setEmail(@NotBlank @Size(min = 4, max = 32) String username) {
-        this.email = username;
-    }
+    /**
+     * Имя файла аватара пользователя.
+     * Хранится в виде строки, может быть null.
+     */
+    @Column(name = "image")
+    private String image;
 
-    public void setLastName(@NotBlank @Size(min = 3, max = 10)  String lastName) {
-        this.lastName = lastName;
-    }
+    /**
+     * Хэшированный пароль пользователя.
+     * Не может быть null, максимальная длина 255 символов.
+     */
+    @Column(name = "password", nullable = false, length = 255)
+    private String password;
 
-    public void setPhone(@NotBlank @Pattern(regexp = "\\+7\\s?\\(?\\d{3}\\)?\\s?\\d{3}-?\\d{2}-?\\d{2}") String phone) {
-        this.phone = phone;
-    }
+    /**
+     * Список объявлений, созданных пользователем.
+     * Однонаправленная связь One-to-Many с каскадными операциями.
+     */
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<AdEntity> ads;
 
-    public void setId(int i) {
-        this.i = i;
-    }
-
+    /**
+     * Список комментариев, оставленных пользователем.
+     * Однонаправленная связь One-to-Many с каскадными операциями.
+     */
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<CommentEntity> comments;
 }

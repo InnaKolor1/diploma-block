@@ -16,9 +16,9 @@ import javax.validation.Valid;
  * Обрабатывает запросы на вход в систему и регистрацию новых пользователей.
  */
 @Slf4j
-@RestController
 @RequiredArgsConstructor
 @CrossOrigin(value = "http://localhost:3000")
+@RestController
 public class AuthController {
 
     private final AuthService authService;

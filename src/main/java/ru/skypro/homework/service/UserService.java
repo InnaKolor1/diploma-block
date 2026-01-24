@@ -39,6 +39,7 @@ public interface UserService {
      * @throws RuntimeException если произошла ошибка при сохранении изображения
      */
     void updateUserImage(String username, MultipartFile image);
+
     /**
      * Изменяет пароль пользователя.
      * Выполняет проверку текущего пароля перед установкой нового.

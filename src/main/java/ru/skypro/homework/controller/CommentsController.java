@@ -18,9 +18,9 @@ import javax.validation.Valid;
  * Обрабатывает HTTP запросы связанные с созданием, получением, обновлением и удалением комментариев.
  */
 @Slf4j
-@RestController
 @RequiredArgsConstructor
 @CrossOrigin(value = "http://localhost:3000")
+@RestController
 @RequestMapping("/ads")
 public class CommentsController {
 

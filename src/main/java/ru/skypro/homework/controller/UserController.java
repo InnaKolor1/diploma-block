@@ -20,9 +20,9 @@ import javax.validation.Valid;
  * сменой пароля и управлением аватаром.
  */
 @Slf4j
-@RestController
 @RequiredArgsConstructor
 @CrossOrigin(value = "http://localhost:3000")
+@RestController
 @RequestMapping("/users")
 public class UserController {
 

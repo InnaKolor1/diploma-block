@@ -4,39 +4,72 @@
     <mappings />
     <preferences />
   </component>
+  <component name="DBNavigator.Project.DataEditorManager">
+    <record-view-column-sorting-type value="BY_INDEX" />
+    <value-preview-text-wrapping value="false" />
+    <value-preview-pinned value="false" />
+  </component>
   <component name="DBNavigator.Project.DatabaseAssistantManager">
     <assistants>
-      <assistant-state connection-id="5dcb076f-9007-4293-9cb4-646d8a6471fc" assistant-type="PUBLIC" default-profile-name="" selected-chat-id="" availability="AVAILABLE" acknowledgement="NONE" selected="true">
+      <assistant-state connection-id="c9826856-7cc9-4173-b716-2bdae96495c9" assistant-type="SELECT_AI" default-profile-name="" selected-chat-id="" availability="UNAVAILABLE" acknowledgement="NONE">
+        <tools />
+      </assistant-state>
+      <assistant-state connection-id="c9826856-7cc9-4173-b716-2bdae96495c9" assistant-type="PUBLIC" default-profile-name="" selected-chat-id="E0257766174944F282C6A4BFE5B428C0" availability="AVAILABLE" acknowledgement="ENGAGED" selected="true">
+        <chats>
+          <chat id="E0257766174944F282C6A4BFE5B428C0" title="" session-signature="" timestamp="1769211859422">
+            <messages />
+            <context provider="OPEN_AI" profile="implicit-profile-ce0a2728-e2b3-410a-a672-2c80e2431234" model="GPT_4_O" action="" interactive="true" />
+          </chat>
+        </chats>
         <tools />
       </assistant-state>
     </assistants>
     <selection-state>
-      <model-selection />
+      <model-selection>
+        <assistant type="PUBLIC">
+          <selection provider-id="OPEN_AI" model-id="GPT_4_O" />
+        </assistant>
+      </model-selection>
     </selection-state>
   </component>
   <component name="DBNavigator.Project.DatabaseBrowserManager">
     <autoscroll-to-editor value="false" />
     <autoscroll-from-editor value="true" />
-    <show-object-properties value="true" />
+    <show-object-properties value="false" />
     <loaded-nodes />
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
-    <connection id="5dcb076f-9007-4293-9cb4-646d8a6471fc">
-      <console name="diplom_bd" type="STANDARD" schema="diplom_bd" session="Main" />
+    <connection id="c9826856-7cc9-4173-b716-2bdae96495c9">
+      <console name="diplom" type="STANDARD" schema="diplom_bd" session="Main" />
     </connection>
+  </component>
+  <component name="DBNavigator.Project.DatabaseEditorStateManager">
+    <last-used-providers />
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
     <open-files />
+  </component>
+  <component name="DBNavigator.Project.DatabasePrerequisiteManager">
+    <prerequisites />
+  </component>
+  <component name="DBNavigator.Project.DatabaseSessionManager">
+    <connection id="c9826856-7cc9-4173-b716-2bdae96495c9" />
+  </component>
+  <component name="DBNavigator.Project.ExecutionManager">
+    <retain-sticky-names value="false" />
   </component>
   <component name="DBNavigator.Project.ObjectQuickFilterManager">
     <last-used-operator value="EQUAL" />
     <filters />
   </component>
+  <component name="DBNavigator.Project.ParserDiagnosticsManager">
+    <diagnostics-history />
+  </component>
   <component name="DBNavigator.Project.Settings">
     <connections>
-      <connection source-id="" id="5dcb076f-9007-4293-9cb4-646d8a6471fc" active="true" signed="true">
+      <connection source-id="" id="c9826856-7cc9-4173-b716-2bdae96495c9" active="true" signed="true">
         <database>
-          <name value="diplom_bd" />
+          <name value="diplom" />
           <description value="" />
           <database-type value="POSTGRES" />
           <config-type value="BASIC" />
@@ -559,7 +592,9 @@
     </ddl-file-settings>
     <assistant-settings>
       <credential-settings>
-        <credentials />
+        <credentials>
+          <credential id="ce0a2728-e2b3-410a-a672-2c80e2431234" name="Open AI" user="" provider="OPEN_AI" />
+        </credentials>
       </credential-settings>
       <profile-settings>
         <profiles />

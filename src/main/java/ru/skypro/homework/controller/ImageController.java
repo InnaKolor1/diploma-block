@@ -17,9 +17,9 @@ import java.security.NoSuchAlgorithmException;
  * Обрабатывает запросы на получение файлов изображений по их именам.
  */
 @Slf4j
-@RestController
 @RequiredArgsConstructor
 @CrossOrigin(value = "http://localhost:3000")
+@RestController
 public class ImageController {
 
     private final ImageService imageService;

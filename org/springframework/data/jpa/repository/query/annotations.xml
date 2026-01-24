@@ -1,0 +1,8 @@
+<root>
+    <item name='org.springframework.data.jpa.repository.query.QueryUtils jakarta.persistence.criteria.Expression&lt;T&gt; toExpressionRecursively(jakarta.persistence.criteria.From&lt;?,?&gt;, org.springframework.data.mapping.PropertyPath)'>
+        <annotation name='java.lang.Deprecated'/>
+    </item>
+    <item name='org.springframework.data.jpa.repository.query.QueryUtils jakarta.persistence.criteria.Expression&lt;T&gt; toExpressionRecursively(jakarta.persistence.criteria.From&lt;?,?&gt;, org.springframework.data.mapping.PropertyPath, boolean)'>
+        <annotation name='java.lang.Deprecated'/>
+    </item>
+</root>

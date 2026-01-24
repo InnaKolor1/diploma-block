@@ -4,111 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="57fb0e16-9d00-4f3b-809d-f02a4a747da7" name="Changes" comment="initial commit22">
-      <change afterPath="$PROJECT_DIR$/.dockerignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/mavenServices.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/example-requests.http" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/org/hibernate/annotations.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/org/hibernate/boot/model/internal/annotations.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/org/hibernate/dialect/annotations.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/org/springframework/beans/factory/support/annotations.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/org/springframework/data/jpa/repository/query/annotations.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/helper.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ru/skypro/homework/filter/BasicAuthCorsFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dbnavigator.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dbnavigator.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.mvn/South_Park_-_poster_%28English%29.webp" beforeDir="false" afterPath="$PROJECT_DIR$/images/South_Park_-_poster_%28English%29.webp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/skypro/homework/controller/AdsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/skypro/homework/controller/AdsController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/skypro/homework/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/skypro/homework/controller/AuthController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/skypro/homework/controller/CommentsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/skypro/homework/controller/CommentsController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/skypro/homework/controller/ImageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/skypro/homework/controller/ImageController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/skypro/homework/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/skypro/homework/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ru/skypro/homework/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ru/skypro/homework/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/additional-spring-configuration-metadata.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application-docker.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/shema.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ru/skypro/homework/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/ru/skypro/homework/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/ads-0.0.1-SNAPSHOT.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/ads-0.0.1-SNAPSHOT.jar.original" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/META-INF/additional-spring-configuration-metadata.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/application-docker.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ru/skypro/homework/controller/AdsController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ru/skypro/homework/controller/AdsController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ru/skypro/homework/controller/AuthController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ru/skypro/homework/controller/AuthController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ru/skypro/homework/controller/CommentsController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ru/skypro/homework/controller/CommentsController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ru/skypro/homework/controller/ImageController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ru/skypro/homework/controller/ImageController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ru/skypro/homework/controller/UserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ru/skypro/homework/controller/UserController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/shema.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/ru/skypro/homework/mapper/AdMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/generated-sources/annotations/ru/skypro/homework/mapper/AdMapperImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/ru/skypro/homework/mapper/CommentMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/generated-sources/annotations/ru/skypro/homework/mapper/CommentMapperImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/generated-sources/annotations/ru/skypro/homework/mapper/UserMapperImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/target/generated-sources/annotations/ru/skypro/homework/mapper/UserMapperImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-01-23T22-34-53_980.dumpstream" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.DiplomaBlockApplicationTests.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.controller.AdsControllerTest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.controller.AuthControllerTest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.controller.CommentsControllerTest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.controller.ImageControllerTest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.controller.UserControllerTest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.dto.AdTest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.dto.CommentTest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.dto.NewPasswordTest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.dto.UserTest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.entity.UserEntityTest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.mapper.UserMapperTest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.service.impl.AdsServiceImplTest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.service.impl.AuthServiceImplTest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.service.impl.CommentsServiceImplTest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.service.impl.UserDetailsServiceImplTest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.service.impl.UserServiceImplTest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/ru.skypro.homework.DiplomaBlockApplicationTests.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/ru.skypro.homework.controller.AdsControllerTest.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/ru.skypro.homework.controller.AuthControllerTest.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/ru.skypro.homework.controller.CommentsControllerTest.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/ru.skypro.homework.controller.ImageControllerTest.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/ru.skypro.homework.controller.UserControllerTest.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/ru.skypro.homework.dto.AdTest.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/ru.skypro.homework.dto.CommentTest.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/ru.skypro.homework.dto.NewPasswordTest.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/ru.skypro.homework.dto.UserTest.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/ru.skypro.homework.entity.UserEntityTest.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/ru.skypro.homework.mapper.UserMapperTest.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/ru.skypro.homework.service.impl.AdsServiceImplTest.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/ru.skypro.homework.service.impl.AuthServiceImplTest.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/ru.skypro.homework.service.impl.CommentsServiceImplTest.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/ru.skypro.homework.service.impl.UserDetailsServiceImplTest.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/ru.skypro.homework.service.impl.UserServiceImplTest.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/ru/skypro/homework/DiplomaBlockApplicationTests.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/ru/skypro/homework/config/TestSecurityConfig.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/ru/skypro/homework/controller/AdsControllerTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/ru/skypro/homework/controller/AuthControllerTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/ru/skypro/homework/controller/CommentsControllerTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/ru/skypro/homework/controller/ImageControllerTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/ru/skypro/homework/controller/UserControllerTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/ru/skypro/homework/dto/AdTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/ru/skypro/homework/dto/CommentTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/ru/skypro/homework/dto/NewPasswordTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/ru/skypro/homework/dto/UserTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/ru/skypro/homework/entity/UserEntityTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/ru/skypro/homework/mapper/UserMapperTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/ru/skypro/homework/service/impl/AdsServiceImplTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/ru/skypro/homework/service/impl/AuthServiceImplTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/ru/skypro/homework/service/impl/CommentsServiceImplTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/ru/skypro/homework/service/impl/UserDetailsServiceImplTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/ru/skypro/homework/service/impl/UserServiceImplTest.class" beforeDir="false" />
-    </list>
+    <list default="true" id="57fb0e16-9d00-4f3b-809d-f02a4a747da7" name="Changes" comment="диплом" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -526,7 +422,15 @@
       <option name="project" value="LOCAL" />
       <updated>1769197355194</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="диплом">
+      <option name="closed" value="true" />
+      <created>1769252898877</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1769252898877</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -547,7 +451,19 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="4-week" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
@@ -559,7 +475,8 @@
     <MESSAGE value="1" />
     <MESSAGE value="initial commit" />
     <MESSAGE value="initial commit22" />
-    <option name="LAST_COMMIT_MESSAGE" value="initial commit22" />
+    <MESSAGE value="диплом" />
+    <option name="LAST_COMMIT_MESSAGE" value="диплом" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

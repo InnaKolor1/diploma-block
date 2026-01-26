@@ -1,7 +1,6 @@
 package ru.skypro.homework.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.skypro.homework.dto.Comment;
@@ -16,10 +15,8 @@ import ru.skypro.homework.repository.CommentRepository;
 import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.CommentService;
 
-import java.util.Collections;
 import java.util.List;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -32,72 +29,61 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Comments getComments(Integer adId) {
-        List<CommentEntity> commentEntities = commentRepository.findByAd_Id(adId);
-        List<Comment> comments = commentEntities.stream()
-                .map(commentMapper::toDto)
-                .toList();
+        List<Comment> comments = commentRepository.findByAd_Id(adId).stream().map(commentMapper::toDto).toList();
 
         Comments result = new Comments();
         result.setCount(comments.size());
-        result.setResults(Collections.singletonList(comments));
+        result.setResults(comments);
         return result;
     }
 
     @Override
-    public Comment addComment(Integer adId, CreateOrUpdateComment createOrUpdateComment, String username) {
-        AdEntity ad = adRepository.findById(adId)
-                .orElseThrow(() -> new RuntimeException("Ad not found"));
+    public Comment addComment(Integer adId, CreateOrUpdateComment dto, String username) {
 
-        UserEntity author = userRepository.findByEmail(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        AdEntity ad = adRepository.findById(adId).orElseThrow(() -> new RuntimeException("Ad not found"));
 
-        CommentEntity commentEntity = new CommentEntity();
-        commentEntity.setAd(ad);
-        commentEntity.setAuthor(author);
+        UserEntity author = userRepository.findByEmail(username).orElseThrow(() -> new RuntimeException("User not found"));
 
-        CommentEntity savedComment = commentRepository.save(commentEntity);
-        return commentMapper.toDto(savedComment);
+        CommentEntity entity = commentMapper.toEntity(dto);
+        entity.setAuthor(author);
+        entity.setAd(ad);
+
+        return commentMapper.toDto(commentRepository.save(entity));
     }
 
     @Override
     public void deleteComment(Integer adId, Integer commentId, String username) {
-        CommentEntity commentEntity = commentRepository.findByIdAndAd_Id(commentId, adId);
 
-        if (commentEntity == null) {
-            throw new RuntimeException("Comment not found");
+        CommentEntity comment = commentRepository.findByIdAndAd_Id(commentId, adId).orElseThrow(() -> new RuntimeException("Comment not found"));
+
+        UserEntity user = userRepository.findByEmail(username).orElseThrow(() -> new RuntimeException("User not found"));
+        if (
+                !comment.getAuthor().getId().equals(user.getId())
+        ) {
+            user.getRole();
+            throw new RuntimeException("Forbidden");
         }
 
-        UserEntity user = userRepository.findByEmail(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
 
-        if (!commentEntity.getAuthor().getId().equals(user.getId()) &&
-                !user.getRole().name().equals("ADMIN")) {
-            throw new RuntimeException("Not enough permissions to delete comment");
-        }
-
-        commentRepository.delete(commentEntity);
+        commentRepository.delete(comment);
     }
 
     @Override
-    public Comment updateComment(Integer adId, Integer commentId,
-                                 CreateOrUpdateComment createOrUpdateComment,
-                                 String username) {
-        CommentEntity commentEntity = commentRepository.findByIdAndAd_Id(commentId, adId);
+    public Comment updateComment(Integer adId, Integer commentId, CreateOrUpdateComment dto, String username) {
 
-        if (commentEntity == null) {
-            throw new RuntimeException("Comment not found");
+        CommentEntity comment = commentRepository.findByIdAndAd_Id(commentId, adId).orElseThrow(() -> new RuntimeException("Comment not found"));
+
+        UserEntity user = userRepository.findByEmail(username).orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (
+                !comment.getAuthor().getId().equals(user.getId())
+        ) {
+            user.getRole();
+            throw new RuntimeException("Forbidden");
         }
 
-        UserEntity user = userRepository.findByEmail(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
 
-        if (!commentEntity.getAuthor().getId().equals(user.getId()) &&
-                !user.getRole().name().equals("ADMIN")) {
-            throw new RuntimeException("Not enough permissions to edit comment");
-        }
-
-        commentMapper.updateFromDto(createOrUpdateComment, commentEntity);
-        CommentEntity updatedComment = commentRepository.save(commentEntity);
-        return commentMapper.toDto(updatedComment);
+        commentMapper.updateFromDto(dto, comment);
+        return commentMapper.toDto(commentRepository.save(comment));
     }
 }

@@ -1,5 +1,7 @@
 package ru.skypro.homework.service.impl;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -7,14 +9,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.skypro.homework.dto.Ad;
 import ru.skypro.homework.dto.Ads;
-
 import ru.skypro.homework.entity.AdEntity;
 import ru.skypro.homework.mapper.mapper.AdMapper;
 import ru.skypro.homework.repository.AdRepository;
 import ru.skypro.homework.service.UserService;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -25,6 +25,8 @@ class AdServiceImplTest {
     @Mock
     private AdRepository adRepository;
 
+    @Getter
+    @Setter
     @Mock
     private UserService userService;
 
@@ -34,10 +36,15 @@ class AdServiceImplTest {
     @InjectMocks
     private AdServiceImpl adService;
 
+    AdServiceImplTest(UserService userService) {
+        this.userService = userService;
+    }
+
     @Test
     void getAllAds_ShouldReturnAds() {
 
-        AdEntity adEntity = new AdEntity();
+        AdEntity adEntity = (AdEntity) createAdEntity();
+        assertNotNull(adEntity);
         adEntity.setId(1);
 
         Ad adDto = new Ad();
@@ -54,15 +61,20 @@ class AdServiceImplTest {
     }
 
     @Test
-    void getExtendedAd_ShouldReturnAd_WhenExists() {
+    void getExtendedAd_ShouldReturnAd_WhenExists() throws InterruptedException {
         Integer adId = 1;
-        AdEntity adEntity = new AdEntity();
-        adEntity.setId(adId);
-
-        when(adRepository.findById(adId)).thenReturn(Optional.of(adEntity));
+        var adEntity = createAdEntity();
+        assertNotNull(adEntity);
+        adEntity.wait(1);
 
         assertDoesNotThrow(() -> adService.getExtendedAd(adId));
 
+
         verify(adRepository, times(1)).findById(adId);
     }
+
+    private Object createAdEntity() {
+        return null;
+    }
+
 }

@@ -1,6 +1,8 @@
 package ru.skypro.homework.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Getter;
+import lombok.Setter;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -21,16 +23,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(AdsController.class)
 @Import(TestSecurityConfig.class)
+
 class AdsControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
+    @Setter
+    @Getter
     @Autowired
     private ObjectMapper objectMapper;
 
     @MockBean
     private AdService adService;
+
+    AdsControllerTest(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
 
     @Test
     @WithMockUser
@@ -57,4 +66,5 @@ class AdsControllerTest {
         mockMvc.perform(get("/ads/me"))
                 .andExpect(status().isOk());
     }
+
 }

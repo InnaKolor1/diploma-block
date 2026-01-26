@@ -2,11 +2,11 @@ package ru.skypro.homework.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import java.util.List;
 
 @Entity
 @Table(name = "ads")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class AdEntity {
@@ -15,22 +15,15 @@ public class AdEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "title", nullable = false, length = 32)
     private String title;
 
-    @Column(name = "price", nullable = false)
-    private Integer price;
-
-    @Column(name = "description", length = 64)
     private String description;
 
-    @Column(name = "image")
+    private Integer price;
+
     private String image;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "author_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "author_id")
     private UserEntity author;
-
-    @OneToMany(mappedBy = "ad", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<CommentEntity> comments;
 }

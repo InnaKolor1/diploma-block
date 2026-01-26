@@ -7,11 +7,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.skypro.homework.config.TestSecurityConfig;
 import ru.skypro.homework.dto.Login;
 import ru.skypro.homework.dto.Register;
-import ru.skypro.homework.dto.Role;
+import ru.skypro.homework.entity.Role;
 import ru.skypro.homework.service.AuthService;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -33,7 +34,9 @@ class AuthControllerTest {
     private AuthService authService;
 
     @Test
+    @WithMockUser
     void login_ShouldReturnOk_WhenCredentialsValid() throws Exception {
+
         Login login = new Login();
         login.setUsername("test@test.com");
         login.setPassword("password");
@@ -46,6 +49,7 @@ class AuthControllerTest {
                 .andExpect(status().isOk());
     }
 
+    @WithMockUser
     @Test
     void register_ShouldReturnCreated_WhenSuccessful() throws Exception {
         Register register = new Register();

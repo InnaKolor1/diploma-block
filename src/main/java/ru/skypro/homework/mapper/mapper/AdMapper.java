@@ -1,29 +1,25 @@
 package ru.skypro.homework.mapper.mapper;
 
-import lombok.Data;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.springframework.stereotype.Component;
 import ru.skypro.homework.dto.Ad;
-import ru.skypro.homework.dto.ExtendedAd;
+import ru.skypro.homework.dto.ExtendedAdDto;
 import ru.skypro.homework.entity.AdEntity;
 
-@Component
-@Mapper()
+@Mapper(componentModel = "spring")
 public interface AdMapper {
 
-
-    @Mapping(target = "phone", source = "price")
-    @Mapping(target = "pk", source = "id")
-    @Mapping(target = "author", source = "author.id")
+    @Mapping(source = "id", target = "pk")
+    @Mapping(source = "author.id", target = "author")
     @Mapping(target = "image", expression = "java(entity.getImage() != null ? \"/images/\" + entity.getImage() : null)")
     Ad toDto(AdEntity entity);
 
-    @Mapping(target = "pk", source = "id")
-    @Mapping(target = "email", source = "author.email")
-    @Mapping(target = "authorFirstName", source = "author.firstName")
-    @Mapping(target = "authorLastName", source = "author.lastName")
-    @Mapping(target = "phone", source = "author.phone")
+    @Mapping(source = "id", target = "pk")
+    @Mapping(source = "author.id", target = "authorId")
     @Mapping(target = "image", expression = "java(entity.getImage() != null ? \"/images/\" + entity.getImage() : null)")
-    ExtendedAd toExtendedAd(AdEntity entity);
+    @Mapping(target = "phone", expression = "java(entity.getAuthor().getPhone())")
+    @Mapping(target = "email", expression = "java(entity.getAuthor().getEmail())")
+    @Mapping(target = "authorFirstName", expression = "java(entity.getAuthor().getUsername())")
+    @Mapping(target = "authorLastName", ignore = true)
+    ExtendedAdDto toExtendedDto(AdEntity entity);
 }

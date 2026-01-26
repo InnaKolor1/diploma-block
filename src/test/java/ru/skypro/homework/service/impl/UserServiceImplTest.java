@@ -9,7 +9,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ru.skypro.homework.dto.User;
 import ru.skypro.homework.entity.UserEntity;
-import ru.skypro.homework.mapper.mapper.UserMapper;
 import ru.skypro.homework.repository.UserRepository;
 
 import java.util.Optional;
@@ -22,9 +21,6 @@ class UserServiceImplTest {
 
     @Mock
     private UserRepository userRepository;
-
-    @Mock
-    private UserMapper userMapper;
 
     @Mock
     private PasswordEncoder passwordEncoder;
@@ -42,7 +38,7 @@ class UserServiceImplTest {
         userDto.setEmail(username);
 
         when(userRepository.findByEmail(username)).thenReturn(Optional.of(userEntity));
-        when(userMapper.toDto(userEntity)).thenReturn(userDto);
+
 
         User result = userService.getCurrentUser(username);
 

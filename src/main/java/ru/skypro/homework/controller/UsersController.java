@@ -114,8 +114,8 @@ public class UsersController {
         String originalFilename = image.getOriginalFilename();
         String extension = originalFilename != null ?
                 originalFilename.substring(originalFilename.lastIndexOf(".")) : ".jpg";
-        String filename = "user_" + UUID.randomUUID() + extension;
-        Path path = Paths.get("images/" + filename);
+        String filename = STR."user_\{UUID.randomUUID()}\{extension}";
+        Path path = Paths.get(STR."images/\{filename}");
 
         Files.createDirectories(path.getParent());
         Files.write(path, image.getBytes());

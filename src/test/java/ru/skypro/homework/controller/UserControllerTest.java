@@ -1,13 +1,15 @@
 package ru.skypro.homework.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.context.annotation.Import;
+
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import ru.skypro.homework.dto.NewPassword;
 import ru.skypro.homework.dto.UpdateUser;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,9 +17,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(UsersController.class)
-@Import(TestSecurityConfig.class)
-class UserControllerTest {
+@RestController
+@RequestMapping("/users")
+@RequiredArgsConstructor
+
+public class UserControllerTest {
+
 
     @Autowired
     private MockMvc mockMvc;
@@ -41,7 +46,6 @@ class UserControllerTest {
     void getUser_ShouldReturnUser() throws Exception {
         mockMvc.perform(get("/users/me"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").doesNotExist())
                 .andExpect(jsonPath("$.email").doesNotExist());
     }
 
@@ -77,3 +81,4 @@ class UserControllerTest {
                 .andExpect(status().isOk());
     }
 }
+

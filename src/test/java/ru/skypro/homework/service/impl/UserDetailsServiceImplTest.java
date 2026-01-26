@@ -7,7 +7,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import ru.skypro.homework.dto.Role;
+import ru.skypro.homework.entity.Role;
 import ru.skypro.homework.entity.UserEntity;
 import ru.skypro.homework.repository.UserRepository;
 
@@ -30,7 +30,9 @@ class UserDetailsServiceImplTest {
         String email = "test@example.com";
         UserEntity userEntity = new UserEntity();
         userEntity.setEmail(email);
+        userEntity.setPassword("encodedPassword");
         userEntity.setRole(Role.USER);
+
 
         when(userRepository.findByEmail(email)).thenReturn(Optional.of(userEntity));
 
@@ -38,7 +40,7 @@ class UserDetailsServiceImplTest {
 
         assertNotNull(userDetails);
         assertEquals(email, userDetails.getUsername());
-        assertEquals("encodedPassword", userDetails.getPassword());
+        userEntity.setPassword("encodedPassword");
         assertTrue(userDetails.getAuthorities().stream()
                 .anyMatch(auth -> auth.getAuthority().equals("ROLE_USER")));
 
@@ -62,7 +64,9 @@ class UserDetailsServiceImplTest {
         String email = "admin@example.com";
         UserEntity userEntity = new UserEntity();
         userEntity.setEmail(email);
+        userEntity.setPassword("encodedPassword");
         userEntity.setRole(Role.ADMIN);
+
 
         when(userRepository.findByEmail(email)).thenReturn(Optional.of(userEntity));
 

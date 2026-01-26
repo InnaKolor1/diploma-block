@@ -1,25 +1,11 @@
-# ---------- BUILD ----------
-FROM maven:3.8.4-openjdk-17 AS build
+FROM eclipse-temurin:21-jre
+
 WORKDIR /app
 
-COPY pom.xml .
-RUN mvn dependency:go-offline
+ENV SPRING_PROFILES_ACTIVE=docker
 
-COPY src ./src
-RUN mvn clean package -DskipTests
+COPY target/*.jar app.jar
 
-FROM openjdk:17-jdk-slim
-WORKDIR /app
+EXPOSE 8082
 
-COPY --from=build /app/target/*.jar app.jar
-
-EXPOSE 8080
-
-ENTRYPOINT ["java",
-  "-Dspring.profiles.active=docker",
-  "-Djava.security.egd=file:/dev/./urandom",
-  "-XX:+UseContainerSupport",
-  "-XX:MaxRAMPercentage=75.0",
-  "-jar",
-  "app.jar"
-]
+ENTRYPOINT ["java","-jar","app.jar"]

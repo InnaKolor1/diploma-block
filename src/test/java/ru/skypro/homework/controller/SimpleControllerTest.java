@@ -27,6 +27,7 @@ class SimpleControllerTest {
     @Test
     void swaggerUi_ShouldBeAccessible() throws Exception {
         mockMvc.perform(get("/swagger-ui.html"))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().isOk());
+
     }
 }

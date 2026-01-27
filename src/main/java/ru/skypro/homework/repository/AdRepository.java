@@ -17,6 +17,7 @@ import java.util.Optional;
 @Repository
 public interface AdRepository extends JpaRepository<AdEntity, Integer> {
 
+
     /**
      * Находит все объявления указанного автора.
      *

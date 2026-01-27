@@ -14,7 +14,6 @@ import java.util.List;
  */
 @Configuration
 public class CorsConfig {
-
     /**
      * Создает источник конфигурации CORS.
      * Разрешает запросы с определенных origins и настраивает разрешенные методы и заголовки.

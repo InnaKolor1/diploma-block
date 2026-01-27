@@ -4,7 +4,48 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="57fb0e16-9d00-4f3b-809d-f02a4a747da7" name="Changes" comment="диплом" />
+    <list default="true" id="57fb0e16-9d00-4f3b-809d-f02a4a747da7" name="Changes" comment="диплом">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/ads-0.0.1-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/ads-0.0.1-SNAPSHOT.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/ads-0.0.1-SNAPSHOT.jar.original" beforeDir="false" afterPath="$PROJECT_DIR$/target/ads-0.0.1-SNAPSHOT.jar.original" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/2026-01-27T16-33-15_188.dumpstream" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.DiplomaBlockApplicationTests.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.DiplomaBlockApplicationTests.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.controller.AdsControllerTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.controller.AdsControllerTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.controller.AuthControllerTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.controller.AuthControllerTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.controller.CommentsControllerTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.controller.CommentsControllerTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.controller.ImageControllerTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.controller.ImageControllerTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.controller.UserControllerTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.controller.UserControllerTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.dto.AdTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.dto.AdTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.dto.CommentTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.dto.CommentTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.dto.NewPasswordTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.dto.NewPasswordTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.dto.UserTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.dto.UserTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.entity.UserEntityTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.entity.UserEntityTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.mapper.UserMapperTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.mapper.UserMapperTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.service.impl.AdsServiceImplTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.service.impl.AdsServiceImplTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.service.impl.AuthServiceImplTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.service.impl.AuthServiceImplTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.service.impl.CommentsServiceImplTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.service.impl.CommentsServiceImplTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.service.impl.UserDetailsServiceImplTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.service.impl.UserDetailsServiceImplTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.service.impl.UserServiceImplTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-ru.skypro.homework.service.impl.UserServiceImplTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/ru.skypro.homework.DiplomaBlockApplicationTests.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/ru.skypro.homework.DiplomaBlockApplicationTests.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/ru.skypro.homework.controller.AdsControllerTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/ru.skypro.homework.controller.AdsControllerTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/ru.skypro.homework.controller.AuthControllerTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/ru.skypro.homework.controller.AuthControllerTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/ru.skypro.homework.controller.CommentsControllerTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/ru.skypro.homework.controller.CommentsControllerTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/ru.skypro.homework.controller.ImageControllerTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/ru.skypro.homework.controller.ImageControllerTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/ru.skypro.homework.controller.UserControllerTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/ru.skypro.homework.controller.UserControllerTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/ru.skypro.homework.dto.AdTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/ru.skypro.homework.dto.AdTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/ru.skypro.homework.dto.NewPasswordTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/ru.skypro.homework.dto.NewPasswordTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/ru.skypro.homework.mapper.UserMapperTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/ru.skypro.homework.mapper.UserMapperTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/ru.skypro.homework.service.impl.AdsServiceImplTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/ru.skypro.homework.service.impl.AdsServiceImplTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/ru.skypro.homework.service.impl.AuthServiceImplTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/ru.skypro.homework.service.impl.AuthServiceImplTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/ru.skypro.homework.service.impl.CommentsServiceImplTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/ru.skypro.homework.service.impl.CommentsServiceImplTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/ru.skypro.homework.service.impl.UserDetailsServiceImplTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/ru.skypro.homework.service.impl.UserDetailsServiceImplTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/ru.skypro.homework.service.impl.UserServiceImplTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/ru.skypro.homework.service.impl.UserServiceImplTest.txt" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -97,7 +138,9 @@
     "Application.java.ru.skypro.homework.service.DiplomaBlockApplication.executor": "Run",
     "Docker.Dockerfile.executor": "Run",
     "Docker.docker-compose.yml.backend: Compose Deployment.executor": "Run",
+    "Docker.docker-compose.yml.frontend: Compose Deployment.executor": "Run",
     "Docker.docker-compose.yml.postgres: Compose Deployment.executor": "Run",
+    "Docker.docker-compose.yml: Compose Deployment (1).executor": "Run",
     "Docker.docker-compose.yml: Compose Deployment.executor": "Run",
     "JUnit.CommentsServiceImplTest.updateComment_ShouldUpdateComment_WhenUserIsOwner.executor": "Run",
     "JUnit.DiplomaBlockApplicationTests (1).executor": "Run",
@@ -130,14 +173,14 @@
     "com.intellij.ide.FileNotInSourceRootChecker.no.check": "true",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
     "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "git-widget-placeholder": "4-week",
+    "git-widget-placeholder": "#5 on 4-week",
     "kotlin-language-version-configured": "true",
     "last_directory_selection": "/Users/innakucak/Downloads/diploma-block/src/test/java",
     "last_opened_file_path": "/Users/innakucak/Downloads/diploma-block",
     "project.structure.last.edited": "SDKs",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.3873563",
-    "settings.editor.selected.configurable": "vcs.Git"
+    "settings.editor.selected.configurable": "DockerRegistry"
   },
   "keyToStringList": {
     "DatabaseDriversLRU": [
@@ -189,21 +232,6 @@
     </key>
   </component>
   <component name="RunManager" selected="Spring Boot.DiplomaBlockApplication">
-    <configuration name="DiplomaBlockApplicationTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="hikari" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value=".*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="DiplomaBlockApplicationTests" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="DiplomaBlockApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
       <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UnknownPolicyInFreeMode" />
       <module name="ads" />
@@ -248,14 +276,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Dockerfile" type="docker-deploy" factoryName="dockerfile" temporary="true" server-name="Docker">
-      <deployment type="dockerfile">
-        <settings>
-          <option name="sourceFilePath" value="Dockerfile" />
-        </settings>
-      </deployment>
-      <method v="2" />
-    </configuration>
     <configuration default="true" type="docker-deploy" factoryName="docker-compose.yml" temporary="true">
       <deployment type="docker-compose.yml">
         <settings />
@@ -268,6 +288,15 @@
       </deployment>
       <method v="2" />
     </configuration>
+    <configuration name="docker-compose.yml: Compose Deployment (1)" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="removeOrphansOnComposeDown" value="false" />
+          <option name="sourceFilePath" value="docker-compose.yml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
     <configuration name="docker-compose.yml: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
       <deployment type="docker-compose.yml">
         <settings>
@@ -276,12 +305,12 @@
       </deployment>
       <method v="2" />
     </configuration>
-    <configuration name="docker-compose.yml.backend: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+    <configuration name="docker-compose.yml.frontend: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
       <deployment type="docker-compose.yml">
         <settings>
           <option name="services">
             <list>
-              <option value="backend" />
+              <option value="frontend" />
             </list>
           </option>
           <option name="sourceFilePath" value="docker-compose.yml" />
@@ -303,20 +332,19 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Docker.Dockerfile" />
-      <item itemvalue="Docker.docker-compose.yml.backend: Compose Deployment" />
+      <item itemvalue="Docker.docker-compose.yml.frontend: Compose Deployment" />
+      <item itemvalue="Docker.docker-compose.yml: Compose Deployment (1)" />
       <item itemvalue="Docker.docker-compose.yml.postgres: Compose Deployment" />
       <item itemvalue="Docker.docker-compose.yml: Compose Deployment" />
-      <item itemvalue="JUnit.DiplomaBlockApplicationTests" />
       <item itemvalue="Spring Boot.DiplomaBlockApplication" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Spring Boot.DiplomaBlockApplication" />
-        <item itemvalue="Docker.Dockerfile" />
-        <item itemvalue="Docker.docker-compose.yml.backend: Compose Deployment" />
+        <item itemvalue="Docker.docker-compose.yml: Compose Deployment (1)" />
         <item itemvalue="Docker.docker-compose.yml: Compose Deployment" />
         <item itemvalue="Docker.docker-compose.yml.postgres: Compose Deployment" />
+        <item itemvalue="Docker.docker-compose.yml.frontend: Compose Deployment" />
       </list>
     </recent_temporary>
   </component>
@@ -466,7 +494,15 @@
       <option name="project" value="LOCAL" />
       <updated>1769521092266</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="диплом">
+      <option name="closed" value="true" />
+      <created>1769521913050</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1769521913050</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="UnknownFeatures">

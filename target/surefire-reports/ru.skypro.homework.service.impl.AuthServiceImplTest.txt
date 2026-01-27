@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: ru.skypro.homework.service.impl.AuthServiceImplTest
 -------------------------------------------------------------------------------
-Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.012 s - in ru.skypro.homework.service.impl.AuthServiceImplTest
+Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s - in ru.skypro.homework.service.impl.AuthServiceImplTest

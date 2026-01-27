@@ -1,68 +1,52 @@
 package ru.skypro.homework.service.impl;
 
-
-import lombok.Getter;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-import ru.skypro.homework.dto.*;
+import ru.skypro.homework.dto.UpdateUser;
+import ru.skypro.homework.dto.User;
 import ru.skypro.homework.entity.UserEntity;
 import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.UserService;
 
-@Getter
+
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
+    @Override
+    public UserEntity findById(Integer id) {
+        return userRepository.findById(id).orElse(null);
     }
 
     @Override
-    public User getCurrentUser() {
+    public void update(UserEntity user) {
+        userRepository.save(user);
+    }
+
+    @Override
+    public User getUser(String username) {
         return null;
     }
 
     @Override
-    public User updateUser(UpdateUser updateUser) {
-        User user = new User();
-        user.setFirstName(updateUser.getFirstName());
-        user.setLastName(updateUser.getLastName());
-        user.setPhone(updateUser.getPhone());
-        return user;
+    public User getCurrentUser(String username) {
+        return null;
     }
 
     @Override
-    public NewPassword updatePassword(NewPassword newPassword) {
-        String encodedPassword = passwordEncoder.encode(newPassword.getNewPassword());
-        newPassword.setNewPassword(encodedPassword);
-        return newPassword;
+    public User updateUser(String username, UpdateUser updateUser) {
+        return null;
     }
 
     @Override
-    public String getCurrentUser(String name) {
-        return name;
+    public void updatePassword(String username, String currentPassword, String newPassword) {
+
     }
 
     @Override
-    public void updatePassword(String name, String currentPassword, String newPassword) {
-    }
-
-    @Override
-    public User updateUser(String name, UpdateUser updateUser) {
-        User user = new User();
-        user.setFirstName(updateUser.getFirstName());
-        user.setLastName(updateUser.getLastName());
-        user.setPhone(updateUser.getPhone());
-        return user;
-    }
-
-    @Override
-    public void updateUserImage(String name, String imagePath) {
+    public void updateUserImage(String username) {
 
     }
 
@@ -72,8 +56,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUserImage(MultipartFile image) {
-        return updateUserImage(image);
+    public User getCurrentUser() {
+        return null;
     }
-
 }

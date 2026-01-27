@@ -4,8 +4,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -87,7 +85,7 @@ public class UsersController {
     @GetMapping("/me")
     public ResponseEntity<User> getUser() {
         log.info("Getting current user info");
-        User user = userService.getCurrentUser();
+        User user = userService.getCurrentUser("Kisa");
         return ResponseEntity.ok(user);
     }
 
@@ -104,7 +102,7 @@ public class UsersController {
         log.info("Updating user image for: {}", principal.getName());
         try {
             String imagePath = saveUserImage(image);
-            userService.updateUserImage(principal.getName(), imagePath);
+            userService.updateUserImage(principal.getName());
             return ResponseEntity.ok().build();
         } catch (IOException e) {
             log.error("Failed to save user image", e);
@@ -116,8 +114,8 @@ public class UsersController {
         String originalFilename = image.getOriginalFilename();
         String extension = originalFilename != null ?
                 originalFilename.substring(originalFilename.lastIndexOf(".")) : ".jpg";
-        String filename = "user_" + UUID.randomUUID() + extension;
-        Path path = Paths.get("images/" + filename);
+        String filename = STR."user_\{UUID.randomUUID()}\{extension}";
+        Path path = Paths.get(STR."images/\{filename}");
 
         Files.createDirectories(path.getParent());
         Files.write(path, image.getBytes());

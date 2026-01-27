@@ -6,7 +6,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import ru.skypro.homework.dto.Role;
+import ru.skypro.homework.entity.Role;
 import ru.skypro.homework.entity.UserEntity;
 import ru.skypro.homework.repository.UserRepository;
 
@@ -34,7 +34,7 @@ public class DataInitializer {
             user.setFirstName(firstName);
             user.setLastName(lastName);
             user.setPhone(phone);
-            user.setRole(Role.valueOf(role));
+            user.setRole(Role.valueOf(String.valueOf(Role.valueOf(role))));
             user.setPassword(passwordEncoder.encode("1234"));
 
             userRepository.save(user);

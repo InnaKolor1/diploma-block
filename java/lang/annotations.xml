@@ -2,7 +2,4 @@
     <item name='java.lang.Integer'>
         <annotation name='java.lang.Deprecated'/>
     </item>
-    <item name='java.lang.Object'>
-        <annotation name='java.lang.Deprecated'/>
-    </item>
 </root>

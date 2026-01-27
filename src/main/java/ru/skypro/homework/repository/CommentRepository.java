@@ -9,12 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface CommentRepository extends JpaRepository<CommentEntity, Integer> {
+    Optional<CommentEntity> findByIdAndAd_Id(Integer id, Integer adId);
+
     List<CommentEntity> findByAd_Id(Integer adId);
-    List<CommentEntity> findAllByAd_IdOrderByCreatedAtDesc(Integer adId);
-
-
-    void deleteByIdAndAd_Id(Integer commentId, Integer adId);
-    boolean existsByIdAndAd_Id(Integer commentId, Integer adId);
-
-    CommentEntity findByIdAndAd_Id(Integer commentId, Integer adId);
 }

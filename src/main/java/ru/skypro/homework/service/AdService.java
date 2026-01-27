@@ -1,20 +1,21 @@
-package ru.skypro.homework.service.impl;
+package ru.skypro.homework.service;
 
 import org.springframework.web.multipart.MultipartFile;
-import ru.skypro.homework.dto.Ad;
-import ru.skypro.homework.dto.Ads;
-import ru.skypro.homework.dto.CreateOrUpdateAd;
-import ru.skypro.homework.dto.ExtendedAd;
-import ru.skypro.homework.entity.AdEntity;
+import ru.skypro.homework.dto.*;
 
 public interface AdService {
+
     Ads getAllAds();
 
     Ad addAd(CreateOrUpdateAd createOrUpdateAd, MultipartFile image, String username);
 
-    ExtendedAd getExtendedAd(Integer id);
+    ExtendedAdDto getExtendedAd(Integer id);
 
     void removeAd(Integer id, String username);
+
+    Ad addAd(CreateOrUpdateAd dto, String username);
+
+    void deleteAd(Integer adId, String username);
 
     Ad updateAd(Integer id, CreateOrUpdateAd createOrUpdateAd, String username);
 
@@ -22,7 +23,7 @@ public interface AdService {
 
     void updateAdImage(Integer id, MultipartFile image, String username);
 
-    AdEntity getAdEntity(Integer id);
+    Ads getAdsMe(String username);
 
-    boolean isAdOwner(Integer adId, String username);
+    Ad getAd(Integer id);
 }

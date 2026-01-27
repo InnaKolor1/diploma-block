@@ -10,7 +10,7 @@ class  AdTest {
         Ad ad = new Ad();
         ad.setAuthor(1);
         ad.setImage("image.jpg");
-        ad.setPk(100);
+        ad.setPk(1);
         ad.setPrice(5000);
         ad.setTitle("Test Ad");
 

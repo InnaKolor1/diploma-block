@@ -1,5 +1,5 @@
 <root>
-    <item name='org.hibernate.query.sqm.tree.domain.AbstractSqmPath'>
+    <item name='java.net.SocksConsts'>
         <annotation name='java.lang.Deprecated'/>
     </item>
 </root>

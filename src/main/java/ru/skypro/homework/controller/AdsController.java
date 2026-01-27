@@ -14,8 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.Ad;
 import ru.skypro.homework.dto.Ads;
 import ru.skypro.homework.dto.CreateOrUpdateAd;
-import ru.skypro.homework.dto.ExtendedAd;
-import ru.skypro.homework.service.impl.AdService;
+import ru.skypro.homework.dto.ExtendedAdDto;
+import ru.skypro.homework.service.AdService;
 
 import java.security.Principal;
 
@@ -74,15 +74,15 @@ public class AdsController {
                             responseCode = "200",
                             description = "OK",
                             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = ExtendedAd.class))
+                                    schema = @Schema(implementation = ExtendedAdDto.class))
                     ),
                     @ApiResponse(responseCode = "404", description = "Not found")
             }
     )
     @GetMapping("/{id}")
-    public ResponseEntity<ExtendedAd> getAds(@PathVariable("id") Integer id) {
+    public ResponseEntity<ExtendedAdDto> getAds(@PathVariable("id") Integer id) {
         log.info("Getting ad with id: {}", id);
-        ExtendedAd extendedAd = adService.getExtendedAd(id);
+        ExtendedAdDto extendedAd = adService.getExtendedAd(id);
         return ResponseEntity.ok(extendedAd);
     }
 

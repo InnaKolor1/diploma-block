@@ -1,0 +1,5 @@
+<root>
+    <item name='org.hibernate.DuplicateMappingException'>
+        <annotation name='java.lang.Deprecated'/>
+    </item>
+</root>

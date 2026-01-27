@@ -1,0 +1,5 @@
+<root>
+    <item name='org.springframework.beans.factory.support.AbstractBeanFactory AbstractBeanFactory(org.springframework.beans.factory.BeanFactory)'>
+        <annotation name='org.jetbrains.annotations.NonBlocking'/>
+    </item>
+</root>
